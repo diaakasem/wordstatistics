@@ -1,9 +1,6 @@
-'use strict'
-
+controller = ($scope) ->
+  $scope.apis = [
+  ]
 angular.module('wordsApp')
-  .controller 'MainCtrl', ($scope) ->
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ]
+  .controller 'MainCtrl',
+    ['$scope', controller]

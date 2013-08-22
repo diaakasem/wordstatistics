@@ -1,10 +1,11 @@
-'use strict'
+module = angular.module('wordsApp', [])
 
-angular.module('wordsApp', [])
-  .config ($routeProvider) ->
-    $routeProvider
-      .when '/',
-        templateUrl: 'views/main.html'
-        controller: 'MainCtrl'
-      .otherwise
-        redirectTo: '/'
+configs = ($routeProvider) ->
+  $routeProvider
+    .when '/',
+      templateUrl: 'views/main.html'
+      controller: 'MainCtrl'
+    .otherwise
+      redirectTo: '/'
+
+module.config configs
