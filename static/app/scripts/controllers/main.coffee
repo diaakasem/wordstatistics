@@ -1,6 +1,10 @@
-controller = ($scope) ->
-  $scope.apis = [
-  ]
+controller = ($scope, service) ->
+
+  onList = (data)->
+    $scope.api = data
+  
+  service.list onList
+
 angular.module('wordsApp')
   .controller 'MainCtrl',
-    ['$scope', controller]
+    ['$scope', 'People', controller]

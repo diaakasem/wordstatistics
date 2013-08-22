@@ -1,4 +1,10 @@
-crud = (Restangular) ->
+service = (Restangular) ->
+
+  httpFields =
+    headers:
+      common:
+        Accept: 'application/json'
+
   ->
     rest = {}
 
@@ -22,10 +28,10 @@ crud = (Restangular) ->
       #TODO: fix this
       cb null
 
-    config = (api, baseUrl='/app/api') ->
-      rest = Restangular.withConfig(->
-        Restangular.setBaseUrl baseUrl
-      ).all(api)
+    config = (api, baseUrl='app') ->
+      rest = Restangular.withConfig((configurer)->
+        configurer.setBaseUrl(baseUrl)
+      ).all(api+'/')
       @
 
     # Public API here
@@ -37,4 +43,6 @@ crud = (Restangular) ->
     update: update
     remove: remove
 
-angular.module('fleetApp').factory 'Crud', ['Restangular', crud]
+angular.module('wordsApp')
+  .factory 'Crud',
+    ['Restangular', service]

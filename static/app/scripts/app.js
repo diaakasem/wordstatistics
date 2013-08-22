@@ -2,7 +2,7 @@
 (function() {
   var configs, module;
 
-  module = angular.module('wordsApp', []);
+  module = angular.module('wordsApp', ['restangular']);
 
   configs = function($routeProvider) {
     return $routeProvider.when('/', {

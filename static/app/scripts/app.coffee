@@ -1,4 +1,4 @@
-module = angular.module('wordsApp', [])
+module = angular.module('wordsApp', ['restangular'])
 
 configs = ($routeProvider) ->
   $routeProvider

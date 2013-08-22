@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "people.js",
+  "sourceRoot": "",
+  "sources": [
+    "people.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;CAAA,KAAA,CAAA;;CAAA,CAAA,CAAU,CAAA,GAAV,EAAW;CACT,GAAA,IAAA;CAAA,EAAO,CAAP,EAAO,GAAA;CADC,UAER;CAFF,EAAU;;CAAV,CAIA,IAAA,CAAO,CAAP,EAAA;CAJA"
+}

@@ -2,11 +2,15 @@
 (function() {
   var controller;
 
-  controller = function($scope) {
-    return $scope.apis = [];
+  controller = function($scope, service) {
+    var onList;
+    onList = function(data) {
+      return $scope.api = data;
+    };
+    return service.list(onList);
   };
 
-  angular.module('wordsApp').controller('MainCtrl', ['$scope', controller]);
+  angular.module('wordsApp').controller('MainCtrl', ['$scope', 'People', controller]);
 
 }).call(this);
 
