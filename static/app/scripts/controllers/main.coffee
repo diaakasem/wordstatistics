@@ -1,7 +1,7 @@
 controller = ($scope, service) ->
 
   onList = (data)->
-    $scope.api = data
+    $scope.people = people
   
   service.list onList
 
