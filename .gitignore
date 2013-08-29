@@ -1,1 +1,26 @@
-/home/diknows/zshconfigs/gitignore
+syntax: glob
+build
+*.swp
+*~
+
+*.pyc
+*.mode1
+*.mode1v3
+*.mode2
+*.mode2v3
+*.pbxuser
+*.perspective
+*.perspectivev3
+xcuserdata
+
+*~.nib
+
+.DS_Store
+*.log
+static/app/components
+static/node_modules
+static/download
+report
+.tmp
+*.tmp
+*.old

@@ -1,6 +1,6 @@
+numpy
 eve
 flask
-numpy
 pyyaml
 matplotlib
 nltk
