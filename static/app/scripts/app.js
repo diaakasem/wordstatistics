@@ -2,15 +2,31 @@
 (function() {
   var configs, module;
 
-  module = angular.module('wordsApp', ['restangular']);
+  module = angular.module('wordsApp', ['restangular', 'blueimp.fileupload']);
 
-  configs = function($routeProvider) {
+  configs = function($routeProvider, fileUploadProvider) {
     return $routeProvider.when('/', {
       templateUrl: 'views/main.html',
       controller: 'MainCtrl'
+    }).when('/upload', {
+      templateUrl: 'views/upload.html',
+      controller: 'UploadCtrl'
+    }).when('/files', {
+      templateUrl: 'views/files.html',
+      controller: 'FilesCtrl'
+    }).when('/segments', {
+      templateUrl: 'views/segments.html',
+      controller: 'SegmentsCtrl'
+    }).when('/words', {
+      templateUrl: 'views/words.html',
+      controller: 'WordsCtrl'
     }).otherwise({
       redirectTo: '/'
-    });
+    }, angular.extend(fileUploadProvider.defaults, {
+      disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+      maxFileSize: 5000000,
+      acceptFileTypes: /(\.|\/)(gif|jpe?g|png|txt)$/i
+    }), fileUploadProvider.defaults.redirect = '#/files');
   };
 
   module.config(configs);
