@@ -26,6 +26,14 @@
     });
   });
 
+  app.run(function($rootScope) {
+    if (Parse.User.current()) {
+      return $rootScope.user = Parse.User.current();
+    } else {
+      return $rootScope.user = null;
+    }
+  });
+
 }).call(this);
 
 /*

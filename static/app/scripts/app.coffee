@@ -19,8 +19,11 @@ app.config ($routeProvider) ->
     .when '/words',
       templateUrl: 'views/words.html',
       controller: 'WordsCtrl'
-    .when '/login',
-      templateUrl: 'views/login.html',
-      controller: 'LoginCtrl'
     .otherwise
       redirectTo: '/'
+app.run ($rootScope)->
+  if Parse.User.current()
+    $rootScope.user = Parse.User.current()
+  else
+    $rootScope.user = null
+

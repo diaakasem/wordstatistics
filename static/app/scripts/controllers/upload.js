@@ -2,20 +2,9 @@
 (function() {
   var controller;
 
-  controller = function($scope, $http) {
-    $scope.options = {
-      url: '/app/upload'
-    };
-    $scope.loadingFiles = true;
-    return $http.get('/app/upload').then(function(response) {
-      $scope.loadingFiles = false;
-      return $scope.queue = response.data.files || [];
-    }, function() {
-      return $scope.loadingFiles = false;
-    });
-  };
+  controller = function($scope) {};
 
-  angular.module('wordsApp').controller('UploadCtrl', ['$scope', '$http', '$filter', '$window', controller]);
+  angular.module('wordsApp').controller('UploadCtrl', ['$scope', controller]);
 
 }).call(this);
 
