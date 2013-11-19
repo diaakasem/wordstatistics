@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "navmenu.js",
+  "sourceRoot": "",
+  "sources": [
+    "navmenu.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;CAAA,CAAA,UAAA;CAAA,KAAA,IAAA;;CAAA,CACA,CAAa,EAAA,IAAC,CAAd;;CADA,CAGA,CACwB,GADxB,CAAO,EAAP,CAAA;WAEI;CAAA,CAAa,IAAb,KAAA,KAAA;CAAA,CACU,CADV,GACA,EAAA;CADA,CAEY,IAAZ,EAAY,EAAZ;CAHoB;CADxB,EACwB;CAJxB"
+}

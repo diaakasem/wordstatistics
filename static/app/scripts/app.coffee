@@ -1,6 +1,8 @@
-module = angular.module('wordsApp', ['restangular', 'blueimp.fileupload'])
+app = angular.module 'wordsApp', ['ngRoute', 'ngTable', 'restangular']
 
-configs = ($routeProvider, fileUploadProvider) ->
+app.config ($routeProvider) ->
+  Parse.initialize "zCZ9afoU17xLzheYoVGnUxU85Wvqri3pasbdc0Q9",
+                   "m1kKssfW6cek18eL9fa8AS0JR7siPCFPx5NmHDuR"
   $routeProvider
     .when '/',
       templateUrl: 'views/main.html'
@@ -17,18 +19,8 @@ configs = ($routeProvider, fileUploadProvider) ->
     .when '/words',
       templateUrl: 'views/words.html',
       controller: 'WordsCtrl'
+    .when '/login',
+      templateUrl: 'views/login.html',
+      controller: 'LoginCtrl'
     .otherwise
       redirectTo: '/'
-
-      # Enable image resizing, except for Android and Opera,
-      # which actually support image resizing, but fail to
-      # send Blob objects via XHR requests:
-      angular.extend fileUploadProvider.defaults,
-        disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent)
-        maxFileSize: 5000000
-        # Acceptable file extensions
-        acceptFileTypes: /(\.|\/)(txt)$/i
-
-      fileUploadProvider.defaults.redirect = '#/files'
-
-module.config configs
