@@ -21,9 +21,14 @@ app.config ($routeProvider) ->
       controller: 'WordsCtrl'
     .otherwise
       redirectTo: '/'
-app.run ($rootScope)->
-  if Parse.User.current()
-    $rootScope.user = Parse.User.current()
-  else
-    $rootScope.user = null
 
+rootController = (root)->
+  root.go = (location)->
+    location.href = location
+
+  if Parse.User.current()
+    root.user = Parse.User.current()
+  else
+    root.user = null
+
+app.run [ '$rootScope', rootController ]

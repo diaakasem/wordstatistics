@@ -1,0 +1,45 @@
+<div class="navbar navbar-default navbar-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-fixed-top .navbar-collapse">
+        <span class="glyphicon glyphicon-thumbnails"></span>
+      </button>
+      <a class="navbar-brand" href="#/">Arabic Words Analyzer</a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav" ng-show="user">
+        <li>
+        <a href="#/upload">
+          <i class="glyphicon glyphicon-cloud-upload"></i>
+          Uploads
+        </a>
+        </li>
+        <li>
+        <a href="#/files">
+          <i class="glyphicon glyphicon-inbox"></i>
+          Documents
+        </a>
+        </li>
+        <li><a href="#/segments">Segments</a></li>
+        <li><a href="#/words">Words</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <signin ng-show="!user"></signin>
+        <signup ng-show="!user"></signup>
+        <li class="dropdown" ng-show="user">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          {{user.get('name') || user.get('email')}}
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="#/profile">Profile</a></li>
+          <li class="divider"></li>
+          <li><a ng-click="signout()" style="cursor:pointer">Logout</a></li>
+        </ul>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>

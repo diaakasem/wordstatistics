@@ -4,47 +4,19 @@
   var controller;
 
   controller = function(root, scope) {
-    scope.signup = function(email, password) {
-      var user;
-      user = new Parse.User();
-      user.set("username", email);
-      user.set("password", password);
-      user.set("email", email);
-      debugger;
-      return user.signUp({
-        ACL: new Parse.ACL()
-      }, {
-        success: function(user) {
-          root.user = user;
-          return root.go('/');
-        },
-        error: function(user, error) {
-          return alert("Invalid username or password. Please try again.");
-        }
-      });
-    };
-    scope.signin = function(email, password) {
-      return Parse.User.logIn(email, password, {
-        success: function(user) {
-          root.user = user;
-          return root.go('/');
-        },
-        error: function(user, error) {
-          return alert("Invalid username or password. Please try again.");
-        }
-      });
-    };
     return scope.signout = function() {
       Parse.User.logOut();
-      root.user = null;
+      delete root.user;
       return root.go('/');
     };
   };
 
   angular.module('wordsApp').directive('navmenu', function() {
     return {
-      templateUrl: 'views/nav.html',
+      templateUrl: 'views/directives/nav.html',
+      replace: true,
       restrict: 'E',
+      scope: true,
       controller: ['$rootScope', '$scope', controller]
     };
   });
