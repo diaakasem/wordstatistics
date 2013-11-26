@@ -30,11 +30,7 @@
     root.go = function(location) {
       return location.href = location;
     };
-    if (Parse.User.current()) {
-      return root.user = Parse.User.current();
-    } else {
-      return root.user = null;
-    }
+    return root.user = Parse.User.current();
   };
 
   app.run(['$rootScope', rootController]);

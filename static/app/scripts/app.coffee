@@ -26,9 +26,6 @@ rootController = (root)->
   root.go = (location)->
     location.href = location
 
-  if Parse.User.current()
-    root.user = Parse.User.current()
-  else
-    root.user = null
+  root.user = Parse.User.current()
 
 app.run [ '$rootScope', rootController ]

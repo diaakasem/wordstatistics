@@ -1,1 +1,28 @@
-<p>This is the words view.</p>
+<div class="row">
+  <div class="col-sm-12 col-md-12 col-lg-8 col-lg-offset-2" ng-show="result">
+    <div class="panel panel-default">
+      <div class="panel-body">                
+        <dl ng-repeat="(k,v) in result">
+          <dt>{{k}}</dt>
+          <dd>{{v}}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-12 col-lg-8 col-lg-offset-2">
+    <div class="panel panel-default">
+      <div class="panel-body">                
+        <form role="form" name="form" ng-submit="analyze(form)" novalidate>
+
+          <textarea id="text" class="form-control" name="text" required
+            ng-model="model.text" placeholder="Type in a large text..."
+            rows="18" style="margin-bottom:10px;"></textarea>
+
+          <button class="btn btn-info pull-right" type="submit">Analyze</button>
+          <h6 class="pull-left">Words in the above area will be analyzed for
+            statistical information</h6>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

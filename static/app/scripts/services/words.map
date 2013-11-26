@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "words.js",
+  "sourceRoot": "",
+  "sources": [
+    "words.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;CAAA,CAAA,UAAA;CAAA,KAAA,CAAA;;CAAA,CACA,CAAU,CAAA,GAAV,EAAW;;CADX,CAGA,IAAA,CAAO,GAAP;CAHA"
+}
