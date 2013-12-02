@@ -11,7 +11,8 @@ def statsText(text, words):
     # formatted prints will work with Python2 and Python3
     for word in word_tokenize(text):
         fdist.inc(word.lower())
-    return [(k, v) for k, v in fdist.iteritems() if k in words]
+
+    return [(k, fdist.freq(k)) for k in words]
 
 
 def statsFile(text):
