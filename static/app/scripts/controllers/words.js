@@ -2,9 +2,31 @@
 (function() {
   var controller;
 
+  if (!String.prototype.trim) {
+    String.prototype.trim = function() {
+      return this.replace(/^\s+|\s+$/gm, '');
+    };
+  }
+
   controller = function(scope, Service, http) {
     scope.model = {};
+    scope.model.words = [];
     scope.result = null;
+    scope.word = '';
+    scope.addWord = function() {
+      if (scope.word) {
+        if (scope.word.trim()) {
+          scope.model.words.push(scope.word);
+          scope.model.words = _.uniq(scope.model.words);
+          return scope.word = '';
+        }
+      }
+    };
+    scope.removeWord = function(word) {
+      return scope.model.words = _.filter(scope.model.words, function(w) {
+        return w !== word;
+      });
+    };
     return scope.analyze = function(form) {
       var h;
       h = http({

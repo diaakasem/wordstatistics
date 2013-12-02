@@ -22,7 +22,9 @@ app.add_url_rule('/upload/', view_func=UploadAPI.as_view('uploadapi'))
 @app.route('/analyze', methods=['POST'])
 def analyze():
     data = json.loads(request.data)
-    res = stats.statsText(data['text'])
+    text = data['text']
+    words = data['words']
+    res = stats.statsText(text, words)
     return jsonify(res)
 
 

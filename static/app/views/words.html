@@ -1,4 +1,5 @@
 <div class="row">
+  <!-- Results -->
   <div class="col-sm-12 col-md-12 col-lg-8 col-lg-offset-2" ng-show="result">
     <div class="panel panel-default">
       <div class="panel-body">                
@@ -9,7 +10,8 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-12 col-md-12 col-lg-8 col-lg-offset-2">
+  <!-- Adding text-->
+  <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
     <div class="panel panel-default">
       <div class="panel-body">                
         <form role="form" name="form" ng-submit="analyze(form)" novalidate>
@@ -25,4 +27,36 @@
       </div>
     </div>
   </div>
+
+
+  <!-- Adding words list-->
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+    <h4> Words to analyze against</h4>
+    <hr/>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <form name="words" ng-submit="addWord()">
+        <div class="input-group">
+          <input type="text" class="form-control" ng-model="word">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="submit"
+              ng-disable="!word.trim()">
+              <i class="glyphicon glyphicon-plus"></i> Add
+            </button>
+          </span>
+        </div>
+      </form>
+    </div>
+    <div class="wordslist col-xs-12 col-sm-12 col-md-12 col-lg-12"
+      ng-if="model.words.length <= 0 ">
+      <center><h5> Empty filtering list. </h5></center>
+    </div>
+    <div class="wordslist col-xs-12 col-sm-12 col-md-12 col-lg-12"
+      ng-if="model.words.length > 0">
+      <span ng-repeat="w in model.words" class="tag">
+        <i class="glyphicon glyphicon-remove-sign" ng-click="removeWord(w)"></i>
+        {{w}} 
+      </span>
+    </div>
+  </div>
+
 </div>
