@@ -1,6 +1,5 @@
 numpy
 flask
 pyyaml
-matplotlib
 nltk
 gunicorn
