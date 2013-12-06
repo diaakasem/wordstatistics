@@ -28,7 +28,7 @@
 
   rootController = function(root) {
     root.go = function(location) {
-      return location.href = location;
+      return window.location.hash = location;
     };
     return root.user = Parse.User.current();
   };

@@ -2,14 +2,15 @@ unless String::trim
   String::trim = ->
     this.replace /^\s+|\s+$/gm, ''
 
-controller = (scope, Service, http) ->
+controller = (scope, Service, http, timeout)->
 
   # Words to filter analysis against
   scope.model =
     words: []
     text: ''
 
-  scope.result = null
+  scope.success = ''
+  scope.error = ''
   # The word to be added to the filter list
   scope.word = ''
 
@@ -24,6 +25,11 @@ controller = (scope, Service, http) ->
 
   success = (res)->
     # Alert that document was saved successfully and move to another page
+    scope.$apply ->
+      scope.success = 'Document was saved successfully'
+      scope.error = ''
+      timeout -> scope.go 'files', 2000
+      
 
   scope.analyze = (form)->
     h = http
@@ -32,12 +38,17 @@ controller = (scope, Service, http) ->
       data: scope.model
 
     h.success (d)->
-      scope.result = d.result
-      Service.save(d, success)
+      obj =
+        excerpt: scope.model.text.substring(0, 100)
+        filename: d.filename
+        results: d.result
+        words: scope.model.words
+      Service.save(obj, success)
 
     h.error (e)->
-      alert "#{e}"
+      scope.success = ''
+      scope.error = e
     
 angular.module('wordsApp')
   .controller 'WordsCtrl',
-  ['$scope', 'Texts', '$http', controller]
+  ['$scope', 'Texts', '$http', '$timeout', controller]

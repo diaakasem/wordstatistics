@@ -47,16 +47,13 @@
         });
       };
 
-      Crud.prototype.list = function(where) {
+      Crud.prototype.list = function(cb, errCB) {
         var query;
-        if (where == null) {
-          where = '';
-        }
         query = new Parse.Query(this["class"]);
         query.descending('createdAt');
         return query.find({
           success: cb,
-          error: onError
+          error: errCB
         });
       };
 

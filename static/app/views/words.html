@@ -1,15 +1,12 @@
 <div class="row">
-  <!-- Results -->
-  <div class="col-sm-12 col-md-12 col-lg-8 col-lg-offset-2" ng-show="result">
-    <div class="panel panel-default">
-      <div class="panel-body">                
-        <dl ng-repeat="(k,v) in result">
-          <dt>{{k}}</dt>
-          <dd>{{v}}</dd>
-        </dl>
-      </div>
-    </div>
+
+  <div class="alert" ng-show="success || error"
+    ng-class="{'alert-danger': error, 'alert-success': success}">
+    <button type="button" class="close" data-dismiss="alert"
+      aria-hidden="true">&times;</button>
+    {{error || success}}
   </div>
+
   <!-- Adding text-->
   <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
     <div class="panel panel-default">

@@ -25,3 +25,7 @@ report
 *.tmp
 *.old
 tags
+*.map
+*.jade
+files/*
+uploads/*

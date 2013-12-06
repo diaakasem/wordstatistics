@@ -29,12 +29,12 @@ Service = ->
         success: cb
         error: errCB
 
-    list: (where='')->
+    list: (cb, errCB)->
       query = new Parse.Query @class
       query.descending('createdAt')
       query.find
         success: cb
-        error: onError
+        error: errCB
     
 angular.module('wordsApp')
   .service 'ParseCrud',

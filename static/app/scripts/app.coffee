@@ -24,7 +24,7 @@ app.config ($routeProvider) ->
 
 rootController = (root)->
   root.go = (location)->
-    location.href = location
+    window.location.hash = location
 
   root.user = Parse.User.current()
 
