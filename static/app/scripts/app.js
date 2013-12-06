@@ -8,32 +8,46 @@
     Parse.initialize("zCZ9afoU17xLzheYoVGnUxU85Wvqri3pasbdc0Q9", "m1kKssfW6cek18eL9fa8AS0JR7siPCFPx5NmHDuR");
     return $routeProvider.when('/', {
       templateUrl: 'views/main.html',
-      controller: 'MainCtrl'
+      controller: 'MainCtrl',
+      access: 'public'
     }).when('/upload', {
       templateUrl: 'views/upload.html',
-      controller: 'UploadCtrl'
-    }).when('/files', {
+      controller: 'UploadCtrl',
+      access: 'user'
+    }).when('/documents', {
       templateUrl: 'views/files.html',
-      controller: 'FilesCtrl'
+      controller: 'FilesCtrl',
+      access: 'user'
+    }).when('/documents/:id', {
+      templateUrl: 'views/document.html',
+      controller: 'DocumentCtrl',
+      access: 'user'
     }).when('/segments', {
       templateUrl: 'views/segments.html',
-      controller: 'SegmentsCtrl'
+      controller: 'SegmentsCtrl',
+      access: 'user'
     }).when('/words', {
       templateUrl: 'views/words.html',
-      controller: 'WordsCtrl'
+      controller: 'WordsCtrl',
+      access: 'user'
     }).otherwise({
-      redirectTo: '/'
+      redirectTo: '/words'
     });
   });
 
-  rootController = function(root) {
-    root.go = function(location) {
-      return window.location.hash = location;
+  rootController = function(root, location) {
+    root.go = function(url) {
+      return location.path('/' + url);
     };
-    return root.user = Parse.User.current();
+    root.user = Parse.User.current();
+    return root.$on('$routeChangeStart', function(event, next) {
+      if (next.access !== 'public' && !root.user) {
+        return root.go('');
+      }
+    });
   };
 
-  app.run(['$rootScope', rootController]);
+  app.run(['$rootScope', '$location', rootController]);
 
 }).call(this);
 

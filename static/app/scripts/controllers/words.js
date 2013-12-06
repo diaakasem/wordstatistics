@@ -34,7 +34,7 @@
         scope.success = 'Document was saved successfully';
         scope.error = '';
         return timeout(function() {
-          return scope.go('files', 2000);
+          return scope.go('documents', 5000);
         });
       });
     };
@@ -49,7 +49,7 @@
         var obj;
         obj = {
           excerpt: scope.model.text.substring(0, 100),
-          filename: d.filename,
+          filename: "" + d.filename,
           results: d.result,
           words: scope.model.words
         };

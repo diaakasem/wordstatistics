@@ -28,7 +28,7 @@ controller = (scope, Service, http, timeout)->
     scope.$apply ->
       scope.success = 'Document was saved successfully'
       scope.error = ''
-      timeout -> scope.go 'files', 2000
+      timeout -> scope.go 'documents', 5000
       
 
   scope.analyze = (form)->
@@ -40,7 +40,7 @@ controller = (scope, Service, http, timeout)->
     h.success (d)->
       obj =
         excerpt: scope.model.text.substring(0, 100)
-        filename: d.filename
+        filename: "#{d.filename}"
         results: d.result
         words: scope.model.words
       Service.save(obj, success)

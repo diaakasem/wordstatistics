@@ -20,14 +20,29 @@ app = Flask(__name__,
 app.add_url_rule('/upload/', view_func=UploadAPI.as_view('uploadapi'))
 
 
+@app.route('/remove', methods=['POST'])
+def remove():
+    data = json.loads(request.data)
+    filename = data['filename']
+    return texts.remove(filename)
+
+
+@app.route('/load', methods=['POST'])
+def load():
+    data = json.loads(request.data)
+    filename = data['filename']
+    text = texts.load(filename)
+    return text
+
+
 @app.route('/analyze', methods=['POST'])
 def analyze():
     data = json.loads(request.data)
     text = data['text']
     words = data['words']
     res = stats.statsText(text, words)
-    name = texts.save(text)
-    return jsonify({'name': name, 'result': res})
+    filename = texts.save(text)
+    return jsonify({'filename': filename, 'result': res})
 
 
 @app.route('/')

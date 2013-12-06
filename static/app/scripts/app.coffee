@@ -7,25 +7,39 @@ app.config ($routeProvider) ->
     .when '/',
       templateUrl: 'views/main.html'
       controller: 'MainCtrl'
+      access: 'public'
     .when '/upload',
       templateUrl: 'views/upload.html',
       controller: 'UploadCtrl'
-    .when '/files',
+      access: 'user'
+    .when '/documents',
       templateUrl: 'views/files.html',
       controller: 'FilesCtrl'
+      access: 'user'
+    .when '/documents/:id',
+      templateUrl: 'views/document.html',
+      controller: 'DocumentCtrl'
+      access: 'user'
     .when '/segments',
       templateUrl: 'views/segments.html',
       controller: 'SegmentsCtrl'
+      access: 'user'
     .when '/words',
       templateUrl: 'views/words.html',
       controller: 'WordsCtrl'
+      access: 'user'
     .otherwise
-      redirectTo: '/'
+      redirectTo: '/words'
 
-rootController = (root)->
-  root.go = (location)->
-    window.location.hash = location
+rootController = (root, location)->
+  root.go = (url)->
+    location.path('/' + url)
 
   root.user = Parse.User.current()
 
-app.run [ '$rootScope', rootController ]
+  root.$on '$routeChangeStart', (event, next)->
+    if next.access isnt 'public' and not root.user
+      root.go ''
+
+app.run [ '$rootScope', '$location', rootController ]
+

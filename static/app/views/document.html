@@ -1,0 +1,69 @@
+<div class="document">
+  <h3> {{entity.get('excerpt')}} </h3>
+
+
+  <div class="alert" ng-show="success || error"
+    ng-class="{'alert-danger': error, 'alert-success': success}">
+    <button type="button" class="close" data-dismiss="alert"
+      aria-hidden="true">&times;</button>
+    {{error || success}}
+  </div>
+
+  <div class="well">
+
+    <div class="row">
+      <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        Created At
+      </div>
+      <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
+        {{entity.createdAt | timer}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        Filtering Words
+      </div>
+      <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
+        {{entity.get('words').join(', ')}}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        Result
+      </div>
+      <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12"
+        ng-init="results = entity.get('results')">
+
+        <div class="row" ng-repeat="entry in entity.get('results')">
+          <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            {{entry[0]}}
+          </div>
+          <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
+            {{entry[1]}}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        Text
+      </div>
+      <div class="text value col-lg-8 col-md-8 col-sm-6 col-xs-12">
+        {{text}}
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <button class="btn btn-danger pull-right" ng-click="remove(entity)">
+      <i class="glyphicon glyphicon-remove"></i>
+      Remove
+    </button>
+  </div>
+</div>
