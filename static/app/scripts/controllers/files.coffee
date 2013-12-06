@@ -8,14 +8,27 @@ controller = (scope, Service, ngTableParams) ->
     scope.data = d
     scope.tableParams.reload()
 
+  removeFile = (name)->
+    params =
+      method: 'POST'
+      url: '/remove'
+      data:
+        filename: name
+    h = http params
+    h.success (d)->
+      scope.$apply ->
+        scope.success = 'Removed successfully.'
+        scope.tableParams.reload()
+    h.error (e)->
+      scope.success = ''
+      scope.error = e
 
   scope.remove = (e)->
 
+    filename = e.get('filename')
     removeSuccess = (e)->
-      scope.$apply ->
-        scope.success = 'Removed successfully.'
-        scope.data = _.filter scope.data, (d)-> d.id isnt e.id
-        scope.tableParams.reload()
+      scope.data = _.filter scope.data, (d)-> d.id isnt e.id
+      removeFile filename
 
     Service.remove(e, removeSuccess)
 
