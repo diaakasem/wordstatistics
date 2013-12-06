@@ -24,7 +24,7 @@ app.add_url_rule('/upload/', view_func=UploadAPI.as_view('uploadapi'))
 def remove():
     data = json.loads(request.data)
     filename = data['filename']
-    return texts.remove(filename)
+    return jsonify(texts.remove(filename))
 
 
 @app.route('/load', methods=['POST'])
