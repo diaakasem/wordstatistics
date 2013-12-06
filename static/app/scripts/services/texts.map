@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "texts.js",
+  "sourceRoot": "",
+  "sources": [
+    "texts.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;CAAA,KAAA,CAAA;;CAAA,CAAA,CAAU,IAAV,EAAW;CACK,GAAV,GAAA,EAAA,EAAA;CADN,EAAU;;CAAV,CAGA,IAAA,CAAO,GAAP,CAEE;CALF"
+}

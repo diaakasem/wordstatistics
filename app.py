@@ -4,6 +4,7 @@ from flask import request
 from flask import render_template
 from flask import jsonify
 from words import stats
+from words import texts
 import json
 import os
 
@@ -25,7 +26,8 @@ def analyze():
     text = data['text']
     words = data['words']
     res = stats.statsText(text, words)
-    return jsonify(res)
+    name = texts.save(text)
+    return jsonify({'name': name, 'result': res})
 
 
 @app.route('/')

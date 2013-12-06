@@ -9,17 +9,18 @@
   }
 
   controller = function(scope, Service, http) {
-    scope.model = {};
-    scope.model.words = [];
+    var success;
+    scope.model = {
+      words: [],
+      text: ''
+    };
     scope.result = null;
     scope.word = '';
     scope.addWord = function() {
-      if (scope.word) {
-        if (scope.word.trim()) {
-          scope.model.words.push(scope.word);
-          scope.model.words = _.uniq(scope.model.words);
-          return scope.word = '';
-        }
+      if (scope.word && scope.word.trim()) {
+        scope.model.words.push(scope.word);
+        scope.model.words = _.uniq(scope.model.words);
+        return scope.word = '';
       }
     };
     scope.removeWord = function(word) {
@@ -27,6 +28,7 @@
         return w !== word;
       });
     };
+    success = function(res) {};
     return scope.analyze = function(form) {
       var h;
       h = http({
@@ -35,7 +37,8 @@
         data: scope.model
       });
       h.success(function(d) {
-        return scope.result = d;
+        scope.result = d.result;
+        return Service.save(d, success);
       });
       return h.error(function(e) {
         return alert("" + e);
@@ -43,7 +46,7 @@
     };
   };
 
-  angular.module('wordsApp').controller('WordsCtrl', ['$scope', 'Words', '$http', controller]);
+  angular.module('wordsApp').controller('WordsCtrl', ['$scope', 'Texts', '$http', controller]);
 
 }).call(this);
 

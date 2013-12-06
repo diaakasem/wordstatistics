@@ -4,22 +4,26 @@ unless String::trim
 
 controller = (scope, Service, http) ->
 
-  scope.model = {}
   # Words to filter analysis against
-  scope.model.words = []
+  scope.model =
+    words: []
+    text: ''
 
   scope.result = null
+  # The word to be added to the filter list
   scope.word = ''
 
   scope.addWord = ->
-    if scope.word
-      if scope.word.trim()
-        scope.model.words.push scope.word
-        scope.model.words = _.uniq scope.model.words
-        scope.word = ''
+    if scope.word and scope.word.trim()
+      scope.model.words.push scope.word
+      scope.model.words = _.uniq scope.model.words
+      scope.word = ''
 
   scope.removeWord = (word)->
     scope.model.words = _.filter scope.model.words, (w)-> w isnt word
+
+  success = (res)->
+    # Alert that document was saved successfully and move to another page
 
   scope.analyze = (form)->
     h = http
@@ -28,10 +32,12 @@ controller = (scope, Service, http) ->
       data: scope.model
 
     h.success (d)->
-      scope.result = d
+      scope.result = d.result
+      Service.save(d, success)
+
     h.error (e)->
       alert "#{e}"
     
 angular.module('wordsApp')
   .controller 'WordsCtrl',
-  ['$scope', 'Words', '$http', controller]
+  ['$scope', 'Texts', '$http', controller]
