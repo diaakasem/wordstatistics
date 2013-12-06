@@ -18,5 +18,6 @@ def load(name):
 
 
 def remove(name):
+    print "Removing %s" % name
     os.remove('./files/%s' % name)
     return {'result': True}

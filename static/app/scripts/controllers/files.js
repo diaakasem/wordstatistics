@@ -2,7 +2,8 @@
 (function() {
   var controller;
 
-  controller = function(scope, Service, ngTableParams) {
+  controller = function(scope, Service, ngTableParams, http) {
+    var removeFile;
     scope.data = [];
     scope.success = '';
     scope.error = '';
@@ -10,16 +11,33 @@
       scope.data = d;
       return scope.tableParams.reload();
     });
+    removeFile = function(name) {
+      var h, params;
+      params = {
+        method: 'POST',
+        url: '/remove',
+        data: {
+          filename: name
+        }
+      };
+      h = http(params);
+      h.success(function(d) {
+        scope.success = 'Removed successfully.';
+        return scope.tableParams.reload();
+      });
+      return h.error(function(e) {
+        scope.success = '';
+        return scope.error = e;
+      });
+    };
     scope.remove = function(e) {
-      var removeSuccess;
+      var filename, removeSuccess;
+      filename = e.get('filename');
       removeSuccess = function(e) {
-        return scope.$apply(function() {
-          scope.success = 'Removed successfully.';
-          scope.data = _.filter(scope.data, function(d) {
-            return d.id !== e.id;
-          });
-          return scope.tableParams.reload();
+        scope.data = _.filter(scope.data, function(d) {
+          return d.id !== e.id;
         });
+        return removeFile(filename);
       };
       return Service.remove(e, removeSuccess);
     };
@@ -36,7 +54,7 @@
     });
   };
 
-  angular.module('wordsApp').controller('FilesCtrl', ['$scope', 'Texts', 'ngTableParams', controller]);
+  angular.module('wordsApp').controller('FilesCtrl', ['$scope', 'Texts', 'ngTableParams', '$http', controller]);
 
 }).call(this);
 

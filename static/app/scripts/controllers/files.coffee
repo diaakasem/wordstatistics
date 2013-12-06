@@ -1,4 +1,4 @@
-controller = (scope, Service, ngTableParams) ->
+controller = (scope, Service, ngTableParams, http) ->
 
   scope.data = []
   scope.success = ''
@@ -16,9 +16,8 @@ controller = (scope, Service, ngTableParams) ->
         filename: name
     h = http params
     h.success (d)->
-      scope.$apply ->
-        scope.success = 'Removed successfully.'
-        scope.tableParams.reload()
+      scope.success = 'Removed successfully.'
+      scope.tableParams.reload()
     h.error (e)->
       scope.success = ''
       scope.error = e
@@ -42,4 +41,4 @@ controller = (scope, Service, ngTableParams) ->
 
 angular.module('wordsApp')
   .controller 'FilesCtrl',
-  ['$scope', 'Texts', 'ngTableParams', controller]
+  ['$scope', 'Texts', 'ngTableParams', '$http', controller]
