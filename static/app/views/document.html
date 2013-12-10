@@ -9,61 +9,73 @@
     {{error || success}}
   </div>
 
-  <div class="well">
+  <ul class="nav nav-tabs">
+    <li class="active"><a class="clickable">Results</a></li>
+    <li><a href="#/visualize/{{id}}">Visualization</a></li>
+  </ul>
 
-    <div class="row">
-      <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
-        Created At
-      </div>
-      <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
-        {{entity.createdAt | timer}}
-      </div>
-    </div>
+  <div class="tab-content">
 
-    <div class="row">
-      <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
-        Filtering Words
-      </div>
-      <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
-        {{entity.get('words').join(', ')}}
-      </div>
-    </div>
+    <div class="tab-pane fade in active panel panel-default"  style="border-top: 0">
 
-    <div class="row">
-      <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
-        Result
-      </div>
-      <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12"
-        ng-init="results = entity.get('results')">
+      <div class="panel-body">
 
-        <div class="row" ng-repeat="entry in entity.get('results')">
+        <div class="row">
           <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            {{entry[0]}}
+            Created At
           </div>
           <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
-            {{entry[1]}}
+            {{entity.createdAt | timer}}
           </div>
         </div>
 
+        <div class="row">
+          <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            Filtering Words
+          </div>
+          <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
+            {{entity.get('words').join(', ')}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            Result
+          </div>
+          <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12"
+            ng-init="results = entity.get('results')">
+
+            <div class="row" ng-repeat="entry in entity.get('results')">
+              <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                {{entry[0]}}
+              </div>
+              <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                {{entry[1]}}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            Text
+          </div>
+          <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
+            {{text}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-2 col-xs-offset-10">
+            <button class="btn btn-danger" ng-click="remove(entity)">
+              <i class="glyphicon glyphicon-remove"></i>
+              Remove
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-
-
-    <div class="row">
-      <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
-        Text
-      </div>
-      <div class="text value col-lg-8 col-md-8 col-sm-6 col-xs-12">
-        {{text}}
-      </div>
-    </div>
-
-  </div>
-
-  <div class="row">
-    <button class="btn btn-danger pull-right" ng-click="remove(entity)">
-      <i class="glyphicon glyphicon-remove"></i>
-      Remove
-    </button>
   </div>
 </div>
