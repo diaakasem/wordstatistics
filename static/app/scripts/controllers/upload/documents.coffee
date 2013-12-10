@@ -17,15 +17,14 @@ controller = (scope, params, Service, timeout, http)->
 
   scope.filesAdded = []
   uploader.bind "FilesAdded", (up, files) ->
-    scope.$apply ->
-      plupload.each files, (file) ->
+    plupload.each files, (file) ->
+      scope.$apply ->
         scope.filesAdded.push file
 
   uploader.bind 'Error', (up, err) ->
     scope.error += "<br/>Error #" + err.code + ": " + err.message
 
-  scope.upload = ->
-    scope.$apply -> uploader.start()
+  scope.upload = -> uploader.start()
 
 angular.module('wordsApp')
   .controller 'UploadDocumentsCtrl',

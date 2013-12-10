@@ -18,8 +18,8 @@
     uploader.init();
     scope.filesAdded = [];
     uploader.bind("FilesAdded", function(up, files) {
-      return scope.$apply(function() {
-        return plupload.each(files, function(file) {
+      return plupload.each(files, function(file) {
+        return scope.$apply(function() {
           return scope.filesAdded.push(file);
         });
       });
@@ -28,9 +28,7 @@
       return scope.error += "<br/>Error #" + err.code + ": " + err.message;
     });
     return scope.upload = function() {
-      return scope.$apply(function() {
-        return uploader.start();
-      });
+      return uploader.start();
     };
   };
 
