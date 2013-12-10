@@ -31,6 +31,7 @@ app.config ($routeProvider) ->
     .when '/visualize',
       templateUrl: 'views/visualize.html',
       controller: 'VisualizeCtrl'
+      access: 'user'
     .otherwise
       redirectTo: '/words'
 
