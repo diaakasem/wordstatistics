@@ -1,8 +1,8 @@
 from flask import Flask
-from views.upload import UploadAPI
 from flask import request
 from flask import render_template
 from flask import jsonify
+from werkzeug import secure_filename
 from words import stats
 from words import texts
 import json
@@ -10,14 +10,15 @@ import os
 
 p = os.path
 statics = p.join(p.dirname(p.abspath(__file__)), 'static/app/')
-print statics
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = set(['txt'])
 
 app = Flask(__name__,
             static_folder=statics,
             static_url_path='',
             template_folder=statics)
 
-app.add_url_rule('/upload/', view_func=UploadAPI.as_view('uploadapi'))
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/remove', methods=['POST'])
@@ -31,8 +32,7 @@ def remove():
 def load():
     data = json.loads(request.data)
     filename = data['filename']
-    text = texts.load(filename)
-    return text
+    return texts.load(filename)
 
 
 @app.route('/analyze', methods=['POST'])
@@ -45,7 +45,20 @@ def analyze():
     return jsonify({'filename': filename, 'result': res})
 
 
-@app.route('/')
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    file = request.files['file']
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return jsonify({'filename': filename, 'result': True})
+
+
+@app.route('/', methods=['GET'])
 def main():
     return render_template('/index.html')
 

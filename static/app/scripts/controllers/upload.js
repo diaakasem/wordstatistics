@@ -2,9 +2,18 @@
 (function() {
   var controller;
 
-  controller = function($scope) {};
+  controller = function(scope, params, Service, timeout, http) {
+    var id;
+    id = params.id;
+    scope.id = params.id;
+    scope.text = '';
+    scope.entity = {};
+    scope.success = '';
+    scope.error = '';
+    return scope.selected = 'documents';
+  };
 
-  angular.module('wordsApp').controller('UploadCtrl', ['$scope', controller]);
+  angular.module('wordsApp').controller('UploadCtrl', ['$scope', '$routeParams', 'Texts', '$timeout', '$http', controller]);
 
 }).call(this);
 

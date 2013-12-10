@@ -8,10 +8,6 @@ app.config ($routeProvider) ->
       templateUrl: 'views/main.html'
       controller: 'MainCtrl'
       access: 'public'
-    .when '/upload',
-      templateUrl: 'views/upload.html',
-      controller: 'UploadCtrl'
-      access: 'user'
     .when '/documents',
       templateUrl: 'views/files.html',
       controller: 'FilesCtrl'
@@ -27,6 +23,14 @@ app.config ($routeProvider) ->
     .when '/words',
       templateUrl: 'views/words.html',
       controller: 'WordsCtrl'
+      access: 'user'
+    .when '/upload/documents',
+      templateUrl: 'views/upload/documents.html',
+      controller: 'UploadDocumentsCtrl'
+      access: 'user'
+    .when '/upload/words',
+      templateUrl: 'views/upload/words.html',
+      controller: 'UploadWordsCtrl'
       access: 'user'
     .otherwise
       redirectTo: '/words'

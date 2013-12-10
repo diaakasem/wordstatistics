@@ -9,12 +9,17 @@
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav" ng-show="user">
         <li><a href="#/words">Words</a></li>
-        <li>
-        <a href="#/upload">
+
+        <li class="dropdown">
+        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
           <i class="glyphicon glyphicon-cloud-upload"></i>
-          Uploads
-        </a>
+        Uploads <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#/upload/documents">Documents</a></li>
+          <li><a href="#/upload/words">Words Lists</a></li>
+        </ul>
         </li>
+
         <li>
         <a href="#/documents">
           <i class="glyphicon glyphicon-inbox"></i>
