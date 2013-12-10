@@ -30,10 +30,6 @@
       templateUrl: 'views/words.html',
       controller: 'WordsCtrl',
       access: 'user'
-    }).when('/visualize', {
-      templateUrl: 'views/visualize.html',
-      controller: 'VisualizeCtrl',
-      access: 'user'
     }).otherwise({
       redirectTo: '/words'
     });
