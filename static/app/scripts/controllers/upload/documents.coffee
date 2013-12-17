@@ -21,6 +21,11 @@ controller = (scope, params, Service, timeout, http)->
     plupload.each files, (file) ->
       scope.filesAdded.push file
 
+  uploader.bind 'UploadProgress', (up, file) ->
+    scope.$apply ->
+      matches = _.filter scope.filesAdded, (f)-> f.id is file.id
+      matches[0].percent = file.percent
+
   uploader.bind 'Error', (up, err) ->
     scope.$apply ->
       res = JSON.parse err.response

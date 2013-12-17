@@ -22,6 +22,15 @@
         return scope.filesAdded.push(file);
       });
     });
+    uploader.bind('UploadProgress', function(up, file) {
+      return scope.$apply(function() {
+        var matches;
+        matches = _.filter(scope.filesAdded, function(f) {
+          return f.id === file.id;
+        });
+        return matches[0].percent = file.percent;
+      });
+    });
     uploader.bind('Error', function(up, err) {
       return scope.$apply(function() {
         var res;
