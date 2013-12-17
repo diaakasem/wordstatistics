@@ -9,7 +9,7 @@
     scope.text = '';
     scope.entity = {};
     scope.success = '';
-    scope.error = '';
+    scope.errors = [];
     scope.selected = 'documents';
     uploader = new plupload.Uploader({
       browse_button: "browse",
@@ -19,15 +19,18 @@
     scope.filesAdded = [];
     uploader.bind("FilesAdded", function(up, files) {
       return plupload.each(files, function(file) {
-        return scope.$apply(function() {
-          return scope.filesAdded.push(file);
-        });
+        return scope.filesAdded.push(file);
       });
     });
     uploader.bind('Error', function(up, err) {
-      return scope.error += "<br/>Error #" + err.code + ": " + err.message;
+      return scope.$apply(function() {
+        var res;
+        res = JSON.parse(err.response);
+        return scope.errors.push(res != null ? res.result : void 0);
+      });
     });
     return scope.upload = function() {
+      scope.errors.length = 0;
       return uploader.start();
     };
   };

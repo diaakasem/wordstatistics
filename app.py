@@ -52,10 +52,17 @@ def allowed_file(filename):
 @app.route('/upload', methods=['POST'])
 def upload_file():
     file = request.files['file']
+    # Initial values
+    res = "Files must be .txt files."
+    code = 415
+    # If file is allowed
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return jsonify({'filename': filename, 'result': True})
+        res = filename
+        code = 200
+    # Return result and success/error code
+    return jsonify({"result": res}), code
 
 
 @app.route('/', methods=['GET'])

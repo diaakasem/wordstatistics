@@ -6,7 +6,7 @@ controller = (scope, params, Service, timeout, http)->
   scope.text = ''
   scope.entity = {}
   scope.success = ''
-  scope.error = ''
+  scope.errors = []
   scope.selected = 'documents'
 
   uploader = new plupload.Uploader
@@ -16,15 +16,19 @@ controller = (scope, params, Service, timeout, http)->
   uploader.init()
 
   scope.filesAdded = []
+
   uploader.bind "FilesAdded", (up, files) ->
     plupload.each files, (file) ->
-      scope.$apply ->
-        scope.filesAdded.push file
+      scope.filesAdded.push file
 
   uploader.bind 'Error', (up, err) ->
-    scope.error += "<br/>Error #" + err.code + ": " + err.message
+    scope.$apply ->
+      res = JSON.parse err.response
+      scope.errors.push(res?.result)
 
-  scope.upload = -> uploader.start()
+  scope.upload = ->
+    scope.errors.length = 0
+    uploader.start()
 
 angular.module('wordsApp')
   .controller 'UploadDocumentsCtrl',
