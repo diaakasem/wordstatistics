@@ -2,16 +2,62 @@
 (function() {
   var controller;
 
-  controller = function(scope, params, ParseCrud, timeout, http) {
-    var DocumentUpload, id, saveError, saveSuccess, uploader;
+  controller = function(scope, params, ParseCrud, timeout, http, ngTableParams) {
+    var DocumentUpload, id, removeFile, saveError, saveSuccess, uploader;
     id = params.id;
     scope.id = params.id;
     scope.text = '';
     scope.entity = {};
     scope.success = '';
     scope.errors = [];
+    scope.data = [];
     scope.selected = 'upload';
     DocumentUpload = new ParseCrud('DocumentUpload');
+    DocumentUpload.list(function(d) {
+      scope.data = d;
+      return scope.tableParams.reload();
+    });
+    removeFile = function(name) {
+      var h;
+      params = {
+        method: 'POST',
+        url: '/removeupload',
+        data: {
+          filename: name
+        }
+      };
+      h = http(params);
+      h.success(function(d) {
+        scope.success = 'Removed successfully.';
+        return scope.tableParams.reload();
+      });
+      return h.error(function(e) {
+        scope.success = '';
+        return scope.error = e;
+      });
+    };
+    scope.remove = function(e) {
+      var filename, removeSuccess;
+      filename = e.get('filename');
+      removeSuccess = function(e) {
+        scope.data = _.filter(scope.data, function(d) {
+          return d.id !== e.id;
+        });
+        return removeFile(filename);
+      };
+      return Service.remove(e, removeSuccess);
+    };
+    scope.tableParams = new ngTableParams({
+      page: 1,
+      count: 10
+    }, {
+      total: function() {
+        return scope.data.length;
+      },
+      getData: function($defer, params) {
+        return $defer.resolve(scope.data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+      }
+    });
     uploader = new plupload.Uploader({
       browse_button: "browse",
       url: "/upload",
@@ -33,7 +79,9 @@
         });
       });
     });
-    saveSuccess = function() {
+    saveSuccess = function(e) {
+      scope.data.push(e);
+      scope.tableParams.reload();
       return scope.$apply(function() {
         return scope.selected = 'uploaded';
       });
@@ -45,10 +93,15 @@
       var obj, res;
       res = JSON.parse(xhr.response);
       obj = {
-        file_name: file.name,
-        upload_name: res.result
+        filename: file.name,
+        uploadname: res.result
       };
       return DocumentUpload.save(obj, saveSuccess, saveError);
+    });
+    uploader.bind('UploadComplete', function(up, file) {
+      return scope.$apply(function() {
+        return scope.filesAdded.length = 0;
+      });
     });
     uploader.bind('UploadProgress', function(up, file) {
       return scope.$apply(function() {
@@ -72,7 +125,7 @@
     };
   };
 
-  angular.module('wordsApp').controller('UploadDocumentsCtrl', ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', controller]);
+  angular.module('wordsApp').controller('UploadDocumentsCtrl', ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', 'ngTableParams', controller]);
 
 }).call(this);
 

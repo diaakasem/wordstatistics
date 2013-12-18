@@ -1,4 +1,4 @@
-controller = (scope, params, ParseCrud, timeout, http)->
+controller = (scope, params, ParseCrud, timeout, http, ngTableParams)->
 
   id = params.id
   scope.id = params.id
@@ -7,8 +7,43 @@ controller = (scope, params, ParseCrud, timeout, http)->
   scope.entity = {}
   scope.success = ''
   scope.errors = []
+  scope.data = []
   scope.selected = 'upload'
   DocumentUpload = new ParseCrud 'DocumentUpload'
+  DocumentUpload.list (d)->
+    scope.data = d
+    scope.tableParams.reload()
+
+  removeFile = (name)->
+    params =
+      method: 'POST'
+      url: '/removeupload'
+      data:
+        filename: name
+    h = http params
+    h.success (d)->
+      scope.success = 'Removed successfully.'
+      scope.tableParams.reload()
+    h.error (e)->
+      scope.success = ''
+      scope.error = e
+
+  scope.remove = (e)->
+    filename = e.get('filename')
+    removeSuccess = (e)->
+      scope.data = _.filter scope.data, (d)-> d.id isnt e.id
+      removeFile filename
+
+    Service.remove(e, removeSuccess)
+
+  scope.tableParams = new ngTableParams
+    page: 1
+    count: 10
+  ,
+    total: -> scope.data.length
+    getData: ($defer, params) ->
+      $defer.resolve scope.data.slice((params.page() - 1) * params.count(), params.page() * params.count())
+
 
   uploader = new plupload.Uploader
       browse_button: "browse"
@@ -27,7 +62,9 @@ controller = (scope, params, ParseCrud, timeout, http)->
       plupload.each files, (file) ->
         scope.filesAdded.push file
 
-  saveSuccess = ->
+  saveSuccess = (e)->
+    scope.data.push e
+    scope.tableParams.reload()
     scope.$apply ->
       scope.selected = 'uploaded'
     
@@ -38,10 +75,14 @@ controller = (scope, params, ParseCrud, timeout, http)->
     res = JSON.parse xhr.response
 
     obj =
-      file_name: file.name
-      upload_name: res.result
+      filename: file.name
+      uploadname: res.result
 
     DocumentUpload.save obj, saveSuccess, saveError
+
+  uploader.bind 'UploadComplete', (up, file) ->
+    scope.$apply ->
+      scope.filesAdded.length = 0
 
   uploader.bind 'UploadProgress', (up, file) ->
     scope.$apply ->
@@ -59,4 +100,4 @@ controller = (scope, params, ParseCrud, timeout, http)->
 
 angular.module('wordsApp')
   .controller 'UploadDocumentsCtrl',
-  ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', controller]
+  ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', 'ngTableParams', controller]

@@ -71,9 +71,8 @@
         <table ng-table="tableParams" class="table table-bordered">
           <tr ng-repeat="e in $data">
             <td data-title="'Excerpt'">
-              <a href="#/documents/{{e.id}}">{{e.get('excerpt')}}</a>
+              {{e.get('filename')}}
             </td>
-            <td data-title="'Filter Words'">{{e.get('words').join(', ')}}</td>
             <td data-title="'Time'">{{e.createdAt | timer}}</td>
             <td data-title="''">
               <button class="btn btn-danger" ng-click="remove(e)">
