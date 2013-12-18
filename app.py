@@ -20,6 +20,7 @@ app = Flask(__name__,
             template_folder=statics)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 160 * 1024 * 1024
 
 
 @app.route('/removeupload', methods=['POST'])
