@@ -1,4 +1,4 @@
-controller = (scope, params, Service, timeout, http)->
+controller = (scope, params, ParseCrud, timeout, http)->
 
   id = params.id
   scope.id = params.id
@@ -7,19 +7,41 @@ controller = (scope, params, Service, timeout, http)->
   scope.entity = {}
   scope.success = ''
   scope.errors = []
-  scope.selected = 'documents'
+  scope.selected = 'upload'
+  DocumentUpload = new ParseCrud 'DocumentUpload'
 
   uploader = new plupload.Uploader
       browse_button: "browse"
       url: "/upload"
+      filters:
+        mime_types: [
+          {title : "Text files", extensions : "txt"}
+        ]
 
   uploader.init()
 
   scope.filesAdded = []
 
   uploader.bind "FilesAdded", (up, files) ->
-    plupload.each files, (file) ->
-      scope.filesAdded.push file
+    scope.$apply ->
+      plupload.each files, (file) ->
+        scope.filesAdded.push file
+
+  saveSuccess = ->
+    scope.$apply ->
+      scope.selected = 'uploaded'
+    
+  saveError = ->
+    debugger
+
+  uploader.bind 'FileUploaded', (up, file, xhr)->
+    res = JSON.parse xhr.response
+
+    obj =
+      file_name: file.name
+      upload_name: res.result
+
+    DocumentUpload.save obj, saveSuccess, saveError
 
   uploader.bind 'UploadProgress', (up, file) ->
     scope.$apply ->
@@ -37,4 +59,4 @@ controller = (scope, params, Service, timeout, http)->
 
 angular.module('wordsApp')
   .controller 'UploadDocumentsCtrl',
-  ['$scope', '$routeParams', 'Texts', '$timeout', '$http', controller]
+  ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', controller]

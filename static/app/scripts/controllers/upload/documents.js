@@ -2,25 +2,53 @@
 (function() {
   var controller;
 
-  controller = function(scope, params, Service, timeout, http) {
-    var id, uploader;
+  controller = function(scope, params, ParseCrud, timeout, http) {
+    var DocumentUpload, id, saveError, saveSuccess, uploader;
     id = params.id;
     scope.id = params.id;
     scope.text = '';
     scope.entity = {};
     scope.success = '';
     scope.errors = [];
-    scope.selected = 'documents';
+    scope.selected = 'upload';
+    DocumentUpload = new ParseCrud('DocumentUpload');
     uploader = new plupload.Uploader({
       browse_button: "browse",
-      url: "/upload"
+      url: "/upload",
+      filters: {
+        mime_types: [
+          {
+            title: "Text files",
+            extensions: "txt"
+          }
+        ]
+      }
     });
     uploader.init();
     scope.filesAdded = [];
     uploader.bind("FilesAdded", function(up, files) {
-      return plupload.each(files, function(file) {
-        return scope.filesAdded.push(file);
+      return scope.$apply(function() {
+        return plupload.each(files, function(file) {
+          return scope.filesAdded.push(file);
+        });
       });
+    });
+    saveSuccess = function() {
+      return scope.$apply(function() {
+        return scope.selected = 'uploaded';
+      });
+    };
+    saveError = function() {
+      debugger;
+    };
+    uploader.bind('FileUploaded', function(up, file, xhr) {
+      var obj, res;
+      res = JSON.parse(xhr.response);
+      obj = {
+        file_name: file.name,
+        upload_name: res.result
+      };
+      return DocumentUpload.save(obj, saveSuccess, saveError);
     });
     uploader.bind('UploadProgress', function(up, file) {
       return scope.$apply(function() {
@@ -44,7 +72,7 @@
     };
   };
 
-  angular.module('wordsApp').controller('UploadDocumentsCtrl', ['$scope', '$routeParams', 'Texts', '$timeout', '$http', controller]);
+  angular.module('wordsApp').controller('UploadDocumentsCtrl', ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', controller]);
 
 }).call(this);
 

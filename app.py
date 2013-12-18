@@ -5,6 +5,7 @@ from flask import jsonify
 from werkzeug import secure_filename
 from words import stats
 from words import texts
+from uuid import uuid4
 import json
 import os
 
@@ -57,7 +58,7 @@ def upload_file():
     code = 415
     # If file is allowed
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
+        filename = "%s_%s" % (uuid4(), secure_filename(file.filename))
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         res = filename
         code = 200
