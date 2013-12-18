@@ -38,14 +38,14 @@
     };
     scope.remove = function(e) {
       var filename, removeSuccess;
-      filename = e.get('filename');
+      filename = e.get('uploadname');
       removeSuccess = function(e) {
         scope.data = _.filter(scope.data, function(d) {
           return d.id !== e.id;
         });
         return removeFile(filename);
       };
-      return Service.remove(e, removeSuccess);
+      return DocumentUpload.remove(e, removeSuccess);
     };
     scope.tableParams = new ngTableParams({
       page: 1,

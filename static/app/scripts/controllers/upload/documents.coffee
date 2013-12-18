@@ -29,12 +29,12 @@ controller = (scope, params, ParseCrud, timeout, http, ngTableParams)->
       scope.error = e
 
   scope.remove = (e)->
-    filename = e.get('filename')
+    filename = e.get('uploadname')
     removeSuccess = (e)->
       scope.data = _.filter scope.data, (d)-> d.id isnt e.id
       removeFile filename
 
-    Service.remove(e, removeSuccess)
+    DocumentUpload.remove(e, removeSuccess)
 
   scope.tableParams = new ngTableParams
     page: 1

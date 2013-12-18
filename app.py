@@ -22,6 +22,13 @@ app = Flask(__name__,
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
+@app.route('/removeupload', methods=['POST'])
+def removeupload():
+    data = json.loads(request.data)
+    filename = data['filename']
+    return jsonify(texts.remove(filename, './uploads'))
+
+
 @app.route('/remove', methods=['POST'])
 def remove():
     data = json.loads(request.data)
