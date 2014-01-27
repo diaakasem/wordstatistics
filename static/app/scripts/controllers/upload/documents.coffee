@@ -1,7 +1,6 @@
-controller = (scope, params, ParseCrud, timeout, http, ngTableParams)->
+'use strict'
 
-  id = params.id
-  scope.id = params.id
+controller = (scope, ParseCrud, http, ngTableParams)->
 
   scope.text = ''
   scope.entity = {}
@@ -42,16 +41,15 @@ controller = (scope, params, ParseCrud, timeout, http, ngTableParams)->
   ,
     total: -> scope.data.length
     getData: ($defer, params) ->
-      $defer.resolve scope.data.slice((params.page() - 1) * params.count(), params.page() * params.count())
-
+      start = (params.page() - 1) * params.count()
+      end = params.page() * params.count()
+      $defer.resolve scope.data.slice(start, end)
 
   uploader = new plupload.Uploader
-      browse_button: "browse"
-      url: "/upload"
-      filters:
-        mime_types: [
-          {title : "Text files", extensions : "txt"}
-        ]
+    browse_button: "browse"
+    url: "/upload"
+    filters:
+      mime_types: [ {title : "Text files", extensions : "txt"} ]
 
   uploader.init()
 
@@ -65,24 +63,25 @@ controller = (scope, params, ParseCrud, timeout, http, ngTableParams)->
   saveSuccess = (e)->
     scope.data.push e
     scope.tableParams.reload()
-    scope.$apply ->
-      scope.selected = 'uploaded'
+    scope.selected = 'uploaded'
     
   saveError = ->
     debugger
 
   uploader.bind 'FileUploaded', (up, file, xhr)->
     res = JSON.parse xhr.response
-
     obj =
+      name: scope.name
       filename: file.name
       uploadname: res.result
 
+    console.log "Saving Object "
     DocumentUpload.save obj, saveSuccess, saveError
 
   uploader.bind 'UploadComplete', (up, file) ->
     scope.$apply ->
       scope.filesAdded.length = 0
+      scope.name = ''
 
   uploader.bind 'UploadProgress', (up, file) ->
     scope.$apply ->
@@ -100,4 +99,4 @@ controller = (scope, params, ParseCrud, timeout, http, ngTableParams)->
 
 angular.module('wordsApp')
   .controller 'UploadDocumentsCtrl',
-  ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', 'ngTableParams', controller]
+  ['$scope', 'ParseCrud', '$http', 'ngTableParams', controller]

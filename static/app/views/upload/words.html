@@ -1,1 +1,85 @@
-<p>This is the upload/words view.</p>
+<div class="wordslists">
+
+  <h3> Words Lists </h3>
+
+  <div class="alert" ng-show="success || errors.length"
+    ng-class="{'alert-danger': errors.length, 'alert-success': success}">
+    <button type="button" class="close" data-dismiss="alert"
+      aria-hidden="true">&times;</button>
+    <span ng-if="success">
+      {{success}}
+    </span>
+    <div ng-repeat="error in errors">
+      {{error}}
+    </div>
+  </div>
+
+  <ul class="nav nav-tabs">
+    <li ng-class="{active: selected=='new'}">
+    <a class="clickable" ng-click="selected='new'"> New </a>
+    </li>
+    <li ng-class="{active: selected=='list'}">
+    <a class="clickable" ng-click="selected='list'"> List </a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane fade in panel panel-default"
+      ng-class="{active: selected=='new'}"
+      style="border-top: 0">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3 col-xl-4 col-xl-offset-4">
+            <form role="form" class="">
+
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name"
+                ng-model="entity.name"
+                placeholder="Unique name for this words list.">
+              </div>
+
+              <div class="form-group">
+                <label for="uploads">Uploaded File</label>
+                <select ng-model="entity.uploadedDocument" class="form-control"
+                  name="uploads" id="uploads"
+                  ng-options="doc.get('name') for doc in uploads">
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary pull-right"
+                ng-click="save()">
+                <i class="glyphicon glyphicon-save"></i>
+                Save
+              </button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane fade in panel panel-default" 
+      ng-class="{active: selected=='list'}"
+      style="border-top: 0">
+      <div class="panel-body">
+
+        <table ng-table="tableParams" class="table">
+          <tr ng-repeat="e in $data">
+            <td data-title="'Name'">
+              {{e.get('name')}}
+            </td>
+            <td data-title="'Time'">{{e.createdAt | timer}}</td>
+            <td data-title="''">
+              <button class="btn btn-danger" ng-click="remove(e)">
+                <i class="glyphicon glyphicon-remove"></i>
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
