@@ -3,6 +3,7 @@ controller = (scope, Service, ngTableParams, http) ->
   scope.data = []
   scope.success = ''
   scope.error = ''
+  scope.selected = 'new'
 
   Service.list (d)->
     scope.data = d
@@ -40,5 +41,5 @@ controller = (scope, Service, ngTableParams, http) ->
       $defer.resolve scope.data.slice((params.page() - 1) * params.count(), params.page() * params.count())
 
 angular.module('wordsApp')
-  .controller 'FilesCtrl',
+  .controller 'ProcessesCtrl',
   ['$scope', 'Texts', 'ngTableParams', '$http', controller]

@@ -113,7 +113,7 @@
     };
   };
 
-  angular.module('wordsApp').controller('DocumentCtrl', ['$scope', '$routeParams', 'Texts', '$timeout', '$http', controller]);
+  angular.module('wordsApp').controller('ProcessedDocumentCtrl', ['$scope', '$routeParams', 'Texts', '$timeout', '$http', controller]);
 
 }).call(this);
 

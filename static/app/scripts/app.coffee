@@ -8,13 +8,13 @@ app.config ($routeProvider) ->
       templateUrl: 'views/main.html'
       controller: 'MainCtrl'
       access: 'public'
-    .when '/documents',
-      templateUrl: 'views/files.html',
-      controller: 'FilesCtrl'
+    .when '/processes',
+      templateUrl: 'views/processes.html',
+      controller: 'ProcessesCtrl'
       access: 'user'
-    .when '/documents/:id',
-      templateUrl: 'views/document.html',
-      controller: 'DocumentCtrl'
+    .when '/process/:id',
+      templateUrl: 'views/processeddocument.html',
+      controller: 'ProcessedDocumentCtrl'
       access: 'user'
     .when '/segments',
       templateUrl: 'views/segments.html',
@@ -31,6 +31,10 @@ app.config ($routeProvider) ->
     .when '/upload/words',
       templateUrl: 'views/upload/words.html',
       controller: 'UploadWordsCtrl'
+      access: 'user'
+    .when '/upload/uploads',
+      templateUrl: 'views/upload/uploads.html',
+      controller: 'UploadsUploadsCtrl'
       access: 'user'
     .otherwise
       redirectTo: '/words'

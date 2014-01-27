@@ -87,5 +87,5 @@ controller = (scope, params, Service, timeout, http)->
     ).on("mouseover", tip.show).on "mouseout", tip.hide
 
 angular.module('wordsApp')
-  .controller 'DocumentCtrl',
+  .controller 'ProcessedDocumentCtrl',
   ['$scope', '$routeParams', 'Texts', '$timeout', '$http', controller]

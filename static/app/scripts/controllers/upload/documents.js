@@ -4,47 +4,33 @@
   var controller;
 
   controller = function(scope, ParseCrud, http, ngTableParams) {
-    var DocumentUpload, removeFile, saveError, saveSuccess, uploader;
+    var DocumentUpload, Documents, onError, removeSuccess, saveSuccess;
     scope.text = '';
     scope.entity = {};
     scope.success = '';
     scope.errors = [];
     scope.data = [];
-    scope.selected = 'upload';
+    scope.selected = 'new';
     DocumentUpload = new ParseCrud('DocumentUpload');
     DocumentUpload.list(function(d) {
+      return scope.uploads = d;
+    });
+    Documents = new ParseCrud('Documents');
+    Documents.list(function(d) {
       scope.data = d;
       return scope.tableParams.reload();
     });
-    removeFile = function(name) {
-      var h, params;
-      params = {
-        method: 'POST',
-        url: '/removeupload',
-        data: {
-          filename: name
-        }
-      };
-      h = http(params);
-      h.success(function(d) {
-        scope.success = 'Removed successfully.';
-        return scope.tableParams.reload();
+    scope.save = function() {
+      return Documents.save(scope.entity, saveSuccess, onError);
+    };
+    removeSuccess = function(e) {
+      scope.data = _.filter(scope.data, function(d) {
+        return d.id !== e.id;
       });
-      return h.error(function(e) {
-        scope.success = '';
-        return scope.error = e;
-      });
+      return scope.tableParams.reload();
     };
     scope.remove = function(e) {
-      var filename, removeSuccess;
-      filename = e.get('uploadname');
-      removeSuccess = function(e) {
-        scope.data = _.filter(scope.data, function(d) {
-          return d.id !== e.id;
-        });
-        return removeFile(filename);
-      };
-      return DocumentUpload.remove(e, removeSuccess);
+      return Documents.remove(e, removeSuccess, onError);
     };
     scope.tableParams = new ngTableParams({
       page: 1,
@@ -60,71 +46,13 @@
         return $defer.resolve(scope.data.slice(start, end));
       }
     });
-    uploader = new plupload.Uploader({
-      browse_button: "browse",
-      url: "/upload",
-      filters: {
-        mime_types: [
-          {
-            title: "Text files",
-            extensions: "txt"
-          }
-        ]
-      }
-    });
-    uploader.init();
-    scope.filesAdded = [];
-    uploader.bind("FilesAdded", function(up, files) {
-      return scope.$apply(function() {
-        return plupload.each(files, function(file) {
-          return scope.filesAdded.push(file);
-        });
-      });
-    });
     saveSuccess = function(e) {
       scope.data.push(e);
       scope.tableParams.reload();
-      return scope.selected = 'uploaded';
+      return scope.selected = 'list';
     };
-    saveError = function() {
+    return onError = function() {
       debugger;
-    };
-    uploader.bind('FileUploaded', function(up, file, xhr) {
-      var obj, res;
-      res = JSON.parse(xhr.response);
-      obj = {
-        name: scope.name,
-        filename: file.name,
-        uploadname: res.result
-      };
-      console.log("Saving Object ");
-      return DocumentUpload.save(obj, saveSuccess, saveError);
-    });
-    uploader.bind('UploadComplete', function(up, file) {
-      return scope.$apply(function() {
-        scope.filesAdded.length = 0;
-        return scope.name = '';
-      });
-    });
-    uploader.bind('UploadProgress', function(up, file) {
-      return scope.$apply(function() {
-        var matches;
-        matches = _.filter(scope.filesAdded, function(f) {
-          return f.id === file.id;
-        });
-        return matches[0].percent = file.percent;
-      });
-    });
-    uploader.bind('Error', function(up, err) {
-      return scope.$apply(function() {
-        var res;
-        res = JSON.parse(err.response);
-        return scope.errors.push(res != null ? res.result : void 0);
-      });
-    });
-    return scope.upload = function() {
-      scope.errors.length = 0;
-      return uploader.start();
     };
   };
 

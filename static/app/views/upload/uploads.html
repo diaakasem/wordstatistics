@@ -1,0 +1,101 @@
+<div class="uploads">
+
+  <h3> Uploads </h3>
+
+  <div class="alert" ng-show="success || errors.length"
+    ng-class="{'alert-danger': errors.length, 'alert-success': success}">
+    <button type="button" class="close" data-dismiss="alert"
+      aria-hidden="true">&times;</button>
+    <span ng-if="success">
+      {{success}}
+    </span>
+    <div ng-repeat="error in errors">
+      {{error}}
+    </div>
+  </div>
+
+  <ul class="nav nav-tabs">
+    <li ng-class="{active: selected=='upload'}">
+    <a class="clickable" ng-click="selected='upload'"> New Upload</a>
+    </li>
+    <li ng-class="{active: selected=='uploaded'}">
+    <a class="clickable" ng-click="selected='uploaded'"> Uploaded </a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane fade in panel panel-default"
+      ng-class="{active: selected=='upload'}"
+      style="border-top: 0">
+
+      <div class="panel-body">
+
+        <div class="row">
+          <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3 col-xl-4 col-xl-offset-4">
+                        
+            <form role="form" class="col-xm-12">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" ng-model="name"
+                placeholder="Enter a unique name to mark this document.">
+              </div>
+            </form>
+
+            <button type="button" id="browse" class="btn btn-default">
+              <i class="glyphicon glyphicon-eye-open"></i>
+              Browse
+            </button>
+            <button type="button" class="btn btn-default" ng-click="upload()">
+              <i class="glyphicon glyphicon-upload"></i>
+              Upload
+            </button>
+          </div>
+        </div>
+
+        <ol id="filelist" class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3 col-xl-4 col-xl-offset-4">
+          <li class="panel panel-default" ng-repeat="file in filesAdded">
+          <div class="panel-heading">
+            {{file.name}}
+          </div>
+          <div class="panel-body">
+            <div class="progress">
+              <div class="progress-bar progress-bar-success" role="progressbar"
+                aria-valuenow="{{file.percent}}" aria-valuemin="0" aria-valuemax="100"
+                style="width: {{file.percent}}%">
+                <span class="sr-only">{{file.percent}}% Complete (success)</span>
+              </div>
+            </div>
+          </div>
+          </li>
+        </ol>
+
+
+      </div>
+
+    </div>
+
+    <div class="tab-pane fade in panel panel-default" 
+      ng-class="{active: selected=='uploaded'}"
+      style="border-top: 0">
+      <div class="panel-body">
+
+        <table ng-table="tableParams" class="table">
+          <tr ng-repeat="e in $data">
+            <td data-title="'Name'">
+              {{e.get('name')}}
+            </td>
+            <td data-title="'File Name'">
+              {{e.get('filename')}}
+            </td>
+            <td data-title="'Time'">{{e.createdAt | timer}}</td>
+            <td data-title="''">
+              <button class="btn btn-danger" ng-click="remove(e)">
+                <i class="glyphicon glyphicon-remove"></i>
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
