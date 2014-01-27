@@ -68,7 +68,20 @@
       ng-class="{active: selected=='uploaded'}"
       style="border-top: 0">
       <div class="panel-body">
-        <table ng-table="tableParams" class="table table-bordered">
+
+        <div class="alert" ng-show="success || errors.length"
+          ng-class="{'alert-danger': errors.length, 'alert-success': success}">
+          <button type="button" class="close" data-dismiss="alert"
+            aria-hidden="true">&times;</button>
+          <span ng-if="success">
+            {{success}}
+          </span>
+          <div ng-repeat="error in errors">
+            {{error}}
+          </div>
+        </div>
+
+        <table ng-table="tableParams" class="table">
           <tr ng-repeat="e in $data">
             <td data-title="'Excerpt'">
               {{e.get('filename')}}
