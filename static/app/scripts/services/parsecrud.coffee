@@ -13,6 +13,14 @@ Service = ->
         success: cb
         error: errCB
 
+    getWith: (id, keys, cb, errCB)->
+      query = new Parse.Query @class
+      for key in keys
+        query.include key
+      query.get id,
+        success: cb
+        error: errCB
+
     get: (id, cb, errCB)->
       query = new Parse.Query @class
       query.get id,
@@ -26,6 +34,15 @@ Service = ->
 
     remove: (model, cb, errCB)->
       model.destroy
+        success: cb
+        error: errCB
+
+    listWith: (keys, cb, errCB)->
+      query = new Parse.Query @class
+      for key in keys
+        query.include key
+      query.descending('createdAt')
+      query.find
         success: cb
         error: errCB
 

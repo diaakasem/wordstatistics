@@ -44,6 +44,23 @@ def load():
     return texts.load(filename)
 
 
+def getFilePath(filename):
+    return os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+
+@app.route('/analyzefiles', methods=['POST'])
+def analyzefiles():
+    data = json.loads(request.data)
+    document = data['document']
+    words = data['words']
+    with open(getFilePath(document), 'r+') as documentFile:
+        documentText = documentFile.read()
+    with open(getFilePath(words), 'r+') as wordsFile:
+        wordsText = wordsFile.read()
+    res = stats.statsText(documentText, wordsText.split(' '))
+    return jsonify({'result': res})
+
+
 @app.route('/analyze', methods=['POST'])
 def analyze():
     data = json.loads(request.data)
@@ -67,7 +84,7 @@ def upload_file():
     # If file is allowed
     if file and allowed_file(file.filename):
         filename = "%s_%s" % (uuid4(), secure_filename(file.filename))
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file.save(getFilePath(filename))
         res = filename
         code = 200
     # Return result and success/error code

@@ -24,6 +24,19 @@
         });
       };
 
+      Crud.prototype.getWith = function(id, keys, cb, errCB) {
+        var key, query, _i, _len;
+        query = new Parse.Query(this["class"]);
+        for (_i = 0, _len = keys.length; _i < _len; _i++) {
+          key = keys[_i];
+          query.include(key);
+        }
+        return query.get(id, {
+          success: cb,
+          error: errCB
+        });
+      };
+
       Crud.prototype.get = function(id, cb, errCB) {
         var query;
         query = new Parse.Query(this["class"]);
@@ -42,6 +55,20 @@
 
       Crud.prototype.remove = function(model, cb, errCB) {
         return model.destroy({
+          success: cb,
+          error: errCB
+        });
+      };
+
+      Crud.prototype.listWith = function(keys, cb, errCB) {
+        var key, query, _i, _len;
+        query = new Parse.Query(this["class"]);
+        for (_i = 0, _len = keys.length; _i < _len; _i++) {
+          key = keys[_i];
+          query.include(key);
+        }
+        query.descending('createdAt');
+        return query.find({
           success: cb,
           error: errCB
         });

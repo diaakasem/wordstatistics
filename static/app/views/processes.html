@@ -73,11 +73,11 @@
 
         <table ng-table="tableParams" class="table">
           <tr ng-repeat="e in $data">
-            <td data-title="'Excerpt'">
+            <td data-title="'Name'">
               <a href="#/process/{{e.id}}">{{e.get('name')}}</a>
             </td>
-            <td data-title="'Words List'">{{e.get('wordslist')}}</td>
-            <td data-title="'Document'">{{e.get('document')}}</td>
+            <td data-title="'Words List'">{{e.get('wordslist').get('name')}}</td>
+            <td data-title="'Document'">{{e.get('documents').get('name')}}</td>
             <td data-title="'Time'">{{e.createdAt | timer}}</td>
             <td data-title="''">
               <button class="btn btn-danger" ng-click="remove(e)">
