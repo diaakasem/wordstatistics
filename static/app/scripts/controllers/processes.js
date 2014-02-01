@@ -96,16 +96,26 @@
         return scope.error = e;
       });
     };
-    scope.remove = function(e) {
-      var filename, removeSuccess;
-      filename = e.get('filename');
-      removeSuccess = function(e) {
-        scope.data = _.filter(scope.data, function(d) {
-          return d.id !== e.id;
-        });
-        return removeFile(filename);
-      };
-      return Processes.remove(e, removeSuccess);
+    scope.remove = function(entity) {
+      return entity.destroy({
+        success: function() {
+          return scope.$apply(function() {
+            scope.success = 'Removed successfully.';
+            scope.error = '';
+            scope.data = _.filter(scope.data, function(d) {
+              return d.id !== entity.id;
+            });
+            return scope.tableParams.reload();
+          });
+        },
+        error: function(e) {
+          console.log(e);
+          return scope.$apply(function() {
+            scope.success = '';
+            return scope.error = 'Error occurred while removing.';
+          });
+        }
+      });
     };
     return scope.tableParams = new ngTableParams({
       page: 1,

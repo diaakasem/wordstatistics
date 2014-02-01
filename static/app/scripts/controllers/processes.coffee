@@ -77,14 +77,19 @@ controller = (scope, ParseCrud,  ngTableParams, http) ->
       scope.success = ''
       scope.error = e
 
-  scope.remove = (e)->
-
-    filename = e.get('filename')
-    removeSuccess = (e)->
-      scope.data = _.filter scope.data, (d)-> d.id isnt e.id
-      removeFile filename
-
-    Processes.remove(e, removeSuccess)
+  scope.remove = (entity)->
+    entity.destroy
+      success: ->
+        scope.$apply ->
+          scope.success = 'Removed successfully.'
+          scope.error = ''
+          scope.data = _.filter scope.data, (d)-> d.id isnt entity.id
+          scope.tableParams.reload()
+      error: (e)->
+        console.log e
+        scope.$apply ->
+          scope.success = ''
+          scope.error = 'Error occurred while removing.'
 
   scope.tableParams = new ngTableParams
     page: 1
