@@ -2,7 +2,7 @@
 (function() {
   var controller;
 
-  controller = function(scope, params, ParseCrud, timeout, http) {
+  controller = function(scope, params, ParseCrud, timeout, http, location) {
     var Processes, id;
     id = params.id;
     scope.id = params.id;
@@ -18,6 +18,20 @@
         return scope.graph();
       });
     });
+    scope.remove = function(entity) {
+      return entity.destroy({
+        success: function() {
+          scope.success = 'Removed successfully.';
+          scope.error = '';
+          return location.path('/processes');
+        },
+        error: function(e) {
+          console.log(e);
+          scope.success = '';
+          return scope.error = 'Error occurred while removing.';
+        }
+      });
+    };
     return scope.graph = function() {
       var data, formatPercent, height, margin, svg, tip, width, x, xAxis, y, yAxis;
       margin = {
@@ -64,7 +78,7 @@
     };
   };
 
-  angular.module('wordsApp').controller('ProcessedDocumentCtrl', ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', controller]);
+  angular.module('wordsApp').controller('ProcessedDocumentCtrl', ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', '$location', controller]);
 
 }).call(this);
 
