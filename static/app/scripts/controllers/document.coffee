@@ -1,4 +1,4 @@
-controller = (scope, params, Service, timeout, http)->
+controller = (scope, params, ParseCrud, timeout, http)->
 
   id = params.id
   scope.id = params.id
@@ -9,45 +9,11 @@ controller = (scope, params, Service, timeout, http)->
   scope.error = ''
   scope.selected = 'document'
 
-  Service.get id, (d)->
+  Processes = new ParseCrud 'Processes'
+  Processes.getWith params.id, ['wordslist', 'documents'], (d)->
     scope.$apply ->
       scope.entity = d
-      load(d)
       scope.graph()
-
-  removeFile = (name)->
-    params =
-      method: 'POST'
-      url: '/remove'
-      data:
-        filename: name
-    h = http params
-    h.success (d)->
-      scope.success = 'Removed successfully.'
-      timeout -> scope.go 'documents', 5000
-    h.error (e)->
-      scope.success = ''
-      scope.error = e
-
-  load = (d)->
-    params =
-      method: 'POST'
-      url: '/load'
-      data:
-        filename: d.get('filename')
-    h = http params
-    h.success (d)->
-      scope.text = d
-      scope.success = ''
-      scope.error = ''
-    h.error (e)->
-      scope.success = ''
-      scope.error = e
-
-  scope.remove = (e)->
-    filename = e.get('filename')
-    removeSuccess = -> removeFile filename
-    Service.remove(e, removeSuccess)
 
   scope.graph = ->
     margin =
@@ -68,14 +34,12 @@ controller = (scope, params, Service, timeout, http)->
     )
     svg = d3.select("#chart").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     svg.call tip
-    data = _.map scope.entity.get('results'), (d)->
+    data = _.map scope.entity.get('result'), (d)->
       word: d[0]
       frequency: d[1] * 100
 
     x.domain data.map((d) -> d.word)
-    y.domain [0, d3.max(data, (d) ->
-      d.frequency
-    )]
+    y.domain [0, d3.max(data, (d) -> d.frequency)]
     svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call xAxis
     svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text "Frequency"
     svg.selectAll(".bar").data(data).enter().append("rect").attr("class", "bar").attr("x", (d) ->
@@ -88,4 +52,4 @@ controller = (scope, params, Service, timeout, http)->
 
 angular.module('wordsApp')
   .controller 'ProcessedDocumentCtrl',
-  ['$scope', '$routeParams', 'Texts', '$timeout', '$http', controller]
+  ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', controller]

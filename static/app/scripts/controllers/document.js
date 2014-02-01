@@ -2,8 +2,8 @@
 (function() {
   var controller;
 
-  controller = function(scope, params, Service, timeout, http) {
-    var id, load, removeFile;
+  controller = function(scope, params, ParseCrud, timeout, http) {
+    var Processes, id;
     id = params.id;
     scope.id = params.id;
     scope.text = '';
@@ -11,62 +11,13 @@
     scope.success = '';
     scope.error = '';
     scope.selected = 'document';
-    Service.get(id, function(d) {
+    Processes = new ParseCrud('Processes');
+    Processes.getWith(params.id, ['wordslist', 'documents'], function(d) {
       return scope.$apply(function() {
         scope.entity = d;
-        load(d);
         return scope.graph();
       });
     });
-    removeFile = function(name) {
-      var h;
-      params = {
-        method: 'POST',
-        url: '/remove',
-        data: {
-          filename: name
-        }
-      };
-      h = http(params);
-      h.success(function(d) {
-        scope.success = 'Removed successfully.';
-        return timeout(function() {
-          return scope.go('documents', 5000);
-        });
-      });
-      return h.error(function(e) {
-        scope.success = '';
-        return scope.error = e;
-      });
-    };
-    load = function(d) {
-      var h;
-      params = {
-        method: 'POST',
-        url: '/load',
-        data: {
-          filename: d.get('filename')
-        }
-      };
-      h = http(params);
-      h.success(function(d) {
-        scope.text = d;
-        scope.success = '';
-        return scope.error = '';
-      });
-      return h.error(function(e) {
-        scope.success = '';
-        return scope.error = e;
-      });
-    };
-    scope.remove = function(e) {
-      var filename, removeSuccess;
-      filename = e.get('filename');
-      removeSuccess = function() {
-        return removeFile(filename);
-      };
-      return Service.remove(e, removeSuccess);
-    };
     return scope.graph = function() {
       var data, formatPercent, height, margin, svg, tip, width, x, xAxis, y, yAxis;
       margin = {
@@ -87,7 +38,7 @@
       });
       svg = d3.select("#chart").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
       svg.call(tip);
-      data = _.map(scope.entity.get('results'), function(d) {
+      data = _.map(scope.entity.get('result'), function(d) {
         return {
           word: d[0],
           frequency: d[1] * 100
@@ -113,7 +64,7 @@
     };
   };
 
-  angular.module('wordsApp').controller('ProcessedDocumentCtrl', ['$scope', '$routeParams', 'Texts', '$timeout', '$http', controller]);
+  angular.module('wordsApp').controller('ProcessedDocumentCtrl', ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', controller]);
 
 }).call(this);
 

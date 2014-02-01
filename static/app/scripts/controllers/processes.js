@@ -28,7 +28,6 @@
       var doProcess;
       Processes.save(scope.entity, saveSuccess, onError);
       doProcess = _.after(2, function() {
-        debugger;
         var h, params;
         params = {
           method: 'POST',
@@ -38,7 +37,6 @@
         h = http(params);
         h.success(function(d) {
           scope.entity.result = d.result;
-          debugger;
           Processes.save(scope.entity, saveSuccess, onError);
           scope.tableParams.reload();
           return scope.success = 'Processed successfully';

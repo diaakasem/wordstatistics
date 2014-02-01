@@ -25,7 +25,6 @@ controller = (scope, ParseCrud,  ngTableParams, http) ->
   scope.save = ->
     Processes.save scope.entity, saveSuccess, onError
     doProcess = _.after 2, ->
-      debugger; 
       params =
         method: 'POST'
         url: '/analyzefiles'
@@ -34,7 +33,6 @@ controller = (scope, ParseCrud,  ngTableParams, http) ->
       h = http params
       h.success (d)->
         scope.entity.result = d.result
-        debugger; 
         Processes.save scope.entity, saveSuccess, onError
         scope.tableParams.reload()
         scope.success = 'Processed successfully'

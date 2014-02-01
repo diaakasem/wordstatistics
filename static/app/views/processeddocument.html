@@ -36,10 +36,19 @@
 
         <div class="row">
           <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            Filtering Words
+            Document
           </div>
           <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
-            {{entity.get('words').join(', ')}}
+            {{entity.get('documents').get('name')}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            Words List
+          </div>
+          <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
+            {{entity.get('wordslist').get('name')}}
           </div>
         </div>
 
@@ -50,7 +59,7 @@
           <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12"
             ng-init="results = entity.get('results')">
 
-            <div class="row" ng-repeat="entry in entity.get('results')">
+            <div class="row" ng-repeat="entry in entity.get('result')">
               <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
                 {{entry[0]}}
               </div>
@@ -59,16 +68,6 @@
               </div>
             </div>
 
-          </div>
-        </div>
-
-
-        <div class="row">
-          <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            Text
-          </div>
-          <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
-            {{text}}
           </div>
         </div>
       </div>
