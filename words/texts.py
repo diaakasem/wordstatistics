@@ -18,6 +18,12 @@ def load(name, path="./files"):
 
 
 def remove(name, path="./files"):
-    print "Removing %s" % name
-    os.remove('%s/%s' % (path, name))
-    return {'result': True}
+    try:
+        print "Removing %s" % name
+        os.remove('%s/%s' % (path, name))
+        return {'result': True}
+
+    except IOError:
+        msg = 'File does not exist'
+        print msg
+        return {'result': msg}
