@@ -3,12 +3,10 @@
   'use strict';
   var controller;
 
-  controller = function(scope, ParseCrud, http, ngTableParams) {
-    var DocumentUpload, Documents, onError, removeSuccess, saveSuccess;
+  controller = function(scope, ParseCrud, http, ngTableParams, Alert) {
+    var DocumentUpload, Documents, Processes, onError, removeSuccess, saveSuccess;
     scope.text = '';
     scope.entity = {};
-    scope.success = '';
-    scope.errors = [];
     scope.data = [];
     scope.selected = 'new';
     DocumentUpload = new ParseCrud('DocumentUpload');
@@ -20,17 +18,37 @@
       scope.data = d;
       return scope.tableParams.reload();
     });
+    Processes = new ParseCrud('Processes');
     scope.save = function() {
       return Documents.save(scope.entity, saveSuccess, onError);
     };
     removeSuccess = function(e) {
-      scope.data = _.filter(scope.data, function(d) {
-        return d.id !== e.id;
+      return scope.$apply(function() {
+        scope.data = _.filter(scope.data, function(d) {
+          return d.id !== e.id;
+        });
+        scope.tableParams.reload();
+        return Alert.success('Document was removed successfully.');
       });
-      return scope.tableParams.reload();
     };
     scope.remove = function(e) {
-      return Documents.remove(e, removeSuccess, onError);
+      var q;
+      q = Processes.query();
+      q.equalTo("documents", e);
+      return q.find({
+        success: function(p) {
+          if (p.length > 0) {
+            return scope.$apply(function() {
+              return Alert.error("This document is needed for process named " + (p[0].get('name')) + ". Please, remove that process first.");
+            });
+          } else {
+            return Documents.remove(e, removeSuccess, onError);
+          }
+        },
+        error: function(err) {
+          return scope.errors.push(err);
+        }
+      });
     };
     scope.tableParams = new ngTableParams({
       page: 1,
@@ -47,16 +65,22 @@
       }
     });
     saveSuccess = function(e) {
-      scope.data.push(e);
-      scope.tableParams.reload();
-      return scope.selected = 'list';
+      return scope.$apply(function() {
+        scope.data.push(e);
+        scope.tableParams.reload();
+        scope.selected = 'list';
+        return Alert.success('Document was saved successfully.');
+      });
     };
-    return onError = function() {
-      debugger;
+    return onError = function(e) {
+      return scope.$apply(function() {
+        console.log(e);
+        return Alert.error('Error occured while saving changes');
+      });
     };
   };
 
-  angular.module('wordsApp').controller('UploadDocumentsCtrl', ['$scope', 'ParseCrud', '$http', 'ngTableParams', controller]);
+  angular.module('wordsApp').controller('UploadDocumentsCtrl', ['$scope', 'ParseCrud', '$http', 'ngTableParams', 'Alert', controller]);
 
 }).call(this);
 

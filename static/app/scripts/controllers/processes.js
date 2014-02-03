@@ -2,11 +2,9 @@
 (function() {
   var controller;
 
-  controller = function(scope, ParseCrud, ngTableParams, http) {
+  controller = function(scope, ParseCrud, ngTableParams, http, Alert) {
     var Documents, Processes, Uploads, WordsLists, onError, removeFile, saveSuccess;
     scope.data = [];
-    scope.success = '';
-    scope.error = '';
     scope.selected = 'new';
     scope.entity = {};
     scope.files = {};
@@ -29,6 +27,7 @@
       Processes.save(scope.entity, saveSuccess, onError);
       doProcess = _.after(2, function() {
         var h, params;
+        scope.warn = 'Processing is in progress, please, be patient.';
         params = {
           method: 'POST',
           url: '/analyzefiles',
@@ -36,26 +35,33 @@
         };
         h = http(params);
         h.success(function(d) {
-          scope.entity.result = d.result;
-          Processes.save(scope.entity, saveSuccess, onError);
-          scope.tableParams.reload();
-          return scope.success = 'Processed successfully';
+          return scope.$apply(function() {
+            scope.entity.result = d.result;
+            Processes.save(scope.entity, saveSuccess, onError);
+            scope.tableParams.reload();
+            return Alert.success('Processed successfully.');
+          });
         });
         return h.error(function(e) {
-          scope.success = '';
-          return scope.error = e;
+          return scope.$apply(function() {
+            return Alert.error(e);
+          });
         });
       });
       scope.entity.documents.get('uploadedDocument').fetch({
         success: function(documentFile) {
-          scope.files.document = documentFile.get('uploadname');
-          return doProcess();
+          return scope.$apply(function() {
+            scope.files.document = documentFile.get('uploadname');
+            return doProcess();
+          });
         }
       });
       return scope.entity.wordslist.get('uploadedDocument').fetch({
         success: function(wordsFile) {
-          scope.files.words = wordsFile.get('uploadname');
-          return doProcess();
+          return scope.$apply(function() {
+            scope.files.words = wordsFile.get('uploadname');
+            return doProcess();
+          });
         }
       });
     };
@@ -88,20 +94,22 @@
       };
       h = http(params);
       h.success(function(d) {
-        scope.success = 'Removed successfully.';
-        return scope.tableParams.reload();
+        return scope.$apply(function() {
+          Alert.success('Removed successfully.');
+          return scope.tableParams.reload();
+        });
       });
       return h.error(function(e) {
-        scope.success = '';
-        return scope.error = e;
+        return scope.$apply(function() {
+          return Alert.error(e);
+        });
       });
     };
     scope.remove = function(entity) {
       return entity.destroy({
         success: function() {
           return scope.$apply(function() {
-            scope.success = 'Removed successfully.';
-            scope.error = '';
+            Alert.success('Removed successfully.');
             scope.data = _.filter(scope.data, function(d) {
               return d.id !== entity.id;
             });
@@ -111,8 +119,7 @@
         error: function(e) {
           console.log(e);
           return scope.$apply(function() {
-            scope.success = '';
-            return scope.error = 'Error occurred while removing.';
+            return Alert.error('Error occurred while removing.');
           });
         }
       });
@@ -130,7 +137,7 @@
     });
   };
 
-  angular.module('wordsApp').controller('ProcessesCtrl', ['$scope', 'ParseCrud', 'ngTableParams', '$http', controller]);
+  angular.module('wordsApp').controller('ProcessesCtrl', ['$scope', 'ParseCrud', 'ngTableParams', '$http', 'Alert', controller]);
 
 }).call(this);
 

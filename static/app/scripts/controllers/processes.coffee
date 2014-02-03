@@ -1,8 +1,6 @@
-controller = (scope, ParseCrud,  ngTableParams, http) ->
+controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
 
   scope.data = []
-  scope.success = ''
-  scope.error = ''
   scope.selected = 'new'
   scope.entity = {}
   scope.files = {}
@@ -25,6 +23,7 @@ controller = (scope, ParseCrud,  ngTableParams, http) ->
   scope.save = ->
     Processes.save scope.entity, saveSuccess, onError
     doProcess = _.after 2, ->
+      scope.warn = 'Processing is in progress, please, be patient.'
       params =
         method: 'POST'
         url: '/analyzefiles'
@@ -32,23 +31,26 @@ controller = (scope, ParseCrud,  ngTableParams, http) ->
           
       h = http params
       h.success (d)->
-        scope.entity.result = d.result
-        Processes.save scope.entity, saveSuccess, onError
-        scope.tableParams.reload()
-        scope.success = 'Processed successfully'
+        scope.$apply ->
+          scope.entity.result = d.result
+          Processes.save scope.entity, saveSuccess, onError
+          scope.tableParams.reload()
+          Alert.success 'Processed successfully.'
       h.error (e)->
-        scope.success = ''
-        scope.error = e
+        scope.$apply ->
+          Alert.error e
 
     scope.entity.documents.get('uploadedDocument').fetch
       success: (documentFile)->
-        scope.files.document = documentFile.get('uploadname')
-        doProcess()
+        scope.$apply ->
+          scope.files.document = documentFile.get('uploadname')
+          doProcess()
 
     scope.entity.wordslist.get('uploadedDocument').fetch
       success: (wordsFile)->
-        scope.files.words = wordsFile.get('uploadname')
-        doProcess()
+        scope.$apply ->
+          scope.files.words = wordsFile.get('uploadname')
+          doProcess()
 
   scope.get = (parseObj, attr='name')->
     parseObj.fetch
@@ -71,25 +73,24 @@ controller = (scope, ParseCrud,  ngTableParams, http) ->
         filename: name
     h = http params
     h.success (d)->
-      scope.success = 'Removed successfully.'
-      scope.tableParams.reload()
+      scope.$apply ->
+        Alert.success 'Removed successfully.'
+        scope.tableParams.reload()
     h.error (e)->
-      scope.success = ''
-      scope.error = e
+      scope.$apply ->
+        Alert.error e
 
   scope.remove = (entity)->
     entity.destroy
       success: ->
         scope.$apply ->
-          scope.success = 'Removed successfully.'
-          scope.error = ''
+          Alert.success 'Removed successfully.'
           scope.data = _.filter scope.data, (d)-> d.id isnt entity.id
           scope.tableParams.reload()
       error: (e)->
         console.log e
         scope.$apply ->
-          scope.success = ''
-          scope.error = 'Error occurred while removing.'
+          Alert.error 'Error occurred while removing.'
 
   scope.tableParams = new ngTableParams
     page: 1
@@ -101,4 +102,4 @@ controller = (scope, ParseCrud,  ngTableParams, http) ->
 
 angular.module('wordsApp')
   .controller 'ProcessesCtrl',
-  ['$scope', 'ParseCrud', 'ngTableParams', '$http', controller]
+  ['$scope', 'ParseCrud', 'ngTableParams', '$http', 'Alert', controller]

@@ -46,6 +46,14 @@ Service = ->
         success: cb
         error: errCB
 
+    query: ->
+      new Parse.Query @class
+
+    applyQuery: (query, cb, errCB)->
+      query.find
+        success: cb
+        error: errCB
+
     list: (cb, errCB)->
       query = new Parse.Query @class
       query.descending('createdAt')

@@ -43,19 +43,20 @@
     });
   });
 
-  rootController = function(root, location) {
+  rootController = function(root, location, Alert) {
     root.go = function(url) {
       return location.path('/' + url);
     };
     root.user = Parse.User.current();
     return root.$on('$routeChangeStart', function(event, next) {
+      Alert.clear();
       if (next.access !== 'public' && !root.user) {
         return root.go('');
       }
     });
   };
 
-  app.run(['$rootScope', '$location', rootController]);
+  app.run(['$rootScope', '$location', 'Alert', rootController]);
 
 }).call(this);
 

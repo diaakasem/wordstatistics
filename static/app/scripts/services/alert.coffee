@@ -9,7 +9,7 @@ alert = ($rootScope)->
 
   success = (msg)-> alert(msg, 'success', 'ok', 'green')
   warn = (msg)-> alert(msg, 'warning', 'ok', 'yellow')
-  error = (msg)-> alert(msg, 'error', 'ok', 'red')
+  error = (msg)-> alert(msg, 'danger', 'ok', 'red')
   clear = ->
     $rootScope.alert = null
 
@@ -20,4 +20,4 @@ alert = ($rootScope)->
   error: error
   clear: clear
 
-angular.module('fleetApp').factory 'Alert', ['$rootScope', alert]
+angular.module('wordsApp').factory 'Alert', ['$rootScope', alert]

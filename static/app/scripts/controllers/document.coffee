@@ -1,12 +1,10 @@
-controller = (scope, params, ParseCrud, timeout, http, location)->
+controller = (scope, params, ParseCrud, timeout, http, location, Alert)->
 
   id = params.id
   scope.id = params.id
 
   scope.text = ''
   scope.entity = {}
-  scope.success = ''
-  scope.error = ''
   scope.selected = 'document'
 
   Processes = new ParseCrud 'Processes'
@@ -18,13 +16,13 @@ controller = (scope, params, ParseCrud, timeout, http, location)->
   scope.remove = (entity)->
     entity.destroy
       success: ->
-        scope.success = 'Removed successfully.'
-        scope.error = ''
-        location.path('/processes')
+        scope.$apply ->
+          Alert.success 'Removed successfully.'
+          location.path('/processes')
       error: (e)->
-        console.log e
-        scope.success = ''
-        scope.error = 'Error occurred while removing.'
+        scope.$apply ->
+          console.log e
+          Alert.error 'Error occurred while removing.'
       
   scope.graph = ->
     margin =
@@ -63,4 +61,4 @@ controller = (scope, params, ParseCrud, timeout, http, location)->
 
 angular.module('wordsApp')
   .controller 'ProcessedDocumentCtrl',
-  ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', '$location', controller]
+  ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', '$location', 'Alert', controller]

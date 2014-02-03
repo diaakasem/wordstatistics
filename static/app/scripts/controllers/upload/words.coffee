@@ -1,6 +1,6 @@
 'use strict'
 
-controller = (scope, ParseCrud, http, ngTableParams)->
+controller = (scope, ParseCrud, http, ngTableParams, Alert)->
 
   scope.text = ''
   scope.entity = {}
@@ -8,6 +8,8 @@ controller = (scope, ParseCrud, http, ngTableParams)->
   scope.errors = []
   scope.data = []
   scope.selected = 'new'
+
+  Processes = new ParseCrud 'Processes'
 
   DocumentUpload = new ParseCrud 'DocumentUpload'
   DocumentUpload.list (d)->
@@ -22,11 +24,25 @@ controller = (scope, ParseCrud, http, ngTableParams)->
     WordsLists.save scope.entity, saveSuccess, onError
 
   removeSuccess = (e)->
-    scope.data = _.filter scope.data, (d)-> d.id isnt e.id
-    scope.tableParams.reload()
+    scope.$apply ->
+      scope.data = _.filter scope.data, (d)-> d.id isnt e.id
+      scope.tableParams.reload()
+      Alert.success 'Words list was removed successfully.'
 
   scope.remove = (e)->
-    WordsLists.remove(e, removeSuccess, onError)
+    q = Processes.query()
+    q.equalTo("wordslist", e)
+    q.find
+      success: (p)->
+        if p.length > 0
+          scope.$apply ->
+            Alert.error "This words list is needed for process named #{p[0].get('name')}. Please, remove that process first."
+        else
+          WordsLists.remove(e, removeSuccess, onError)
+      error: (err)->
+        scope.$apply ->
+          console.log err
+          Alert.error "Error occured while removing."
 
   scope.tableParams = new ngTableParams
     page: 1
@@ -39,14 +55,18 @@ controller = (scope, ParseCrud, http, ngTableParams)->
       $defer.resolve scope.data.slice(start, end)
 
   saveSuccess = (e)->
-    scope.data.push e
-    scope.tableParams.reload()
-    scope.selected = 'list'
+    scope.$apply ->
+      scope.data.push e
+      scope.tableParams.reload()
+      scope.selected = 'list'
+      Alert.success "Words list was saved successfully."
     
-  onError = ->
-    debugger
+  onError = (e)->
+    console.log e
+    scope.$apply ->
+      Alert.error 'Error occured while saving changes'
 
 angular.module('wordsApp')
   .controller 'UploadWordsCtrl',
-  ['$scope', 'ParseCrud', '$http', 'ngTableParams', controller]
+  ['$scope', 'ParseCrud', '$http', 'ngTableParams', 'Alert', controller]
 

@@ -3,14 +3,15 @@
   'use strict';
   var controller;
 
-  controller = function(scope, ParseCrud, http, ngTableParams) {
-    var DocumentUpload, WordsLists, onError, removeSuccess, saveSuccess;
+  controller = function(scope, ParseCrud, http, ngTableParams, Alert) {
+    var DocumentUpload, Processes, WordsLists, onError, removeSuccess, saveSuccess;
     scope.text = '';
     scope.entity = {};
     scope.success = '';
     scope.errors = [];
     scope.data = [];
     scope.selected = 'new';
+    Processes = new ParseCrud('Processes');
     DocumentUpload = new ParseCrud('DocumentUpload');
     DocumentUpload.list(function(d) {
       return scope.uploads = d;
@@ -24,13 +25,35 @@
       return WordsLists.save(scope.entity, saveSuccess, onError);
     };
     removeSuccess = function(e) {
-      scope.data = _.filter(scope.data, function(d) {
-        return d.id !== e.id;
+      return scope.$apply(function() {
+        scope.data = _.filter(scope.data, function(d) {
+          return d.id !== e.id;
+        });
+        scope.tableParams.reload();
+        return Alert.success('Words list was removed successfully.');
       });
-      return scope.tableParams.reload();
     };
     scope.remove = function(e) {
-      return WordsLists.remove(e, removeSuccess, onError);
+      var q;
+      q = Processes.query();
+      q.equalTo("wordslist", e);
+      return q.find({
+        success: function(p) {
+          if (p.length > 0) {
+            return scope.$apply(function() {
+              return Alert.error("This words list is needed for process named " + (p[0].get('name')) + ". Please, remove that process first.");
+            });
+          } else {
+            return WordsLists.remove(e, removeSuccess, onError);
+          }
+        },
+        error: function(err) {
+          return scope.$apply(function() {
+            console.log(err);
+            return Alert.error("Error occured while removing.");
+          });
+        }
+      });
     };
     scope.tableParams = new ngTableParams({
       page: 1,
@@ -47,16 +70,22 @@
       }
     });
     saveSuccess = function(e) {
-      scope.data.push(e);
-      scope.tableParams.reload();
-      return scope.selected = 'list';
+      return scope.$apply(function() {
+        scope.data.push(e);
+        scope.tableParams.reload();
+        scope.selected = 'list';
+        return Alert.success("Words list was saved successfully.");
+      });
     };
-    return onError = function() {
-      debugger;
+    return onError = function(e) {
+      console.log(e);
+      return scope.$apply(function() {
+        return Alert.error('Error occured while saving changes');
+      });
     };
   };
 
-  angular.module('wordsApp').controller('UploadWordsCtrl', ['$scope', 'ParseCrud', '$http', 'ngTableParams', controller]);
+  angular.module('wordsApp').controller('UploadWordsCtrl', ['$scope', 'ParseCrud', '$http', 'ngTableParams', 'Alert', controller]);
 
 }).call(this);
 

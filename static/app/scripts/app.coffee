@@ -39,15 +39,16 @@ app.config ($routeProvider) ->
     .otherwise
       redirectTo: '/words'
 
-rootController = (root, location)->
+rootController = (root, location, Alert)->
   root.go = (url)->
     location.path('/' + url)
 
   root.user = Parse.User.current()
 
   root.$on '$routeChangeStart', (event, next)->
+    Alert.clear()
     if next.access isnt 'public' and not root.user
       root.go ''
 
-app.run [ '$rootScope', '$location', rootController ]
+app.run [ '$rootScope', '$location', 'Alert', rootController ]
 

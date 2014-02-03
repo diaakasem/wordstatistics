@@ -2,14 +2,12 @@
 (function() {
   var controller;
 
-  controller = function(scope, params, ParseCrud, timeout, http, location) {
+  controller = function(scope, params, ParseCrud, timeout, http, location, Alert) {
     var Processes, id;
     id = params.id;
     scope.id = params.id;
     scope.text = '';
     scope.entity = {};
-    scope.success = '';
-    scope.error = '';
     scope.selected = 'document';
     Processes = new ParseCrud('Processes');
     Processes.getWith(params.id, ['wordslist', 'documents'], function(d) {
@@ -21,14 +19,16 @@
     scope.remove = function(entity) {
       return entity.destroy({
         success: function() {
-          scope.success = 'Removed successfully.';
-          scope.error = '';
-          return location.path('/processes');
+          return scope.$apply(function() {
+            Alert.success('Removed successfully.');
+            return location.path('/processes');
+          });
         },
         error: function(e) {
-          console.log(e);
-          scope.success = '';
-          return scope.error = 'Error occurred while removing.';
+          return scope.$apply(function() {
+            console.log(e);
+            return Alert.error('Error occurred while removing.');
+          });
         }
       });
     };
@@ -78,7 +78,7 @@
     };
   };
 
-  angular.module('wordsApp').controller('ProcessedDocumentCtrl', ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', '$location', controller]);
+  angular.module('wordsApp').controller('ProcessedDocumentCtrl', ['$scope', '$routeParams', 'ParseCrud', '$timeout', '$http', '$location', 'Alert', controller]);
 
 }).call(this);
 

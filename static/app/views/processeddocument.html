@@ -1,13 +1,7 @@
 <div class="document">
   <h3> {{entity.get('excerpt')}} </h3>
 
-
-  <div class="alert" ng-show="success || error"
-    ng-class="{'alert-danger': error, 'alert-success': success}">
-    <button type="button" class="close" data-dismiss="alert"
-      aria-hidden="true">&times;</button>
-    {{error || success}}
-  </div>
+  <alert></alert>
 
   <ul class="nav nav-tabs">
     <li ng-class="{active: selected=='document'}">

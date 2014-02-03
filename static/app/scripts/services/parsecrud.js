@@ -74,6 +74,17 @@
         });
       };
 
+      Crud.prototype.query = function() {
+        return new Parse.Query(this["class"]);
+      };
+
+      Crud.prototype.applyQuery = function(query, cb, errCB) {
+        return query.find({
+          success: cb,
+          error: errCB
+        });
+      };
+
       Crud.prototype.list = function(cb, errCB) {
         var query;
         query = new Parse.Query(this["class"]);
