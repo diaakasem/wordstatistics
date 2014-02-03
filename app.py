@@ -80,7 +80,7 @@ def upload_file():
     file = request.files['file']
     # Initial values
     res = "Files must be .txt files."
-    code = 415
+    code = 200
     # If file is allowed
     if file and allowed_file(file.filename):
         filename = "%s_%s" % (uuid4(), secure_filename(file.filename))
@@ -89,6 +89,9 @@ def upload_file():
         file.save(filepath)
         res = filename
         code = 200
+    else:
+        print 'File not allowed '
+        print file
     # Return result and success/error code
     return jsonify({"result": res}), code
 
