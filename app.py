@@ -84,7 +84,9 @@ def upload_file():
     # If file is allowed
     if file and allowed_file(file.filename):
         filename = "%s_%s" % (uuid4(), secure_filename(file.filename))
-        file.save(getFilePath(filename))
+        filepath = getFilePath(filename)
+        print 'Saving %s ' % filepath
+        file.save(filepath)
         res = filename
         code = 200
     # Return result and success/error code
