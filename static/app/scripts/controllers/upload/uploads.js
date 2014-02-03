@@ -82,12 +82,18 @@
       });
     });
     saveSuccess = function(e) {
-      scope.data.push(e);
-      scope.tableParams.reload();
-      return scope.selected = 'uploaded';
+      return scope.$apply(function() {
+        scope.data.push(e);
+        scope.tableParams.reload();
+        scope.selected = 'uploaded';
+        return Alert.error("File was uploaded successfully.");
+      });
     };
-    saveError = function() {
-      debugger;
+    saveError = function(e) {
+      return scope.$apply(function() {
+        console.log(e);
+        return Alert.error("Error occured while saving upload info.");
+      });
     };
     uploader.bind('FileUploaded', function(up, file, xhr) {
       var obj, res;
@@ -117,9 +123,8 @@
     });
     uploader.bind('Error', function(up, err) {
       return scope.$apply(function() {
-        var res;
-        res = JSON.parse(err.response);
-        return scope.errors.push(res != null ? res.result : void 0);
+        console.log(err);
+        return Alert.error("Error uploading the file.");
       });
     });
     return scope.upload = function() {

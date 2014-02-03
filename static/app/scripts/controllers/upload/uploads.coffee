@@ -61,12 +61,16 @@ controller = (scope, ParseCrud, http, ngTableParams)->
         scope.filesAdded.push file
 
   saveSuccess = (e)->
-    scope.data.push e
-    scope.tableParams.reload()
-    scope.selected = 'uploaded'
+    scope.$apply ->
+      scope.data.push e
+      scope.tableParams.reload()
+      scope.selected = 'uploaded'
+      Alert.error "File was uploaded successfully."
     
-  saveError = ->
-    debugger
+  saveError = (e)->
+    scope.$apply ->
+      console.log e
+      Alert.error "Error occured while saving upload info."
 
   uploader.bind 'FileUploaded', (up, file, xhr)->
     res = JSON.parse xhr.response
@@ -90,8 +94,8 @@ controller = (scope, ParseCrud, http, ngTableParams)->
 
   uploader.bind 'Error', (up, err) ->
     scope.$apply ->
-      res = JSON.parse err.response
-      scope.errors.push(res?.result)
+      console.log err
+      Alert.error "Error uploading the file."
 
   scope.upload = ->
     scope.errors.length = 0
