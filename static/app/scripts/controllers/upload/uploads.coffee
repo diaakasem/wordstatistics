@@ -63,7 +63,7 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
       scope.data.push e
       scope.tableParams.reload()
       scope.selected = 'uploaded'
-      Alert.error "File was uploaded successfully."
+      Alert.success "File was uploaded successfully."
     
   saveError = (e)->
     scope.$apply ->
