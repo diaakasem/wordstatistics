@@ -1,11 +1,9 @@
 'use strict'
 
-controller = (scope, ParseCrud, http, ngTableParams)->
+controller = (scope, ParseCrud, http, ngTableParams, Alert)->
 
   scope.text = ''
   scope.entity = {}
-  scope.success = ''
-  scope.errors = []
   scope.data = []
   scope.selected = 'upload'
   DocumentUpload = new ParseCrud 'DocumentUpload'
@@ -21,11 +19,11 @@ controller = (scope, ParseCrud, http, ngTableParams)->
         filename: name
     h = http params
     h.success (d)->
-      scope.success = 'Removed successfully.'
+      Alert.success 'Removed successfully.'
       scope.tableParams.reload()
     h.error (e)->
-      scope.success = ''
-      scope.error = e
+      console.log e
+      Alert.error "Error removing uploaded file."
 
   scope.remove = (e)->
     filename = e.get('uploadname')
@@ -98,9 +96,9 @@ controller = (scope, ParseCrud, http, ngTableParams)->
       Alert.error "Error uploading the file."
 
   scope.upload = ->
-    scope.errors.length = 0
+    Alert.clear()
     uploader.start()
 
 angular.module('wordsApp')
   .controller 'UploadsUploadsCtrl',
-  ['$scope', 'ParseCrud', '$http', 'ngTableParams', controller]
+  ['$scope', 'ParseCrud', '$http', 'ngTableParams', 'Alert', controller]

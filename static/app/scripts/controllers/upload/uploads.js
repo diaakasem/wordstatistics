@@ -3,12 +3,10 @@
   'use strict';
   var controller;
 
-  controller = function(scope, ParseCrud, http, ngTableParams) {
+  controller = function(scope, ParseCrud, http, ngTableParams, Alert) {
     var DocumentUpload, removeFile, saveError, saveSuccess, uploader;
     scope.text = '';
     scope.entity = {};
-    scope.success = '';
-    scope.errors = [];
     scope.data = [];
     scope.selected = 'upload';
     DocumentUpload = new ParseCrud('DocumentUpload');
@@ -27,12 +25,12 @@
       };
       h = http(params);
       h.success(function(d) {
-        scope.success = 'Removed successfully.';
+        Alert.success('Removed successfully.');
         return scope.tableParams.reload();
       });
       return h.error(function(e) {
-        scope.success = '';
-        return scope.error = e;
+        console.log(e);
+        return Alert.error("Error removing uploaded file.");
       });
     };
     scope.remove = function(e) {
@@ -128,12 +126,12 @@
       });
     });
     return scope.upload = function() {
-      scope.errors.length = 0;
+      Alert.clear();
       return uploader.start();
     };
   };
 
-  angular.module('wordsApp').controller('UploadsUploadsCtrl', ['$scope', 'ParseCrud', '$http', 'ngTableParams', controller]);
+  angular.module('wordsApp').controller('UploadsUploadsCtrl', ['$scope', 'ParseCrud', '$http', 'ngTableParams', 'Alert', controller]);
 
 }).call(this);
 
