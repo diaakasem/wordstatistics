@@ -24,10 +24,9 @@
     Uploads = new ParseCrud('DocumentUpload');
     scope.save = function() {
       var doProcess;
-      Processes.save(scope.entity, saveSuccess, onError);
       doProcess = _.after(2, function() {
         var h, params;
-        scope.warn = 'Processing is in progress, please, be patient.';
+        Alert.warn('Processing is in progress, please, be patient.');
         params = {
           method: 'POST',
           url: '/analyzefiles',
@@ -35,17 +34,15 @@
         };
         h = http(params);
         h.success(function(d) {
-          return scope.$apply(function() {
-            scope.entity.result = d.result;
-            Processes.save(scope.entity, saveSuccess, onError);
-            scope.tableParams.reload();
-            return Alert.success('Processed successfully.');
-          });
+          scope.entity.result = d.result;
+          Processes.save(scope.entity, saveSuccess, onError);
+          scope.tableParams.reload();
+          Processes.save(scope.entity, saveSuccess, onError);
+          return Alert.success('Processed successfully.');
         });
         return h.error(function(e) {
-          return scope.$apply(function() {
-            return Alert.error(e);
-          });
+          Alert.success('Error occured.');
+          return console.log(e);
         });
       });
       scope.entity.documents.get('uploadedDocument').fetch({
@@ -76,12 +73,18 @@
       });
     };
     saveSuccess = function(e) {
-      scope.data.push(e);
-      scope.tableParams.reload();
-      return scope.selected = 'list';
+      return scope.$apply(function() {
+        scope.data.push(e);
+        scope.tableParams.reload();
+        scope.selected = 'list';
+        return Alert.success('Process information was saved successfully.');
+      });
     };
-    onError = function() {
-      debugger;
+    onError = function(e) {
+      return scope.$apply(function() {
+        console.log(e);
+        return Alert.error('Error occured while saving process information.');
+      });
     };
     removeFile = function(name) {
       var h, params;

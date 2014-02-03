@@ -21,9 +21,8 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
   Uploads = new ParseCrud 'DocumentUpload'
 
   scope.save = ->
-    Processes.save scope.entity, saveSuccess, onError
     doProcess = _.after 2, ->
-      scope.warn = 'Processing is in progress, please, be patient.'
+      Alert.warn 'Processing is in progress, please, be patient.'
       params =
         method: 'POST'
         url: '/analyzefiles'
@@ -31,14 +30,14 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
           
       h = http params
       h.success (d)->
-        scope.$apply ->
-          scope.entity.result = d.result
-          Processes.save scope.entity, saveSuccess, onError
-          scope.tableParams.reload()
-          Alert.success 'Processed successfully.'
+        scope.entity.result = d.result
+        Processes.save scope.entity, saveSuccess, onError
+        scope.tableParams.reload()
+        Processes.save scope.entity, saveSuccess, onError
+        Alert.success 'Processed successfully.'
       h.error (e)->
-        scope.$apply ->
-          Alert.error e
+        Alert.success 'Error occured.'
+        console.log e
 
     scope.entity.documents.get('uploadedDocument').fetch
       success: (documentFile)->
@@ -58,12 +57,16 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
         obj.get(attr)
     
   saveSuccess = (e)->
-    scope.data.push e
-    scope.tableParams.reload()
-    scope.selected = 'list'
+    scope.$apply ->
+      scope.data.push e
+      scope.tableParams.reload()
+      scope.selected = 'list'
+      Alert.success 'Process information was saved successfully.'
     
-  onError = ->
-    debugger
+  onError = (e)->
+    scope.$apply ->
+      console.log e
+      Alert.error 'Error occured while saving process information.'
 
   removeFile = (name)->
     params =
