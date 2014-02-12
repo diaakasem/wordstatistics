@@ -28,11 +28,11 @@ controller = (scope, params, ParseCrud, timeout, http, location, Alert)->
     margin =
       top: 40
       right: 20
-      bottom: 30
+      bottom: 80
       left: 40
 
     width = 960 - margin.left - margin.right
-    height = 500 - margin.top - margin.bottom
+    height = 550 - margin.top - margin.bottom
     formatPercent = d3.format(".0%")
     x = d3.scale.ordinal().rangeRoundBands([0, width], .1)
     y = d3.scale.linear().range([height, 0])
@@ -44,12 +44,19 @@ controller = (scope, params, ParseCrud, timeout, http, location, Alert)->
     svg = d3.select("#chart").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     svg.call tip
     data = _.map scope.entity.get('result'), (d)->
-      word: d[0]
-      frequency: d[1] * 100
+      word: d.name
+      frequency: d.freq * 100
 
     x.domain data.map((d) -> d.word)
     y.domain [0, d3.max(data, (d) -> d.frequency)]
-    svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call xAxis
+    svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("transform", (d)-> "rotate(-65)")
+
     svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text "Frequency"
     svg.selectAll(".bar").data(data).enter().append("rect").attr("class", "bar").attr("x", (d) ->
       x d.word

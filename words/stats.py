@@ -3,6 +3,60 @@
 # tested with Python 2.5.4 and Python 3.1.1
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
+import re
+
+commasPattern = re.compile('\,{2,}')
+digi = re.compile('\d+')
+
+
+def buildWordsStructure(wordsListText):
+    ### build correct structure
+    # structure = {
+    #   words: {
+    #      someword: {
+    #          freq: 0,
+    #          categories: [501, 502,.. ]
+    #      }
+    #   },
+    #   categories: {
+    #      '501': {
+    #          'name' : 'blah',
+    #          'freq' : 0
+    #      }
+    #   }
+    #}
+    ###
+    structure = {
+        'words': {},
+        'categories': {}
+    }
+    inCategories = False
+    for line in wordsListText.split('\n'):
+        res = re.sub(commasPattern, '', line)
+        if res == '%':
+            inCategories = not inCategories
+            continue
+
+        if inCategories:
+            category, title = res.split(',')
+            structure['categories'][category] = {
+                'name': title,
+                'freq': 0
+            }
+        else:
+            categoriesAndWords = res.split(',')
+            categories = []
+            for item in categoriesAndWords:
+                m = digi.match(item)
+                if m:
+                    categories.append(m.group())
+                else:
+                    structure['words'][item] = {
+                        'freq': 0,
+                        'categories': categories
+                    }
+
+    return structure
 
 
 def statsText(text, words):

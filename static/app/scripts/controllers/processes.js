@@ -34,7 +34,7 @@
         };
         h = http(params);
         h.success(function(d) {
-          scope.entity.result = d.result;
+          scope.entity.result = d.result.categories;
           Processes.save(scope.entity, saveSuccess, onError);
           scope.tableParams.reload();
           Processes.save(scope.entity, saveSuccess, onError);

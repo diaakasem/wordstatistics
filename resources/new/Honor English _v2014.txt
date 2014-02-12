@@ -1,0 +1,1087 @@
+%					
+500	Honor				
+501	HonLoss				
+502	Wrongdo				
+503	Harm
+535	aggress				
+504	HonGain				
+511	Achieve				
+506	Status				
+540	Vir Beh							
+509	Faith				
+999	Mor/Man		
+513	Protect				
+514	Sex				
+515	PubIm				
+516	Prev				
+527	strbrav				
+518	genhon				
+522	Context				
+523	Soc				
+525	Gender				
+526	Family				
+528	govnat				
+530	self				
+531	milit				
+539	business				
+544	ethnic
+507	Mor/Int	
+532	manners					
+%					
+wrong*	500	501	502	503	
+lying	500	501	502		
+lie*	500	501	502		
+liar	500	501	502		
+legal*	500	501	502		
+illegal*	500	501	502		
+law*	500	501	502		
+greed*	500	501	502		
+corrupt*	500	501	502		
+betray*	500	501	502		
+infidelity	500	501	502		
+infidelities	500	501	502		
+hooking	500	501	502		
+hookers	500	501	502		
+hooker	500	501	502		
+cheat*	500	501	502		
+gossip*	500	501	502	515	
+poor*	500	501	502		
+poverty	500	501	502		
+outrag*	500	501	502		
+teasing	500	501	502		
+tease*	500	501	502		
+suicid*	500	501	502		
+stole	500	501	502		
+refus*	500	501	502		
+steal*	500	501	502		
+defy*	500	501	502		
+defiant	500	501	502		
+affair	500	501	502		
+prostitute	500	501	502		
+whore	500	501	502		
+defiance	500	501	502		
+derogat*	500	501	502		
+atroc*	500	501	502		
+vanity	500	501	502		
+vain	500	501	502		
+flaunt*	500	501	502		
+conceit*	500	501	502		
+arrogan*	500	501	502		
+sabotag*	500	501	502		
+rude*	500	501	502		
+plagiari*	500	501	502		
+offens*	500	501	502		
+offenc*	500	501	502		
+mess*	500	501	502		
+cuckholds	500	501	502		
+cuckhold	500	501	502		
+malpractic*	500	501	502		
+guilt*	500	501	502		
+fault*	500	501	502		
+fals*	500	501	502		
+inappropriate*	500	501	502		
+sorry	500	501	503		
+intolerable	500	501	502		
+haram	500	501	502		
+bad*	500	501	502		
+violat*	500	501	502		
+vices	500	501	502		
+vice	500	501	502		
+thiev*	500	501	502		
+thief	500	501	502		
+thefts	500	501	502		
+theft	500	501	502		
+coward*	500	501	502		
+weak*	500	501	502		
+frail	500	501	502		
+resign*	500	501	502		
+timid	500	501	502		
+scandal*	500	501	502		
+Sacred	500	501	502		
+revenge*	500	501	502		
+punish*	500	501	502		
+profan*	500	501	502		
+prisons	500	501	502		
+prisoners	500	501	502		
+prisoner	500	501	502		
+prison	500	501	502		
+policed	500	501	502		
+policing	500	501	502		
+police	500	501	502		
+enforc*	500	501	502		
+surrender*	500	501	502		
+submit*	500	501	502		
+bow*	500	501	502		
+mistook	500	501	502		
+mistake*	500	501	502		
+misdemeanors	500	501	502		
+misdemeanor	500	501	502		
+interfere*	500	501	502		
+indulge*	500	501	502		
+imprison*	500	501	502		
+drug*	500	501	502		
+evil	500	501	502		
+debt*	500	501	502		
+exploit*	500	501	502		
+embezzle*	500	501	502		
+devia*	500	501	502		
+defil*	500	501	502		
+criminal*	500	501	502		
+crimes	500	501	502		
+crime	500	501	502		
+consequen*	500	501	502		
+chicanery	500	501	502		
+bribe*	500	501	502		
+abandon*	500	501	502		
+excuse*	500	501	502		
+complain*	500	501	502		
+bail*	500	501	502		
+adulter*	500	501	502		
+gay	500	501	502		
+gays	500	501	502		
+homosexual*	500	501	502		
+blackmail	500	501	502		
+degrade*	500	501	502		
+treachery	500	501	502		
+treason	500	501	502		
+untruth	500	501	502		
+decept*	500	501	502		
+deceiv*	500	501	502		
+stance	500	501	502		
+unpleasant*	500	501	502		
+obscen*	500	501	502		
+improper*	500	501	502		
+impolite*	500	501	502		
+injust*	500	501	503		
+beneath	500	501	503		
+belittl*	500	501	503		
+ostraci*	500	501	503	522	523
+unemploy*	500	501	503		
+jobless	500	501	503		
+suing	500	501	503		
+sue*	500	501	503		
+murder*	500	501	503		
+molest*	500	501	503		
+missing	500	501	503		
+lash*	500	501	503		
+invasion	500	501	503		
+invad*	500	501	503		
+injur*	500	501	503		
+frighten*	500	501	503		
+duel*	500	501	503		
+drop*	500	501	503		
+destruct*	500	501	503		
+crisis*	500	501	503		
+crash*	500	501	503		
+burn*	500	501	503		
+bother*	500	501	503		
+beat*	500	501	503		
+disrespect*	500	501	503		
+abus*	500	501	503		
+dishonor*	500	501	503		
+knives	500	501	503	535	
+knife	500	501	503	535	
+viral	500	501	503		
+viruses	500	501	503		
+virus	500	501	503		
+violen*	500	501	503		
+victim*	500	501	503		
+threat*	500	501	503		
+terrible	500	501	503		
+struggl*	500	501	503		
+jihad*	500	501	503		
+strik*	500	501	503		
+spit*	500	501	503		
+slander*	500	501	503		
+shout*	500	501	503		
+shoot*	500	501	503		
+shots	500	501	503		
+shot	500	501	503		
+scorn*	500	501	503		
+ruin*	500	501	503		
+reject*	500	501	503		
+rape*	500	501	503		
+raping	500	501	503		
+problem*	500	501	503		
+quiet*	500	501	503		
+occup*	500	501	503		
+overbear*	500	501	503		
+oppress*	500	501	503		
+notch*	500	501	503		
+lost	500	501	503		
+loss	500	501	503		
+losing	500	501	503		
+lose*	500	501	503		
+lack*	500	501	503		
+kill*	500	501	503		
+insult*	500	501	503		
+ignoran*	500	501	503		
+hurt*	500	501	503		
+hit*	500	501	503		
+harass*	500	501	503		
+harm*	500	501	503		
+fail*	500	501	503		
+enmity	500	501	503		
+drag*	500	501	503		
+disparag*	500	501	503		
+dismis*	500	501	503		
+disease*	500	501	503		
+ding*	500	501	503		
+diminish*	500	501	503		
+die	500	501	503		
+dies	500	501	503		
+died	500	501	503		
+damag*	500	501	503		
+destroy*	500	501	503		
+death	500	501	503		
+deaths	500	501	503		
+dead	500	501	503		
+curs*	500	501	503		
+conque*	500	501	503		
+conflict*	500	501	503		
+condemn*	500	501	503		
+collaps*	500	501	503		
+burden	500	501	503		
+blunt*	500	501	503		
+blood*	500	501	503		
+blam*	500	501	503	513	515
+boil*	500	501	503		
+bear*	500	501	503		
+bastard	500	501	503		
+attack*	500	501	503		
+assault*	500	501	503		
+animosity	500	501	503		
+affront*	500	501	503		
+expos*	500	501	503		
+break*	500	501	503		
+broken	500	501	503		
+isolat*	500	501	503		
+blow*	500	501	503		
+satan*	500	501	503		
+crumbl*	500	501	503		
+taunt*	500	501	503		
+alleg*	500	501	503		
+snap*	500	501	503		
+spoil*	500	501	503		
+crush*	500	501	503		
+taken	500	501	503		
+sick	500	501	503		
+stain	500	501	503		
+ill	500	501	503		
+dirty	500	501	503		
+rivalr*	500	501	503		
+dishonour*	500	501	503		
+kidnap*	500	501	503		
+snatch*	500	501	503		
+tyrant	500	501	503		
+fought	500	501	535		
+fight*	500	501	535		
+disagree*	500	501	535		
+cruel*	500	501	535		
+confront*	500	501	535		
+arguments	500	501	535		
+argument	500	501	535		
+argue*	500	501	535		
+contradict*	500	501	535		
+stoning	500	501	535		
+stones	500	501	535		
+threw	500	501	535		
+brawl	500	501	535		
+challeng*	500	501	535		
+feud	500	501	535		
+riot	500	501	535		
+battle*	500	501	535		
+battling	500	501	535		
+supervisors	500	504	506		
+supervisor	500	504	506		
+positions	500	504	506		
+position	500	504	506		
+directors	500	504	506		
+director	500	504	506		
+colleagues	500	522	523		
+colleague	500	522	523		
+co-workers	500	522	523		
+co-worker	500	522	523		
+staff	500	522	523		
+secretar*	500	522	523		
+project*	500	504	511		
+profession*	500	504	506		
+hiring	500	504	511		
+hire*	500	504	511		
+effort*	500	504	511		
+compan*	500	504	506		
+Work*	500	504	511		
+labor*	500	504	511		
+hardwork*	500	504	511		
+retire*	500	504	506		
+tasks	500	504	511		
+task	500	504	511	507	999	
+produc*	500	504	511		
+precise*	500	504	511		
+perform*	500	504	511		
+mission*	500	504	511		
+jobs	500	504	511		
+job	500	504	511		
+exact*	500	504	511		
+employ*	500	504	506		
+bosses	500	504	506		
+boss	500	504	506		
+earned	500	504	511		
+earns	500	504	511		
+excess*	500	504	511		
+exceeds	500	504	511		
+exceed	500	504	511		
+earning	500	504	511		
+earnings	500	504	511		
+earn	500	504	511		
+jewel*	500	504	506		
+authority	500	504	506	527	
+respect*	500	504	506	518	532	999
+pedigree*	500	504	506		
+comfort*	500	504	506		
+worth*	500	504	506		
+status	500	504	506		
+bestow*	500	504	506		
+stand*	500	504	506		
+signif*	500	504	506		
+prestig*	500	504	506		
+suprem*	500	504	506		
+glor*	500	504	506		
+esteem*	500	504	506		
+class	500	504	506		
+classy	500	504	506		
+classes	500	504	506		
+levels	500	504	506		
+level	500	504	506		
+beaut*	500	504	506		
+awesome*	500	504	506		
+raise*	500	504	506	522	526
+elevat*	500	504	506		
+high	500	504	506		
+highest	500	504	506		
+top	500	504	506		
+elder*	500	504	506		
+senior*	500	504	506		
+spend*	500	504	506		
+spent	500	504	506		
+rich	500	504	506		
+expens*	500	504	506		
+influen*	500	504	506		
+endow*	500	504	506		
+advantage	500	504	506		
+favor*	500	504	506		
+rank	500	504	506		
+regard*	500	504	506		
+loyal*	500	540	507	999		
+unblemish*	500	540	507	999		
+truth*	500	540	507	999		
+fact*	500	540	507	999	
+trust*	500	540	507	999	
+true*	500	540	507	999	
+transparen*	500	540	507	999		
+sincer*	500	540	507	999	
+scrupulous	500	540	507	999		
+scruples	500	540	507	999		
+integrity	500	540	507	999		
+honest*	500	540	507	999		
+credib*	500	540	507	999		
+value*	500	540	507	506	999	
+tenet*	500	540	507	999		
+ethic*	500	540	507	999	
+principle*	500	540	507	999	
+valuable	500	540	507	999	
+upright*	500	540	507	999	
+unfair*	500	501	502	
+tradition*	500	540	507	999	
+right*	500	540	507	999	
+principle*	500	540	507	999	
+objectivity	500	540	507	999	
+moral*	500	540	507	999	
+kosher	500	540	507	999	
+hallal	500	540	507	999	
+fair*	500	540	507	999	
+justice	500	540	507	999	
+deserv*	500	540	507	999	
+customarily	500	540	507	999	
+customary	500	540	507	999	
+customs	500	540	507	999	
+custom	500	540	507	999	
+conscientious*	500	540	507	999	
+conscience	500	540	507	999	
+codes	500	540	507	999	
+code	500	540	507	999	
+account*	500	540	507	999	
+paths	500	540	507	999	
+path	500	540	507	999	
+advis*	500	540	507	511	999
+advice	500	540	507	999	
+peace	500	540	507	999	
+peaceful	500	540	507	999	
+peacefulness	500	540	507	999	
+kindness	500	540	507	532	999
+modest*	500	540	532	999	
+kindly	500	540	507	532	999
+kind	500	540	507	532	999
+humility	500	540	532	999	
+humbl*	500	540	532	999	
+virtue	500	540	507	999	
+virtues	500	540	507	999	
+virtuous*	500	540	507	999	
+sacrific*	500	540	507	999	
+compassion*	500	540	507	999	
+aid	500	540	507	999	
+aids	500	540	507	999	
+aided	500	540	507	999	
+aiding	500	540	507	999	
+offer	500	540	507	999	
+guid*	500	540	507	999	
+help*	500	540	507	532	999
+hand	500	540	507	999	
+worship*	500	540	509		
+ritual*	500	540	509		
+heaven*	500	540	509		
+religio*	500	540	509		
+faith*	500	540	507	509	999
+believ*	500	540	509		
+belief*	500	540	509		
+god*	500	540	509		
+lord	500	540	509		
+prophec*	500	540	509		
+prophet*	500	540	509		
+quran*	500	540	509		
+koran*	500	540	509		
+soul*	500	540	509		
+islam*	500	540	509		
+muslim*	500	540	509		
+bless*	500	540	509		
+piety	500	540	509		
+pious	500	540	509		
+Muhammad	500	540	509		
+devot*	500	540	509	507	999
+hope*	500	540	509		
+hoping	500	540	509		
+christ*	500	540	509		
+bible	500	540	509		
+biblical*	500	540	509		
+gospel	500	540	509		
+saint*	500	540	509		
+mosque*	500	540	509		
+jesus	500	540	509		
+church*	500	540	509		
+pray*	500	540	509		
+accomplish*	500	504	511		
+held	500	540	507	999	
+expect*	500	540	507	999	
+duty	500	540	507	999	
+duti*	500	540	507	999	
+should	500	540	507	999	
+responsib*	500	540	507	999	
+promising	500	540	507	999	
+promise*	500	540	507	999	
+possess*	500	540	507	999	
+oblig*	500	540	507	999	
+hold*	500	540	507	999	
+commitment	500	540	507	999	
+commitments	500	540	507	999	
+committed	500	540	507	999	
+commits	500	540	507	999	
+committing	500	540	507	999	
+depend*	500	540	507	999
+demand*	500	540	507	999
+comply	500	540	507	999
+complie*	500	540	507	999	
+complian*	500	540	507	999	
+approv*	500	540	507	999	
+norms	500	540	507	999	
+appoint*	500	540	507	999	
+conform	500	540	507	999	
+wise*	500	504	511		
+wisdom	500	504	511		
+credit	500	504	511		
+graduat*	500	504	511		
+university	500	504	511		
+universities	500	504	511		
+college	500	504	511		
+colleges	500	504	511		
+teach*	500	504	511		
+taught	500	504	511		
+success	500	504	511		
+successful*	500	504	511		
+succeed*	500	504	511		
+successes	500	504	511		
+stud*	500	504	511		
+reach*	500	504	511		
+professor*	500	504	511		
+privileg*	500	504	511		
+phds	500	504	511		
+phd	500	504	511		
+naive	500	504	511		
+motivat*	500	504	511		
+mind*	500	504	511		
+learn*	500	504	511		
+kindergarten	500	504	511		
+grade	500	504	511		
+exceed	500	504	511		
+educat*	500	504	511		
+doctorate	500	504	511		
+doctor	500	504	511		
+doctors	500	504	511		
+degrees	500	504	511		
+degree	500	504	511		
+coach*	500	504	511		
+capable	500	504	511		
+capability	500	504	511		
+capabilities	500	504	511		
+ability	500	504	511		
+abilities	500	504	511		
+able	500	504	511		
+admir*	500	504	511		
+achieve*	500	504	511		
+achieving	500	504	511		
+school*	500	504	511		
+lectur*	500	504	511		
+inspir*	500	504	511		
+improv*	500	504	511		
+smart	500	504	511		
+grades	500	504	511		
+profit*	500	504	511		
+experience*	500	504	511		
+excel*	500	504	511		
+scholar*	500	504	511		
+discover*	500	504	511		
+scien*	500	504	511		
+skill*	500	504	511		
+prais*	500	504	511		
+progress*	500	504	511		
+opportun*	500	504	511		
+medal	500	504	511		
+medals	500	504	511		
+advanc*	500	504	511		
+capacity	500	504	511		
+competence	500	504	511		
+incomes	500	504	511		
+income	500	504	511		
+salary	500	504	511		
+salaries	500	504	511		
+fulfill*	500	540	507	511	999
+intelligen*	500	504	511		
+reason*	500	504	511		
+recogni*	500	504	511	513	515
+review*	500	504	511		
+surpass*	500	504	511		
+benefit*	500	504	511		
+abundan*	500	504	506		
+overabundan*	500	504	506		
+mundane	500	504	506		
+mone*	500	504	506		
+material*	500	504	506		
+car	500	504	506		
+cars	500	504	506		
+cheap*	500	504	506		
+estate	500	504	506		
+estates	500	504	506		
+rupee*	500	504	506		
+resource	500	504	506		
+resources	500	504	506		
+earring	500	504	506		
+earrings	500	504	506		
+live*	500	504	506		
+life*	500	504	506		
+living	500	504	506		
+forgiv*	500	540	532	507	999
+proper	500	540	532	999	
+properly	500	540	532	999	
+appropriate	500	540	532	999	
+welcom*	500	540	532	999	
+tolerat*	500	540	532	999	
+polite*	500	540	532	999	
+pleasant*	500	540	532	999	
+manner*	500	540	532	999	
+decorum	500	540	532	999	
+please	500	540	532	999	
+thank*	500	540	532	999	
+greet*	500	540	532	999	
+decent	500	540	532	999	
+decency	500	540	532	999	
+courtesy	500	540	532	999	
+courteousness	500	540	532	999	
+courteous	500	540	532	999	
+listen*	500	540	532	999	
+thoughtful*	500	540	532	999	
+share*	500	540	532	999	
+sharing	500	540	532	999	
+patient*	500	540	532	999	
+conduct*	500	540	532	999	
+attitude	500	540	532	999	
+agree*	500	540	532	999	
+does	500	540	532	999	
+appreciate	500	540	532	999	
+consent	500	540	532	999	
+accept*	500	540	532	999	
+demeanor	500	540	532	999	
+presence	500	540	532	999	
+suitable	500	540	532	999	
+obtain	500	504	511		
+grow	500	504	511		
+acquire	500	504	511		
+chase	500	504	511		
+inquire	500	504	511		
+pursue	500	504	511		
+power*	500	513	527		
+lead*	500	513	527		
+obey*	500	513			
+obedience	500	513			
+decid*	500	504	506		
+command*	500	504	506		
+order*	500	504	506		
+fate*	500	540	509		
+fatal*	500	540	509		
+fix*	500	504	506		
+dominat*	500	501	535		
+determin*	500	540	509		
+destin*	500	540	509		
+control*	500	504	506		
+inten*	500	504	506		
+desir*	500	504	506		
+want*	500	504	506		
+resolution*	500	504	506		
+resolv*	500	504	506		
+solution*	500	504	506		
+solv*	500	504	506		
+trying	500	504	506		
+tried	500	504	506		
+tries	500	504	506		
+try	500	504	506		
+correct*	500	504	506		
+conscious*	500	504	506		
+dictate	500	504	506		
+manage*	500	504	506		
+object	500	513			
+objects	500	513			
+objected	500	513			
+objecting	500	513			
+protest*	500	513			
+regulat*	500	513			
+yield*	500	513			
+kiss*	500	513	514		
+hair*	500	513	514		
+head	500	513	514		
+heads	500	513	514		
+beds	500	513	514		
+bed	500	513	514		
+virgin*	500	513	514		
+vagina	500	513	514		
+vaginas	500	513	514		
+sex*	500	513	514		
+puri*	500	513	514		
+pure	500	513	514		
+flirt*	500	513	514		
+clean*	500	513	514		
+chast*	500	513	514		
+bod*	500	513	514		
+affairs	500	513	514		
+reput*	500	513	515	504	506
+fame	500	513	515	504	506
+famous	500	513	515	504	506
+prove	500	513	515		
+proves	500	513	515	516	
+proved	500	513	515	516	
+proving	500	513	515	516	
+proof	500	513	515	516	
+worn	500	513	515		
+percieve*	500	513	515		
+percep*	500	513	515		
+look*	500	513	515		
+display*	500	513	515		
+demonstrat*	500	513	515		
+deform*	500	513	515		
+defacing	500	513	515		
+deface*	500	513	515		
+charg*	500	513	515		
+attire*	500	513	515		
+bashful*	500	513	515		
+wear*	500	513	515		
+view*	500	513	515		
+shied	500	513	515		
+public*	500	513	515		
+media*	500	513	515		
+press	500	513	515		
+news	500	513	515		
+perspectives	500	513	515		
+perspective	500	513	515		
+name	500	513	515		
+image	500	513	515		
+history	500	513	515		
+front*	500	513	515		
+facing	500	513	515		
+faces	500	513	515		
+faced	500	513	515		
+face	500	513	515		
+doubt*	500	513	515		
+cloth*	500	513	515		
+pant*	500	513	515		
+brand*	500	513	515		
+apparent*	500	513	515		
+appear*	500	513	515		
+adorn*	500	513	515		
+accus*	500	513	515		
+others	500	513	515		
+acknowledg*	500	513	515		
+visib*	500	513	515		
+surrounding*	500	513	515		
+exhibit*	500	513	515		
+investigat*	500	513	515		
+dress*	500	513	515		
+panchayat	500	513	515		
+obvious*	500	513	515		
+wellknown	500	513	515		
+rumour	500	513	515		
+rumours	500	513	515		
+rumoured	500	513	515		
+rumor	500	513	515		
+rumors	500	513	515		
+rumored	500	513	515		
+outward*	500	513	515		
+claim	500	513	515		
+claims	500	513	515		
+exterior	500	513	515		
+feature	500	513	515		
+reveal	500	513	515		
+danger*	500	513	516		
+reserv*	500	513	516		
+guard*	500	513	516		
+caring	500	513	516		
+care*	500	513	516		
+skin	500	513	516		
+wary	500	513	516		
+wariness	500	513	516		
+burkas	500	513	516		
+burka	500	513	516		
+purdahs	500	513	516		
+purdah	500	513	516		
+hijabs	500	513	516		
+hijab	500	513	516		
+niqab	500	513	516		
+niqabs	500	513	516		
+scarves	500	513	516		
+scarf	500	513	516		
+separate*	500	513	516		
+secur*	500	513	516		
+secretly	500	513	516		
+secrets	500	513	516		
+secret	500	513	516		
+saves	500	513	516		
+saved	500	513	516		
+save	500	513	516		
+safe*	500	513	516		
+insur*	500	513	516		
+ring	500	513	516		
+reluctan*	500	513	516		
+protect*	500	513	516		
+prevent*	500	513	516		
+permit*	500	513	516		
+permission	500	513	516		
+maintain*	500	513	516		
+maintenance	500	513	516		
+immun*	500	513	516		
+hides	500	513	516		
+hide	500	513	516		
+hidden	500	513	516		
+hiding	500	513	516		
+hid	500	513	516		
+distances	500	513	516		
+distanced	500	513	516		
+distancing	500	513	516		
+distance	500	513	516		
+deter	500	513	516		
+deters	500	513	516		
+deterrence	500	513	516		
+deterred	500	513	516		
+deterring	500	513	516		
+defen*	500	513	516		
+covering	500	513	516		
+covers	500	513	516		
+covered	500	513	516		
+cover	500	513	516		
+coverage	500	513	516		
+cautious	500	513	516		
+caution	500	513	516		
+avoid*	500	513	516		
+allow*	500	513	516		
+limit*	500	513	516		
+scare*	500	513	516		
+scaring	500	513	516		
+scary	500	513	516		
+sustain*	500	513	516		
+suspic*	500	513	516		
+restrict*	500	513	516		
+prohibit*	500	513	516		
+overlook*	500	513	516		
+curtain	500	513	516		
+curtains	500	513	516		
+bound*	500	513	516		
+preserv*	500	513	516		
+leave	500	513	516		
+left	500	513	516		
+avert*	500	513	516		
+confine*	500	513	516		
+discretion	500	513	516		
+disguise*	500	513	516		
+escape*	500	513	516		
+forbid*	500	513	516		
+forbade	500	513	516		
+restrain*	500	513	516		
+shelter*	500	513	516		
+shield*	500	513	516		
+vigilan*	500	513	516		
+shame*	500	513	516		
+afraid	500	513	516		
+fear	500	513	516		
+strong*	500	513	527		
+strength*	500	513	527		
+hero*	500	513	527		
+forcing	500	513	527		
+force*	500	513	527		
+firm	500	513	527		
+courag*	500	513	527		
+brave*	500	513	527		
+confident	500	513	527		
+daring	500	513	527		
+persistent	500	513	527		
+tough	500	513	527		
+irdh	500	518			
+ird	500	518			
+honour*	500	518			
+honor*	500	518			
+digni*	500	518			
+namus*	500	518			
+seref*	500	518			
+sharaf	500	518			
+relat*	500	522	523	526	
+partners	500	522	523		
+partner	500	522	523		
+counterparts	500	522	523		
+counterpart	500	522	523		
+classmates	500	522	523		
+classmate	500	522	523		
+tribes	500	522	523		
+tribe	500	522	523		
+tribal*	500	522	523		
+strange*	500	522	523		
+Societ*	500	522	523		
+social*	500	522	523		
+partnership	500	522	523		
+neighbor*	500	522	523		
+member*	500	522	523		
+friend*	500	522	523		
+group*	500	522	523		
+assembl*	500	522	523		
+clique*	500	522	523		
+befriend*	500	522	523		
+party	500	522	523		
+parties	500	522	523		
+connect*	500	522	523		
+link*	500	522	523		
+compromis*	500	522	523		
+reciprocat*	500	522	523		
+village*	500	522	523		
+belong*	500	522	523		
+ties	500	522	523		
+district	500	522	523		
+districts	500	522	523		
+county	500	522	523		
+counties	500	522	523		
+associat*	500	522	523		
+peer*	500	522	523		
+people	500	522	523		
+women	500	522	525		
+Woman	500	522	525		
+men	500	522	525		
+masculin*	500	522	525		
+man	500	522	525		
+males	500	522	525		
+male	500	522	525		
+ladies	500	522	525		
+lady	500	522	525		
+girls	500	522	525		
+girl	500	522	525		
+feminin*	500	522	525		
+females	500	522	525		
+female	500	522	525		
+daugthers	500	522	525		
+daughter	500	522	525		
+boys	500	522	525		
+boy	500	522	525		
+maiden*	500	522	525		
+house	500	522	526		
+wives	500	522	526		
+wife*	500	522	526		
+parent*	500	522	526		
+mother-in-law	500	522	526		
+moms	500	522	526		
+mom	500	522	526		
+marry	500	522	526		
+marri*	500	522	526		
+kids	500	522	526		
+kid	500	522	526		
+husbands	500	522	526		
+husband	500	522	526		
+houses	500	522	526		
+dad	500	522	526		
+brothers	500	522	526		
+brother	500	522	526		
+home*	500	522	526		
+widow*	500	522	526		
+upbringing	500	522	526		
+uncle*	500	522	526		
+spouse*	500	522	526		
+son	500	522	526		
+sons	500	522	526		
+sister	500	522	526		
+sibling*	500	522	526		
+raising	500	522	526		
+mothers	500	522	526		
+Mother	500	522	526		
+fiances	500	522	526		
+fathers	500	522	526		
+father	500	522	526		
+famil*	500	522	526		
+dads	500	522	526		
+child*	500	522	526		
+teen*	500	522	526		
+betroth*	500	522	526		
+aunt*	500	522	526		
+dear*	500	522	526		
+grandfather*	500	522	526		
+grandmother*	500	522	526		
+grandparent*	500	522	526		
+inlaw	500	522	526		
+inlaws	500	522	526		
+daughterinlaw	500	522	526		
+brotherinlaw	500	522	526		
+soninlaw	500	522	526		
+engage*	500	522	526		
+senat*	500	522	528		
+deput*	500	522	528		
+representative*	500	522	528		
+minister*	500	522	528		
+parliament*	500	522	528		
+president*	500	522	528		
+presidency	500	522	528		
+politic*	500	522	528		
+policy	500	522	528		
+policies	500	522	528		
+official*	500	522	528		
+govern*	500	522	528		
+flag*	500	522	528		
+elect*	500	522	528		
+homeland	500	522	528		
+country	500	522	528		
+countries	500	522	528		
+border*	500	522	528		
+lands	500	522	528		
+land	500	522	528		
+sovereign*	500	522	528		
+international	500	522	528		
+law	500	522	528		
+laws	500	522	528		
+judic*	500	522	528		
+judging	500	522	528		
+judge*	500	522	528		
+courts	500	522	528		
+court	500	522	528		
+custody	500	522	528		
+personal*	500	522	530		
+yourself	500	522	530		
+themselves	500	522	530		
+self-worth	500	522	530		
+ourselves	500	522	530		
+oneself	500	522	530		
+myself	500	522	530		
+himself	500	522	530		
+herself	500	522	530		
+character*	500	522	530		
+person	500	522	530		
+someone	500	522	530		
+self*	500	522	530		
+affect*	500	522	530		
+concern*	500	522	530		
+tending	500	522	530		
+tended	500	522	530		
+tends	500	522	530		
+tend	500	522	530		
+natural*	500	522	530		
+nature	500	522	530		
+tenden*	500	522	530		
+core	500	522	530		
+foundations	500	522	530		
+basis	500	522	530		
+ego	500	522	530		
+egotistic	500	522	530		
+ident*	500	522	530		
+own	500	522	530		
+war	500	522	531		
+wars	500	522	531		
+vets	500	522	531		
+veterans	500	522	531		
+veteran	500	522	531		
+vet	500	522	531		
+troops	500	522	531		
+troop	500	522	531		
+soldiers	500	522	531		
+soldier	500	522	531		
+officers	500	522	531		
+officer	500	522	531		
+military	500	522	531		
+marines	500	522	531		
+marine	500	522	531		
+corps	500	522	531		
+corp	500	522	531		
+army	500	522	531		
+chief	500	522	531		
+combat	500	522	531		
+service	500	522	531		
+Hotel	500	522			
+situation	500	522			
+location	500	522			
+area	500	522			
+region	500	522			
+provinc*	500	522			
+road	500	522			
+venue	500	522			
+Gender	500	522	525		
+prude*	500	513	516		
+bashful	500	513	515		
+shy*	500	513	515		
+pride*	500	504	511		
+proud	500	504	511		
+administrat*	500	522	528	539	
+contract*	500	522	539		
+business*	500	522	539		
+econ*	500	522	539		
+trade*	500	522	539		
+trading	500	522	539		
+exchang*	500	522	539		
+buy*	500	522	539		
+bought	500	522	539		
+sell*	500	522	539		
+sold	500	522	539		
+commodi*	500	522	539		
+advertis*	500	522	539		
+bargain	500	522	539		
+profession*	500	522	539		
+customers	500	522	539		
+customer	500	522	539		
+commerce	500	522	539		
+world*	500	522	544		
+eastern*	500	522	544		
+western*	500	522	544		
+ethnic*	500	522	544		
+outsider	500	522	544		
+outsiders	500	522	544		
+foreign*	500	522	544		
+immigrat*	500	522	544		
+immigrant*	500	522	544		
+domestic*	500	522	544		
+cultur*	500	522	544		
+currency	500	506	504		

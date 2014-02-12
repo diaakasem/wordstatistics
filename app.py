@@ -57,8 +57,18 @@ def analyzefiles():
         documentText = documentFile.read()
     with open(getFilePath(words), 'r+') as wordsFile:
         wordsText = wordsFile.read()
-    res = stats.statsText(documentText, wordsText.split(' '))
-    return jsonify({'result': res})
+        structure = stats.buildWordsStructure(wordsText)
+    res = stats.statsText(documentText, structure['words'].keys())
+    for comp in res:
+        word = comp[0]
+        freq = comp[1]
+        categories = structure['words'][word]['categories']
+        for category in categories:
+            catfreq = structure['categories'][category]['freq']
+            catfreq += freq
+            structure['categories'][category]['freq'] = catfreq
+
+    return jsonify({'result': structure})
 
 
 @app.route('/analyze', methods=['POST'])
