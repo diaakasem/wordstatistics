@@ -39,7 +39,7 @@
       controller: 'UploadsUploadsCtrl',
       access: 'user'
     }).otherwise({
-      redirectTo: '/words'
+      redirectTo: '/processes'
     });
   });
 

@@ -84,7 +84,7 @@
         scope.data.push(e);
         scope.tableParams.reload();
         scope.selected = 'uploaded';
-        return Alert.error("File was uploaded successfully.");
+        return Alert.success("File was uploaded successfully.");
       });
     };
     saveError = function(e) {

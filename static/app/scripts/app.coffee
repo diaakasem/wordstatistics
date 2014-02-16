@@ -37,7 +37,7 @@ app.config ($routeProvider) ->
       controller: 'UploadsUploadsCtrl'
       access: 'user'
     .otherwise
-      redirectTo: '/words'
+      redirectTo: '/processes'
 
 rootController = (root, location, Alert)->
   root.go = (url)->
