@@ -1,4 +1,4 @@
-<div class="navbar navbar-default navbar-top">
+<div class="navbar navbar-default navbar-fixed-top" id="navbar-main">
   <div class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse"
       data-target=".navbar-collapse">
@@ -6,14 +6,9 @@
     </button>
     <a class="navbar-brand" href="#/">Arabic Words Analyzer</a>
   </div>
-  <div class="navbar-collapse collapse">
+  <div class="navbar-collapse collapse navbar-responsive-collapse">
     <ul class="nav navbar-nav" ng-show="user">
       <!--<li><a href="#/words">Words</a></li>-->
-
-      <li>
-      <a href="#/processes">
-        <i class="glyphicon glyphicon-cog"></i> Processes </a>
-      </li>
       <li>
       <a href="#/upload/uploads">
         <i class="glyphicon glyphicon-cloud-upload"></i> Uploads</a>
@@ -29,6 +24,11 @@
         <li><a href="#/upload/words">
           <i class="glyphicon glyphicon-bold"></i> Words Lists</a></li>
       </ul>
+      </li>
+
+      <li>
+      <a href="#/processes">
+        <i class="glyphicon glyphicon-cog"></i> Processes </a>
       </li>
     </ul>
 

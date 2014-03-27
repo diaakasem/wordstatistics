@@ -14,8 +14,10 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap-theme.css">
+    <!--<link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap-theme.css">-->
     <link rel="stylesheet" href="components/ng-table/ng-table.css">
+    <link rel="stylesheet" href="styles/bootswatch.min.css">
+    <link rel="stylesheet" href="styles/bootstrap.min.css">
     <link rel="stylesheet" href="styles/main.css">
     <style>
       /* Hide Angular JS elements before initializing */
@@ -34,8 +36,23 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <navmenu></navmenu>
-    <div class="container" ng-view></div>
+    <div id="wrap">
+      <navmenu></navmenu>
+      <div class="container" ng-view></div>
+      <div id="push"></div>
+    </div>
+
+    <footer class="row">
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container">
+     <div class="navbar-inner navbar-content-center">
+       <p class="text-muted credit pull-right">
+       Copyright &copy; 2014
+       </p>
+     </div>
+    </div>
+    </nav>
+    </footer>
 
     <script src="components/jquery/jquery.js"></script>
     <script src="components/d3/d3.js"></script>
