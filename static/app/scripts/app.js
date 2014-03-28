@@ -38,6 +38,10 @@
       templateUrl: 'views/upload/uploads.html',
       controller: 'UploadsUploadsCtrl',
       access: 'user'
+    }).when('/admin', {
+      templateUrl: 'views/admin.html',
+      controller: 'AdminCtrl',
+      access: 'admin'
     }).otherwise({
       redirectTo: '/processes'
     });
@@ -52,6 +56,8 @@
       Alert.clear();
       if (next.access !== 'public' && !root.user) {
         return root.go('');
+      } else if (next.access === 'admin' && !root.user.get("isAdmin")) {
+        return root.go('/upload/uploads');
       }
     });
   };

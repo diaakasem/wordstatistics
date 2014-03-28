@@ -36,6 +36,10 @@ app.config ($routeProvider) ->
       templateUrl: 'views/upload/uploads.html',
       controller: 'UploadsUploadsCtrl'
       access: 'user'
+    .when '/admin',
+      templateUrl: 'views/admin.html'
+      controller: 'AdminCtrl'
+      access: 'admin'
     .otherwise
       redirectTo: '/processes'
 
@@ -49,6 +53,8 @@ rootController = (root, location, Alert)->
     Alert.clear()
     if next.access isnt 'public' and not root.user
       root.go ''
+    else if next.access is 'admin' and not root.user.get("isAdmin")
+      root.go '/upload/uploads'
 
 app.run [ '$rootScope', '$location', 'Alert', rootController ]
 

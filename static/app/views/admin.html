@@ -1,0 +1,37 @@
+<div class="wordslists">
+
+  <h3> Processes </h3>
+
+  <alert></alert>
+
+  <ul class="nav nav-tabs">
+    <li ng-class="{active: selected=='users'}">
+    <a class="clickable" ng-click="selected='users'"> Users </a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+
+    <div class="tab-pane fade in panel panel-default" 
+      ng-class="{active: selected=='users'}"
+      style="border-top: 0">
+      <div class="panel-body">
+
+        <table ng-table="tableParams" class="table">
+          <tr ng-repeat="e in $data">
+            <td data-title="'Username'"> {{e.get('username')}} </td>
+            <td data-title="'Name'"> {{e.get('name')}} </td>
+            <td data-title="'Is Admin'">{{e.get('isAdmin')}}</td>
+            <td data-title="'Time'">{{e.createdAt | timer}}</td>
+            <td data-title="''">
+              <button class="btn btn-danger" ng-click="remove(e)">
+                <i class="glyphicon glyphicon-remove"></i>
+              </button>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
