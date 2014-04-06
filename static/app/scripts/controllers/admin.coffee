@@ -24,23 +24,29 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
 
 
   scope.switchAdmin = (user)->
-    roleSuccess = (result) ->
-      role = result[0]
-      roleACL = role.getACL()
-      roleACL.setReadAccess(user, true)
-      roleACL.setWriteAccess(user, true)
-      role.getUsers().add(user)
-      role.save
-        success: ->
-          Alert.success 'Operation was successful.'
-          scope.$apply ->
-            scope.tableParams.reload()
-        error: (obj, e)->
-          Alert.error e.message
+    roleSuccess = (role) ->
+      adminRelation = new Parse.Relation(role, "users")
+      queryAdmins = adminRelation.query()
+      queryAdmins.equalTo "objectId", user.id
+      queryAdmins.first success: (isAdmin)->
+        roleACL = role.getACL()
+        roleACL.setReadAccess(user, !isAdmin)
+        roleACL.setWriteAccess(user, !isAdmin)
+        if !isAdmin
+          role.getUsers().add(user)
+        else
+          role.getUsers().remove(user)
+        role.save
+          success: ->
+            Alert.success 'Operation was successful.'
+            scope.$apply ->
+              scope.tableParams.reload()
+          error: (obj, e)->
+            Alert.error e.message
       
     query = new Parse.Query(Parse.Role)
     query.equalTo "name", "Administrator"
-    query.find success: roleSuccess
+    query.first success: roleSuccess
 
 
   scope.tableParams = new ngTableParams

@@ -29,28 +29,39 @@
     };
     scope.switchAdmin = function(user) {
       var query, roleSuccess;
-      roleSuccess = function(result) {
-        var role, roleACL;
-        role = result[0];
-        roleACL = role.getACL();
-        roleACL.setReadAccess(user, true);
-        roleACL.setWriteAccess(user, true);
-        role.getUsers().add(user);
-        return role.save({
-          success: function() {
-            Alert.success('Operation was successful.');
-            return scope.$apply(function() {
-              return scope.tableParams.reload();
+      roleSuccess = function(role) {
+        var adminRelation, queryAdmins;
+        adminRelation = new Parse.Relation(role, "users");
+        queryAdmins = adminRelation.query();
+        queryAdmins.equalTo("objectId", user.id);
+        return queryAdmins.first({
+          success: function(isAdmin) {
+            var roleACL;
+            roleACL = role.getACL();
+            roleACL.setReadAccess(user, !isAdmin);
+            roleACL.setWriteAccess(user, !isAdmin);
+            if (!isAdmin) {
+              role.getUsers().add(user);
+            } else {
+              role.getUsers().remove(user);
+            }
+            return role.save({
+              success: function() {
+                Alert.success('Operation was successful.');
+                return scope.$apply(function() {
+                  return scope.tableParams.reload();
+                });
+              },
+              error: function(obj, e) {
+                return Alert.error(e.message);
+              }
             });
-          },
-          error: function(obj, e) {
-            return Alert.error(e.message);
           }
         });
       };
       query = new Parse.Query(Parse.Role);
       query.equalTo("name", "Administrator");
-      return query.find({
+      return query.first({
         success: roleSuccess
       });
     };

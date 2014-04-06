@@ -21,7 +21,6 @@
           <tr ng-repeat="e in $data">
             <td data-title="'Username'">{{e.get('username')}}</td>
             <td data-title="'Name'">{{e.get('name')}}</td>
-            <td data-title="'Is Admin'">{{e.get('isAdmin')}}</td>
             <td data-title="'Time'">{{e.createdAt | timer}}</td>
             <td data-title="'Admin'">
               <button class="btn btn-success" ng-click="switchAdmin(e)">

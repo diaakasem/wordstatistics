@@ -48,17 +48,35 @@
   });
 
   rootController = function(root, location, Alert) {
+    var query, roleSuccess;
     root.go = function(url) {
       return location.path('/' + url);
     };
     root.user = Parse.User.current();
-    return root.$on('$routeChangeStart', function(event, next) {
-      Alert.clear();
-      if (next.access !== 'public' && !root.user) {
-        return root.go('');
-      } else if (next.access === 'admin' && !root.user.get("isAdmin")) {
-        return root.go('/upload/uploads');
-      }
+    root.isAdmin = false;
+    roleSuccess = function(role) {
+      var adminRelation, queryAdmins;
+      adminRelation = new Parse.Relation(role, "users");
+      queryAdmins = adminRelation.query();
+      queryAdmins.equalTo("objectId", root.user.id);
+      return queryAdmins.first({
+        success: function(result) {
+          root.isAdmin = result;
+          return root.$on('$routeChangeStart', function(event, next) {
+            Alert.clear();
+            if (next.access !== 'public' && !root.user) {
+              return root.go('');
+            } else if (next.access === 'admin' && !root.isAdmin) {
+              return root.go('/upload/uploads');
+            }
+          });
+        }
+      });
+    };
+    query = new Parse.Query(Parse.Role);
+    query.equalTo("name", "Administrator");
+    return query.first({
+      success: roleSuccess
     });
   };
 

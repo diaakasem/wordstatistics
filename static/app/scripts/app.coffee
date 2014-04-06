@@ -48,13 +48,23 @@ rootController = (root, location, Alert)->
     location.path('/' + url)
 
   root.user = Parse.User.current()
+  root.isAdmin = no
+  roleSuccess = (role)->
+    adminRelation = new Parse.Relation(role, "users")
+    queryAdmins = adminRelation.query()
+    queryAdmins.equalTo "objectId", root.user.id
+    queryAdmins.first success: (result)->
+      root.isAdmin = result
+      root.$on '$routeChangeStart', (event, next)->
+        Alert.clear()
+        if next.access isnt 'public' and not root.user
+          root.go ''
+        else if next.access is 'admin' and not root.isAdmin
+          root.go '/upload/uploads'
 
-  root.$on '$routeChangeStart', (event, next)->
-    Alert.clear()
-    if next.access isnt 'public' and not root.user
-      root.go ''
-    else if next.access is 'admin' and not root.user.get("isAdmin")
-      root.go '/upload/uploads'
+  query = new Parse.Query(Parse.Role)
+  query.equalTo "name", "Administrator"
+  query.first success: roleSuccess
 
 app.run [ '$rootScope', '$location', 'Alert', rootController ]
 

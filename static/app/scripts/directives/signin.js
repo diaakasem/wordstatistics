@@ -11,7 +11,24 @@
       }
       return Parse.User.logIn(scope.model.email, scope.model.password, {
         success: function(user) {
+          var query, roleSuccess;
           root.user = user;
+          roleSuccess = function(role) {
+            var adminRelation, queryAdmins;
+            adminRelation = new Parse.Relation(role, "users");
+            queryAdmins = adminRelation.query();
+            queryAdmins.equalTo("objectId", root.user.id);
+            return queryAdmins.first({
+              success: function(result) {
+                return root.isAdmin = result;
+              }
+            });
+          };
+          query = new Parse.Query(Parse.Role);
+          query.equalTo("name", "Administrator");
+          query.first({
+            success: roleSuccess
+          });
           return root.go('/');
         },
         error: function(user, error) {
