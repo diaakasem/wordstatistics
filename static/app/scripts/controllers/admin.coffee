@@ -5,47 +5,11 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
   scope.entity = {}
   scope.files = {}
 
-  Processes = new ParseCrud 'User'
-  Processes.list (d)->
+  Users = new ParseCrud 'User'
+  Users.list (d)->
     scope.data = d
     scope.tableParams.reload()
 
-  scope.save = ->
-    doProcess = _.after 2, ->
-      Alert.warn 'Processing is in progress, please, be patient.'
-      params =
-        method: 'POST'
-        url: '/analyzefiles'
-        data: scope.files
-          
-      h = http params
-      h.success (d)->
-        scope.entity.result = d.result.categories
-        Processes.save scope.entity, saveSuccess, onError
-        scope.tableParams.reload()
-        Processes.save scope.entity, saveSuccess, onError
-        Alert.success 'Processed successfully.'
-      h.error (e)->
-        Alert.success 'Error occured.'
-        console.log e
-
-    scope.entity.documents.get('uploadedDocument').fetch
-      success: (documentFile)->
-        scope.$apply ->
-          scope.files.document = documentFile.get('uploadname')
-          doProcess()
-
-    scope.entity.wordslist.get('uploadedDocument').fetch
-      success: (wordsFile)->
-        scope.$apply ->
-          scope.files.words = wordsFile.get('uploadname')
-          doProcess()
-
-  scope.get = (parseObj, attr='name')->
-    parseObj.fetch
-      success: (obj)->
-        obj.get(attr)
-    
   saveSuccess = (e)->
     scope.$apply ->
       scope.data.push e
@@ -58,17 +22,26 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
       console.log e
       Alert.error 'Error occured while saving user information.'
 
-  scope.remove = (entity)->
-    entity.destroy
-      success: ->
-        scope.$apply ->
-          Alert.success 'Removed successfully.'
-          scope.data = _.filter scope.data, (d)-> d.id isnt entity.id
-          scope.tableParams.reload()
-      error: (e)->
-        console.log e
-        scope.$apply ->
-          Alert.error 'Error occurred while removing.'
+
+  scope.switchAdmin = (user)->
+    roleSuccess = (result) ->
+      role = result[0]
+      roleACL = role.getACL()
+      roleACL.setReadAccess(user, true)
+      roleACL.setWriteAccess(user, true)
+      role.getUsers().add(user)
+      role.save
+        success: ->
+          Alert.success 'Operation was successful.'
+          scope.$apply ->
+            scope.tableParams.reload()
+        error: (obj, e)->
+          Alert.error e.message
+      
+    query = new Parse.Query(Parse.Role)
+    query.equalTo "name", "Administrator"
+    query.find success: roleSuccess
+
 
   scope.tableParams = new ngTableParams
     page: 1

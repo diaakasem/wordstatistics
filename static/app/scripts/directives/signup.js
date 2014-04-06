@@ -3,10 +3,10 @@
   "use strict";
   var controller;
 
-  controller = function(root, scope) {
+  controller = function(root, scope, ParseCrud) {
     scope.model = {};
     return scope.signup = function(form) {
-      var user;
+      var onError, query, roleSuccess;
       if (form.$invalid) {
         return;
       }
@@ -15,20 +15,38 @@
         return;
       }
       delete scope.model.confirmpassword;
-      user = new Parse.User();
-      user.set("name", scope.model.name);
-      user.set("username", scope.model.email);
-      user.set("password", scope.model.password);
-      user.set("email", scope.model.email);
-      user.set("ACL", new Parse.ACL());
-      return user.signUp(null, {
-        success: function(user) {
-          root.user = user;
-          return root.go('/');
-        },
-        error: function(user, error) {
-          return alert("Invalid username or password. Please try again.");
-        }
+      roleSuccess = function(roles) {
+        var acl, administrators, user;
+        administrators = roles[0];
+        user = new Parse.User();
+        user.set("name", scope.model.name);
+        user.set("username", scope.model.email);
+        user.set("password", scope.model.password);
+        user.set("email", scope.model.email);
+        acl = new Parse.ACL();
+        acl.setRoleReadAccess(administrators, true);
+        user.set("ACL", acl);
+        return user.signUp(null, {
+          success: function(user) {
+            root.user = user;
+            return root.go('/');
+          },
+          error: function(user, error) {
+            console.error(error);
+            return alert("Error occured while signing up.");
+          }
+        });
+      };
+      onError = function(e) {
+        return scope.$apply(function() {
+          console.log(e);
+          return Alert.error('Error occured while saving user information.');
+        });
+      };
+      query = new Parse.Query(Parse.Role);
+      return query.find({
+        success: roleSuccess,
+        error: onError
       });
     };
   };
@@ -40,7 +58,7 @@
       replace: true,
       scope: true,
       link: function(scope, elm, attrs, ctrl) {},
-      controller: ['$rootScope', '$scope', controller]
+      controller: ['$rootScope', '$scope', 'ParseCrud', controller]
     };
   });
 

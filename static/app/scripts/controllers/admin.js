@@ -3,66 +3,16 @@
   var controller;
 
   controller = function(scope, ParseCrud, ngTableParams, http, Alert) {
-    var Processes, onError, saveSuccess;
+    var Users, onError, saveSuccess;
     scope.data = [];
     scope.selected = 'users';
     scope.entity = {};
     scope.files = {};
-    Processes = new ParseCrud('User');
-    Processes.list(function(d) {
+    Users = new ParseCrud('User');
+    Users.list(function(d) {
       scope.data = d;
       return scope.tableParams.reload();
     });
-    scope.save = function() {
-      var doProcess;
-      doProcess = _.after(2, function() {
-        var h, params;
-        Alert.warn('Processing is in progress, please, be patient.');
-        params = {
-          method: 'POST',
-          url: '/analyzefiles',
-          data: scope.files
-        };
-        h = http(params);
-        h.success(function(d) {
-          scope.entity.result = d.result.categories;
-          Processes.save(scope.entity, saveSuccess, onError);
-          scope.tableParams.reload();
-          Processes.save(scope.entity, saveSuccess, onError);
-          return Alert.success('Processed successfully.');
-        });
-        return h.error(function(e) {
-          Alert.success('Error occured.');
-          return console.log(e);
-        });
-      });
-      scope.entity.documents.get('uploadedDocument').fetch({
-        success: function(documentFile) {
-          return scope.$apply(function() {
-            scope.files.document = documentFile.get('uploadname');
-            return doProcess();
-          });
-        }
-      });
-      return scope.entity.wordslist.get('uploadedDocument').fetch({
-        success: function(wordsFile) {
-          return scope.$apply(function() {
-            scope.files.words = wordsFile.get('uploadname');
-            return doProcess();
-          });
-        }
-      });
-    };
-    scope.get = function(parseObj, attr) {
-      if (attr == null) {
-        attr = 'name';
-      }
-      return parseObj.fetch({
-        success: function(obj) {
-          return obj.get(attr);
-        }
-      });
-    };
     saveSuccess = function(e) {
       return scope.$apply(function() {
         scope.data.push(e);
@@ -77,23 +27,31 @@
         return Alert.error('Error occured while saving user information.');
       });
     };
-    scope.remove = function(entity) {
-      return entity.destroy({
-        success: function() {
-          return scope.$apply(function() {
-            Alert.success('Removed successfully.');
-            scope.data = _.filter(scope.data, function(d) {
-              return d.id !== entity.id;
+    scope.switchAdmin = function(user) {
+      var query, roleSuccess;
+      roleSuccess = function(result) {
+        var role, roleACL;
+        role = result[0];
+        roleACL = role.getACL();
+        roleACL.setReadAccess(user, true);
+        roleACL.setWriteAccess(user, true);
+        role.getUsers().add(user);
+        return role.save({
+          success: function() {
+            Alert.success('Operation was successful.');
+            return scope.$apply(function() {
+              return scope.tableParams.reload();
             });
-            return scope.tableParams.reload();
-          });
-        },
-        error: function(e) {
-          console.log(e);
-          return scope.$apply(function() {
-            return Alert.error('Error occurred while removing.');
-          });
-        }
+          },
+          error: function(obj, e) {
+            return Alert.error(e.message);
+          }
+        });
+      };
+      query = new Parse.Query(Parse.Role);
+      query.equalTo("name", "Administrator");
+      return query.find({
+        success: roleSuccess
       });
     };
     return scope.tableParams = new ngTableParams({
