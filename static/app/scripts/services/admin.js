@@ -4,9 +4,14 @@
   var Admin;
 
   Admin = (function() {
-    function Admin() {
+    function Admin(Pubsub) {
       var query,
         _this = this;
+      this.Pubsub = Pubsub;
+      this.events = {
+        UPDATED: 'Users updated'
+      };
+      this.Pubsub.engage(this, this.events);
       query = new Parse.Query(Parse.Role);
       query.equalTo("name", "Administrator");
       query.first({
@@ -25,6 +30,7 @@
       return usersQuery.find({
         success: function(roleUsers) {
           _this.roleUsers = roleUsers;
+          return _this.notify(_this.events.UPDATE, _this.roleUsers);
         }
       });
     };
@@ -40,6 +46,7 @@
     Admin.prototype.switchAdmin = function(user, cb, errCB) {
       var index, isAdmin, roleACL,
         _this = this;
+      console.log(user.get('username'));
       isAdmin = this.isAdmin(user);
       roleACL = this.adminRole.getACL();
       roleACL.setReadAccess(user, !isAdmin);
@@ -67,7 +74,7 @@
 
   })();
 
-  angular.module('wordsApp').service('Admin', Admin);
+  angular.module('wordsApp').service('Admin', ['Pubsub', Admin]);
 
 }).call(this);
 

@@ -2,17 +2,21 @@
 
 class Admin
 
-  constructor: ->
+  constructor: (@Pubsub)->
+    @events =
+      UPDATED: 'Users updated'
+
+    @Pubsub.engage @, @events
     query = new Parse.Query(Parse.Role)
-    #query.include "users"
     query.equalTo "name", "Administrator"
     query.first success: (@adminRole) =>
       @updateUsers()
 
   updateUsers: ->
-      @users = @adminRole.getUsers()
-      usersQuery = @users.query()
-      usersQuery.find success: (@roleUsers)=>
+    @users = @adminRole.getUsers()
+    usersQuery = @users.query()
+    usersQuery.find success: (@roleUsers)=>
+      @notify @events.UPDATE, @roleUsers
 
   isAdmin: (user)->
     if @roleUsers
@@ -20,6 +24,7 @@ class Admin
         roleUser.id is user.id
     
   switchAdmin: (user, cb, errCB)->
+    console.log user.get('username')
     isAdmin = @isAdmin user
     roleACL = @adminRole.getACL()
     roleACL.setReadAccess user, !isAdmin
@@ -37,4 +42,4 @@ class Admin
       error: (obj, err)=>
         errCB?(obj, err)
 
-angular.module('wordsApp').service 'Admin', Admin
+angular.module('wordsApp').service 'Admin', ['Pubsub', Admin]

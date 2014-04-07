@@ -6,10 +6,10 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert, Admin) ->
   scope.files = {}
   scope.Admin = Admin
 
-  scope.$watch ->
-    Admin.roleUsers
-  , ->
-    scope.users = Admin.roleUsers
+  scope.Admin.on scope.Admin.events.UPDATE, (users)->
+    scope.$apply ->
+      scope.users = users
+      console.log _.map scope.users, (user)-> user.get('username')
 
   scope.isAdmin = (user)->
     not not _.find scope.users, {'id': user.id}

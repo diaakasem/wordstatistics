@@ -9,10 +9,13 @@
     scope.entity = {};
     scope.files = {};
     scope.Admin = Admin;
-    scope.$watch(function() {
-      return Admin.roleUsers;
-    }, function() {
-      return scope.users = Admin.roleUsers;
+    scope.Admin.on(scope.Admin.events.UPDATE, function(users) {
+      return scope.$apply(function() {
+        scope.users = users;
+        return console.log(_.map(scope.users, function(user) {
+          return user.get('username');
+        }));
+      });
     });
     scope.isAdmin = function(user) {
       return !!_.find(scope.users, {
