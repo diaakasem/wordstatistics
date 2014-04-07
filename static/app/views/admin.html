@@ -21,9 +21,11 @@
           <tr ng-repeat="e in $data">
             <td data-title="'Username'">{{e.get('username')}}</td>
             <td data-title="'Name'">{{e.get('name')}}</td>
+            <td data-title="'Is Admin'">{{isAdmin(e)}}</td>
             <td data-title="'Time'">{{e.createdAt | timer}}</td>
             <td data-title="'Admin'">
-              <button class="btn btn-success" ng-click="switchAdmin(e)">
+              <button class="btn" ng-click="switchAdmin(e)"
+              ng-class="{'btn-success': isAdmin(e), 'btn-error': !isAdmin(e)}">
                 <i class="glyphicon glyphicon-user"></i>
               </button>
             </td>

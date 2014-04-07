@@ -2,12 +2,23 @@
 (function() {
   var controller;
 
-  controller = function(scope, ParseCrud, ngTableParams, http, Alert) {
+  controller = function(scope, ParseCrud, ngTableParams, http, Alert, Admin) {
     var Users, onError, saveSuccess;
     scope.data = [];
     scope.selected = 'users';
     scope.entity = {};
     scope.files = {};
+    scope.Admin = Admin;
+    scope.$watch(function() {
+      return Admin.roleUsers;
+    }, function() {
+      return scope.users = Admin.roleUsers;
+    });
+    scope.isAdmin = function(user) {
+      return !!_.find(scope.users, {
+        'id': user.id
+      });
+    };
     Users = new ParseCrud('User');
     Users.list(function(d) {
       scope.data = d;
@@ -21,49 +32,21 @@
         return Alert.success('User information was saved successfully.');
       });
     };
-    onError = function(e) {
+    onError = function(obj, e) {
       return scope.$apply(function() {
         console.log(e);
         return Alert.error('Error occured while saving user information.');
       });
     };
     scope.switchAdmin = function(user) {
-      var query, roleSuccess;
-      roleSuccess = function(role) {
-        var adminRelation, queryAdmins;
-        adminRelation = new Parse.Relation(role, "users");
-        queryAdmins = adminRelation.query();
-        queryAdmins.equalTo("objectId", user.id);
-        return queryAdmins.first({
-          success: function(isAdmin) {
-            var roleACL;
-            roleACL = role.getACL();
-            roleACL.setReadAccess(user, !isAdmin);
-            roleACL.setWriteAccess(user, !isAdmin);
-            if (!isAdmin) {
-              role.getUsers().add(user);
-            } else {
-              role.getUsers().remove(user);
-            }
-            return role.save({
-              success: function() {
-                Alert.success('Operation was successful.');
-                return scope.$apply(function() {
-                  return scope.tableParams.reload();
-                });
-              },
-              error: function(obj, e) {
-                return Alert.error(e.message);
-              }
-            });
-          }
+      var success;
+      success = function() {
+        Alert.success('Operation was successful.');
+        return scope.$apply(function() {
+          return scope.tableParams.reload();
         });
       };
-      query = new Parse.Query(Parse.Role);
-      query.equalTo("name", "Administrator");
-      return query.first({
-        success: roleSuccess
-      });
+      return Admin.switchAdmin(user, success, onError);
     };
     return scope.tableParams = new ngTableParams({
       page: 1,
@@ -78,7 +61,7 @@
     });
   };
 
-  angular.module('wordsApp').controller('AdminCtrl', ['$scope', 'ParseCrud', 'ngTableParams', '$http', 'Alert', controller]);
+  angular.module('wordsApp').controller('AdminCtrl', ['$scope', 'ParseCrud', 'ngTableParams', '$http', 'Alert', 'Admin', controller]);
 
 }).call(this);
 
