@@ -37,7 +37,7 @@
     }).when('/upload/uploads', {
       templateUrl: 'views/upload/uploads.html',
       controller: 'UploadsUploadsCtrl',
-      access: 'user'
+      access: 'admin'
     }).when('/admin', {
       templateUrl: 'views/admin.html',
       controller: 'AdminCtrl',
