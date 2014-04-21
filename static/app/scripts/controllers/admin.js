@@ -12,9 +12,7 @@
     scope.Admin.on(scope.Admin.events.UPDATE, function(users) {
       return scope.$apply(function() {
         scope.users = users;
-        return console.log(_.map(scope.users, function(user) {
-          return user.get('username');
-        }));
+        return scope.tableParams.reload();
       });
     });
     scope.isAdmin = function(user) {
@@ -25,7 +23,8 @@
     Users = new ParseCrud('User');
     Users.list(function(d) {
       scope.data = d;
-      return scope.tableParams.reload();
+      scope.tableParams.reload();
+      return scope.Admin.updateUsers();
     });
     saveSuccess = function(e) {
       return scope.$apply(function() {

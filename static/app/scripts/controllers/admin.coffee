@@ -9,7 +9,7 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert, Admin) ->
   scope.Admin.on scope.Admin.events.UPDATE, (users)->
     scope.$apply ->
       scope.users = users
-      console.log _.map scope.users, (user)-> user.get('username')
+      scope.tableParams.reload()
 
   scope.isAdmin = (user)->
     not not _.find scope.users, {'id': user.id}
@@ -18,6 +18,7 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert, Admin) ->
   Users.list (d)->
     scope.data = d
     scope.tableParams.reload()
+    scope.Admin.updateUsers()
 
   saveSuccess = (e)->
     scope.$apply ->

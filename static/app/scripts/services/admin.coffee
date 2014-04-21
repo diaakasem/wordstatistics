@@ -24,7 +24,6 @@ class Admin
         roleUser.id is user.id
     
   switchAdmin: (user, cb, errCB)->
-    console.log user.get('username')
     isAdmin = @isAdmin user
     roleACL = @adminRole.getACL()
     roleACL.setReadAccess user, !isAdmin

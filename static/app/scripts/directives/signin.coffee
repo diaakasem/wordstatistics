@@ -21,6 +21,7 @@ controller = (root, scope)->
         root.go '/'
 
       error: (user, error) ->
+        console.log(error)
         alert("Invalid username or password. Please try again.")
 
 

@@ -32,6 +32,7 @@
           return root.go('/');
         },
         error: function(user, error) {
+          console.log(error);
           return alert("Invalid username or password. Please try again.");
         }
       });
