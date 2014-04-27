@@ -3,8 +3,29 @@
   "use strict";
   var controller;
 
-  controller = function(root, scope) {
+  controller = function(root, scope, fb) {
     scope.model = {};
+    scope.signinFacebook = function() {
+      scope.$watch(function() {
+        return fb.loaded;
+      }, function(loaded) {
+        if (loaded) {
+          return Parse.FacebookUtils.logIn(null, {
+            success: function(user) {
+              if (!user.existed()) {
+                return alert("User signed up and logged in through Facebook!");
+              } else {
+                return alert("User logged in through Facebook!");
+              }
+            },
+            error: function(user, error) {
+              return alert("User cancelled the Facebook login or did not fully authorize.");
+            }
+          });
+        }
+      });
+      return fb._init(fb.fbParams);
+    };
     return scope.signin = function(form) {
       if (form.$invalid) {
         return;
@@ -45,7 +66,7 @@
       restrict: "E",
       replace: true,
       scope: true,
-      controller: ['$rootScope', '$scope', controller]
+      controller: ['$rootScope', '$scope', '$FB', controller]
     };
   });
 

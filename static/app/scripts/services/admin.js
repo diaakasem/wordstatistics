@@ -46,7 +46,6 @@
     Admin.prototype.switchAdmin = function(user, cb, errCB) {
       var index, isAdmin, roleACL,
         _this = this;
-      console.log(user.get('username'));
       isAdmin = this.isAdmin(user);
       roleACL = this.adminRole.getACL();
       roleACL.setReadAccess(user, !isAdmin);

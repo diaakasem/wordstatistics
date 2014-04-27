@@ -1,6 +1,26 @@
 "use strict"
-controller = (root, scope)->
+controller = (root, scope, fb)->
   scope.model = {}
+
+  scope.signinFacebook = ->
+
+    scope.$watch ->
+      fb.loaded
+    , (loaded)->
+        if loaded
+          Parse.FacebookUtils.logIn null,
+            success: (user) ->
+              unless user.existed()
+                alert "User signed up and logged in through Facebook!"
+              else
+                alert "User logged in through Facebook!"
+            error: (user, error) ->
+              alert "User cancelled the Facebook login or did not fully authorize."
+
+    fb._init fb.fbParams
+
+
+
   scope.signin = (form)->
     if form.$invalid
       return
@@ -30,5 +50,5 @@ angular.module("wordsApp").directive "signin", ->
   restrict: "E"
   replace: yes
   scope: on
-  controller: ['$rootScope', '$scope', controller]
+  controller: ['$rootScope', '$scope', '$FB', controller]
 

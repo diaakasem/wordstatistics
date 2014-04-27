@@ -50,6 +50,8 @@ rootController = (root, location, Alert)->
   root.user = Parse.User.current()
   root.isAdmin = no
   roleSuccess = (role)->
+    unless root.user
+      return
     adminRelation = new Parse.Relation(role, "users")
     queryAdmins = adminRelation.query()
     queryAdmins.equalTo "objectId", root.user.id
@@ -68,3 +70,62 @@ rootController = (root, location, Alert)->
 
 app.run [ '$rootScope', '$location', 'Alert', rootController ]
 
+
+
+fbService = ($rootScope) ->
+  fbLoaded = false
+  
+  # Our own customisations
+  _fb =
+    loaded: fbLoaded
+    _init: (params) ->
+      if window.FB
+        
+        # FIXME: Ugly hack to maintain both window.FB
+        # and our AngularJS-wrapped $FB with our customisations
+        angular.extend window.FB, _fb
+        angular.extend _fb, window.FB
+        
+        # Set the flag
+        _fb.loaded = true
+        
+        # Initialise FB SDK
+        window.FB.init params
+        $rootScope.$apply()  unless $rootScope.$$phase
+
+  _fb
+fbCompile = ($FB) ->
+    return ->
+      fbAppId = "749434618429985"
+      $FB.fbParams =
+        appId: fbAppId
+        cookie: true
+        status: true
+        xfbml: true
+      
+      # Setup the post-load callback
+      window.fbAsyncInit = ->
+        $FB._init $FB.fbParams
+
+      ((d, s, id, fbAppId) ->
+        js = undefined
+        fjs = d.getElementsByTagName(s)[0]
+        return  if d.getElementById(id)
+        js = d.createElement(s)
+        js.id = id
+        js.async = true
+        js.src = "//connect.facebook.net/en_US/all.js"
+        fjs.parentNode.insertBefore js, fjs
+        return
+      ) document, "script", "facebook-jssdk", fbAppId
+
+app.factory "$FB", [ "$rootScope", fbService ]
+
+app.directive "fb", [ "$FB", ($FB) ->
+    return (
+      restrict: "E"
+      replace: true
+      template: "<div id='fb-root'></div>"
+      compile: fbCompile($FB)
+    )
+]
