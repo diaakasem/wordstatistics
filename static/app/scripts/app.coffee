@@ -103,7 +103,7 @@ fbCompile = ($FB) ->
         status: true
         xfbml: true
       
-      $FB._init $FB.fbParams
+      #$FB._init $FB.fbParams
 
 app.factory "$FB", [ "$rootScope", fbService ]
 

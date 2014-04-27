@@ -109,13 +109,12 @@
     return function() {
       var fbAppId;
       fbAppId = "749434618429985";
-      $FB.fbParams = {
+      return $FB.fbParams = {
         appId: fbAppId,
         cookie: true,
         status: true,
         xfbml: true
       };
-      return $FB._init($FB.fbParams);
     };
   };
 
