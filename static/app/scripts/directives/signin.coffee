@@ -3,20 +3,15 @@ controller = (root, scope, fb)->
   scope.model = {}
 
   scope.signinFacebook = ->
-
-    scope.$watch ->
-      fb.loaded
-    , (loaded)->
-        if loaded
-          Parse.FacebookUtils.init()
-          Parse.FacebookUtils.logIn null,
-            success: (user) ->
-              unless user.existed()
-                alert "User signed up and logged in through Facebook!"
-              else
-                alert "User logged in through Facebook!"
-            error: (user, error) ->
-              alert "User cancelled the Facebook login or did not fully authorize."
+    Parse.FacebookUtils.init(fb.fbParams)
+    Parse.FacebookUtils.logIn null,
+      success: (user) ->
+        unless user.existed()
+          alert "User signed up and logged in through Facebook!"
+        else
+          alert "User logged in through Facebook!"
+      error: (user, error) ->
+        alert "User cancelled the Facebook login or did not fully authorize."
 
 
   scope.signin = (form)->

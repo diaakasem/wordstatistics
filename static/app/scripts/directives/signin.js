@@ -6,23 +6,17 @@
   controller = function(root, scope, fb) {
     scope.model = {};
     scope.signinFacebook = function() {
-      return scope.$watch(function() {
-        return fb.loaded;
-      }, function(loaded) {
-        if (loaded) {
-          Parse.FacebookUtils.init();
-          return Parse.FacebookUtils.logIn(null, {
-            success: function(user) {
-              if (!user.existed()) {
-                return alert("User signed up and logged in through Facebook!");
-              } else {
-                return alert("User logged in through Facebook!");
-              }
-            },
-            error: function(user, error) {
-              return alert("User cancelled the Facebook login or did not fully authorize.");
-            }
-          });
+      Parse.FacebookUtils.init(fb.fbParams);
+      return Parse.FacebookUtils.logIn(null, {
+        success: function(user) {
+          if (!user.existed()) {
+            return alert("User signed up and logged in through Facebook!");
+          } else {
+            return alert("User logged in through Facebook!");
+          }
+        },
+        error: function(user, error) {
+          return alert("User cancelled the Facebook login or did not fully authorize.");
         }
       });
     };
