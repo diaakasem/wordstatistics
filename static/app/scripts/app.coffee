@@ -103,21 +103,7 @@ fbCompile = ($FB) ->
         status: true
         xfbml: true
       
-      # Setup the post-load callback
-      window.fbAsyncInit = ->
-        $FB._init $FB.fbParams
-
-      ((d, s, id, fbAppId) ->
-        js = undefined
-        fjs = d.getElementsByTagName(s)[0]
-        return  if d.getElementById(id)
-        js = d.createElement(s)
-        js.id = id
-        js.async = true
-        js.src = "//connect.facebook.net/en_US/all.js"
-        fjs.parentNode.insertBefore js, fjs
-        return
-      ) document, "script", "facebook-jssdk", fbAppId
+      $FB._init $FB.fbParams
 
 app.factory "$FB", [ "$rootScope", fbService ]
 

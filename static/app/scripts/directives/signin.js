@@ -6,10 +6,11 @@
   controller = function(root, scope, fb) {
     scope.model = {};
     scope.signinFacebook = function() {
-      scope.$watch(function() {
+      return scope.$watch(function() {
         return fb.loaded;
       }, function(loaded) {
         if (loaded) {
+          Parse.FacebookUtils.init();
           return Parse.FacebookUtils.logIn(null, {
             success: function(user) {
               if (!user.existed()) {
@@ -24,7 +25,6 @@
           });
         }
       });
-      return fb._init(fb.fbParams);
     };
     return scope.signin = function(form) {
       if (form.$invalid) {

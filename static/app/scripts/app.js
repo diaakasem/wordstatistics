@@ -107,30 +107,15 @@
 
   fbCompile = function($FB) {
     return function() {
-      var fbAppId, fbParams;
+      var fbAppId;
       fbAppId = "749434618429985";
-      fbParams = {
+      $FB.fbParams = {
         appId: fbAppId,
         cookie: true,
         status: true,
         xfbml: true
       };
-      window.fbAsyncInit = function() {
-        return $FB._init(fbParams);
-      };
-      return (function(d, s, id, fbAppId) {
-        var fjs, js;
-        js = void 0;
-        fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-          return;
-        }
-        js = d.createElement(s);
-        js.id = id;
-        js.async = true;
-        js.src = "//connect.facebook.net/en_US/all.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, "script", "facebook-jssdk", fbAppId);
+      return $FB._init($FB.fbParams);
     };
   };
 

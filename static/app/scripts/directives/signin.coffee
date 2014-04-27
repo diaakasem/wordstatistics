@@ -8,6 +8,7 @@ controller = (root, scope, fb)->
       fb.loaded
     , (loaded)->
         if loaded
+          Parse.FacebookUtils.init()
           Parse.FacebookUtils.logIn null,
             success: (user) ->
               unless user.existed()
@@ -16,9 +17,6 @@ controller = (root, scope, fb)->
                 alert "User logged in through Facebook!"
             error: (user, error) ->
               alert "User cancelled the Facebook login or did not fully authorize."
-
-    fb._init fb.fbParams
-
 
 
   scope.signin = (form)->
