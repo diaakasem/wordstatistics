@@ -100,7 +100,7 @@ fbCompile = ($FB) ->
       $FB.fbParams =
         appId: fbAppId
         cookie: true
-        status: true
+        status: false
         xfbml: true
       
       #$FB._init $FB.fbParams

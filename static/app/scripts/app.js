@@ -112,7 +112,7 @@
       return $FB.fbParams = {
         appId: fbAppId,
         cookie: true,
-        status: true,
+        status: false,
         xfbml: true
       };
     };
