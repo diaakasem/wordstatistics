@@ -98,12 +98,12 @@ fbCompile = ($FB) ->
     return ->
       fbAppId = "749434618429985"
       $FB.fbParams =
+        channelUrl : 'http://local.host/channel.html'
         appId: fbAppId
         cookie: true
-        status: false
+        status: true
+        oauth: true
         xfbml: true
-      
-      #$FB._init $FB.fbParams
 
 app.factory "$FB", [ "$rootScope", fbService ]
 

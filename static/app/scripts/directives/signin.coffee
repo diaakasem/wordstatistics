@@ -2,8 +2,8 @@
 controller = (root, scope, fb)->
   scope.model = {}
 
+  Parse.FacebookUtils.init(fb.fbParams)
   scope.signinFacebook = ->
-    Parse.FacebookUtils.init(fb.fbParams)
     Parse.FacebookUtils.logIn null,
       success: (user) ->
         unless user.existed()
