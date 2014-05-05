@@ -77,7 +77,7 @@
               {{e.get('filename')}}
             </td>
             <td data-title="'Time'">{{e.createdAt | timer}}</td>
-            <td data-title="''">
+            <td data-title="''" ng-show="hasWriteAccess(e)">
               <button class="btn btn-danger" ng-click="remove(e)">
                 <i class="glyphicon glyphicon-remove"></i>
               </button>

@@ -26,12 +26,14 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
       Alert.error "Error removing uploaded file."
 
   scope.remove = (e)->
+    return  unless scope.hasWriteAccess(e)
     filename = e.get('uploadname')
     removeSuccess = (e)->
       scope.data = _.filter scope.data, (d)-> d.id isnt e.id
       removeFile filename
 
     DocumentUpload.remove(e, removeSuccess)
+
 
   scope.tableParams = new ngTableParams
     page: 1
@@ -57,6 +59,11 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
     scope.$apply ->
       plupload.each files, (file) ->
         scope.filesAdded.push file
+
+  scope.hasWriteAccess = (obj)->
+    return false  unless obj
+    acl = obj.getACL()
+    acl.getWriteAccess(scope.$root.user)
 
   saveSuccess = (e)->
     scope.$apply ->

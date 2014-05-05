@@ -29,15 +29,15 @@
     }).when('/upload/documents', {
       templateUrl: 'views/upload/documents.html',
       controller: 'UploadDocumentsCtrl',
-      access: 'user'
+      access: 'admin'
     }).when('/upload/words', {
       templateUrl: 'views/upload/words.html',
       controller: 'UploadWordsCtrl',
-      access: 'user'
+      access: 'admin'
     }).when('/upload/uploads', {
       templateUrl: 'views/upload/uploads.html',
       controller: 'UploadsUploadsCtrl',
-      access: 'admin'
+      access: 'user'
     }).when('/admin', {
       templateUrl: 'views/admin.html',
       controller: 'AdminCtrl',
