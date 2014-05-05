@@ -6,6 +6,7 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
   scope.entity = {}
   scope.data = []
   scope.selected = 'upload'
+  Documents = new ParseCrud 'Documents'
   DocumentUpload = new ParseCrud 'DocumentUpload'
   DocumentUpload.list (d)->
     scope.data = d
@@ -65,13 +66,27 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
     acl = obj.getACL()
     acl.getWriteAccess(scope.$root.user)
 
+  documentSaveSuccess = (e)->
+    (doc)->
+      scope.$apply ->
+        scope.data.push e
+        scope.tableParams.reload()
+        scope.selected = 'uploaded'
+        Alert.success "File was uploaded successfully."
+
   saveSuccess = (e)->
-    scope.$apply ->
-      scope.data.push e
-      scope.tableParams.reload()
-      scope.selected = 'uploaded'
-      Alert.success "File was uploaded successfully."
-    
+    unless scope.$root.isAdmin
+      Documents.save {
+        name: e.get('name')
+        uploadedDocument: e
+      }, documentSaveSuccess(e), saveError
+    else
+      scope.$apply ->
+        scope.data.push e
+        scope.tableParams.reload()
+        scope.selected = 'uploaded'
+        Alert.success "File was uploaded successfully."
+
   saveError = (e)->
     scope.$apply ->
       console.log e

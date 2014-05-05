@@ -4,11 +4,12 @@
   var controller;
 
   controller = function(scope, ParseCrud, http, ngTableParams, Alert) {
-    var DocumentUpload, removeFile, saveError, saveSuccess, uploader;
+    var DocumentUpload, Documents, documentSaveSuccess, removeFile, saveError, saveSuccess, uploader;
     scope.text = '';
     scope.entity = {};
     scope.data = [];
     scope.selected = 'upload';
+    Documents = new ParseCrud('Documents');
     DocumentUpload = new ParseCrud('DocumentUpload');
     DocumentUpload.list(function(d) {
       scope.data = d;
@@ -90,13 +91,30 @@
       acl = obj.getACL();
       return acl.getWriteAccess(scope.$root.user);
     };
+    documentSaveSuccess = function(e) {
+      return function(doc) {
+        return scope.$apply(function() {
+          scope.data.push(e);
+          scope.tableParams.reload();
+          scope.selected = 'uploaded';
+          return Alert.success("File was uploaded successfully.");
+        });
+      };
+    };
     saveSuccess = function(e) {
-      return scope.$apply(function() {
-        scope.data.push(e);
-        scope.tableParams.reload();
-        scope.selected = 'uploaded';
-        return Alert.success("File was uploaded successfully.");
-      });
+      if (!scope.$root.isAdmin) {
+        return Documents.save({
+          name: e.get('name'),
+          uploadedDocument: e
+        }, documentSaveSuccess(e), saveError);
+      } else {
+        return scope.$apply(function() {
+          scope.data.push(e);
+          scope.tableParams.reload();
+          scope.selected = 'uploaded';
+          return Alert.success("File was uploaded successfully.");
+        });
+      }
     };
     saveError = function(e) {
       return scope.$apply(function() {
