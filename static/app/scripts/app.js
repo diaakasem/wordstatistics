@@ -42,6 +42,10 @@
       templateUrl: 'views/admin.html',
       controller: 'AdminCtrl',
       access: 'admin'
+    }).when('/passwordreset', {
+      templateUrl: 'views/passwordreset.html',
+      controller: 'PasswordresetCtrl',
+      access: 'public'
     }).otherwise({
       redirectTo: '/processes'
     });
