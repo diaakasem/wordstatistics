@@ -51,6 +51,12 @@ rootController = (root, location, Alert)->
   root.go = (url)->
     location.path('/' + url)
 
+  activateTooltips = ->
+    $('.bstooltip').tooltip()
+
+  # Initial Activation
+  setTimeout activateTooltips, 1000
+
   root.user = Parse.User.current()
   root.isAdmin = no
   roleSuccess = (role)->
@@ -62,6 +68,9 @@ rootController = (root, location, Alert)->
     queryAdmins.first success: (result)->
       root.isAdmin = result
       root.$on '$routeChangeStart', (event, next)->
+        # Activating Bootstrap tooltips
+        setTimeout activateTooltips, 1000
+
         Alert.clear()
         if next.access isnt 'public' and not root.user
           root.go ''

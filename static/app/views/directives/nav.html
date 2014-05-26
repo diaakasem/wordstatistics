@@ -9,7 +9,10 @@
   <div class="navbar-collapse collapse navbar-responsive-collapse">
     <ul class="nav navbar-nav" ng-show="user">
       <!--<li><a href="#/words">Words</a></li>-->
-      <li>
+      <li
+      class="bstooltip" data-toggle="tooltip" data-placement="bottom"
+      title="Upload a document to be analyzed"
+      >
       <a href="#/upload/uploads">
         <i class="glyphicon glyphicon-cloud-upload"></i> Upload</a>
       </li>
@@ -19,38 +22,53 @@
         <i class="glyphicon glyphicon-cloud-upload"></i>
         Manage Uploads <b class="caret"></b></a>
       <ul class="dropdown-menu">
-        <li><a href="#/upload/documents">
+        <li
+        class="bstooltip" data-toggle="tooltip" data-placement="right"
+        title="Documents to be analyzed"
+        >
+        <a href="#/upload/documents">
           <i class="glyphicon glyphicon-inbox"></i> Documents</a></li>
-        <li><a href="#/upload/words">
+        <li
+        class="bstooltip" data-toggle="tooltip" data-placement="right"
+        title="Words lists to analyze documents against"
+        >
+        <a href="#/upload/words">
           <i class="glyphicon glyphicon-bold"></i> Words Lists</a></li>
       </ul>
       </li>
 
-      <li>
+      <li
+      class="bstooltip" data-toggle="tooltip" data-placement="bottom"
+      title="Start a new analysis or check archived ones"
+      >
       <a href="#/processes">
         <i class="glyphicon glyphicon-cog"></i> Analyze </a>
       </li>
 
-      <li>
+      <li
+      class="bstooltip" data-toggle="tooltip" data-placement="bottom"
+      title="Manage system users and their privileges"
+      >
       <a href="#/admin" ng-if="isAdmin">
         <i class="glyphicon glyphicon-user"></i> Admin </a>
       </li>
 
     </ul>
 
-    <ul class="nav navbar-nav navbar-right">
+    <ul class="nav navbar-nav navbar-right" style="padding-right: 15px;">
       <signin ng-show="!user"></signin>
       <signup ng-show="!user"></signup>
-      <li class="dropdown pull-right" ng-show="user">
-      <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+      <li ng-show="user">
+      <a style="cursor:pointer" href="javascript:;">
+        <b class="glyphicon glyphicon-user"></b>
         {{user.get('name') || user.get('email')}}
-        <b class="caret"></b>
       </a>
-      <ul class="dropdown-menu">
-        <li><a href="#/profile">Profile</a></li>
-        <li class="divider"></li>
-        <li><a ng-click="signout()" style="cursor:pointer">Logout</a></li>
-      </ul>
+      </li>
+      <li ng-show="user">
+      <a style="cursor:pointer" href="javascript:;" ng-click="signout()">
+        <b class="glyphicon glyphicon-off"></b>
+        Sign out
+      </a>
       </li>
     </ul>
 

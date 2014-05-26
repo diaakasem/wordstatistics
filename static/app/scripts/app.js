@@ -52,10 +52,14 @@
   });
 
   rootController = function(root, location, Alert) {
-    var query, roleSuccess;
+    var activateTooltips, query, roleSuccess;
     root.go = function(url) {
       return location.path('/' + url);
     };
+    activateTooltips = function() {
+      return $('.bstooltip').tooltip();
+    };
+    setTimeout(activateTooltips, 1000);
     root.user = Parse.User.current();
     root.isAdmin = false;
     roleSuccess = function(role) {
@@ -70,6 +74,7 @@
         success: function(result) {
           root.isAdmin = result;
           return root.$on('$routeChangeStart', function(event, next) {
+            setTimeout(activateTooltips, 1000);
             Alert.clear();
             if (next.access !== 'public' && !root.user) {
               return root.go('');

@@ -1,14 +1,20 @@
 <div class="wordslists">
 
-  <h3> Processes </h3>
+  <h3> Analyze </h3>
 
   <alert></alert>
 
   <ul class="nav nav-tabs">
-    <li ng-class="{active: selected=='new'}">
+    <li ng-class="{active: selected=='new'}"
+    class="bstooltip" data-toggle="tooltip" data-placement="bottom"
+    title="Start a new analysis"
+    >
     <a class="clickable" ng-click="selected='new'"> New </a>
     </li>
-    <li ng-class="{active: selected=='list'}">
+    <li ng-class="{active: selected=='list'}"
+    class="bstooltip" data-toggle="tooltip" data-placement="bottom"
+    title="Previously analyzed documents"
+    >
     <a class="clickable" ng-click="selected='list'"> Archive </a></li>
   </ul>
 
