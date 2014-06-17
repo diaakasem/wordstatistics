@@ -35,16 +35,20 @@
             queryAdmins.equalTo("objectId", root.user.id);
             return queryAdmins.first({
               success: function(result) {
-                return root.isAdmin = result;
+                root.isAdmin = result;
+                if (root.isAdmin) {
+                  return root.go('/');
+                } else {
+                  return root.go('/');
+                }
               }
             });
           };
           query = new Parse.Query(Parse.Role);
           query.equalTo("name", "Administrator");
-          query.first({
+          return query.first({
             success: roleSuccess
           });
-          return root.go('/');
         },
         error: function(user, error) {
           console.log(error);

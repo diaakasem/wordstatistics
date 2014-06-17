@@ -28,11 +28,14 @@ controller = (root, scope, fb)->
           queryAdmins.equalTo "objectId", root.user.id
           queryAdmins.first success: (result)->
             root.isAdmin = result
+            if root.isAdmin
+              root.go '/'
+            else
+              root.go '/'
 
         query = new Parse.Query(Parse.Role)
         query.equalTo "name", "Administrator"
         query.first success: roleSuccess
-        root.go '/'
 
       error: (user, error) ->
         console.log(error)
