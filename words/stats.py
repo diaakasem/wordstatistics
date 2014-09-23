@@ -5,7 +5,7 @@ from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 import re
 
-commasPattern = re.compile('\,{2,}')            #a comma repeated two or more times consecutively...
+#commasPattern = re.compile('\,{2,}')            #a comma repeated two or more times consecutively...
 digi = re.compile('\d+')
 
 
@@ -32,31 +32,42 @@ def buildWordsStructure(wordsListText):
     }
     inCategories = False
     for line in wordsListText.split('\n'):
-        res = re.sub(commasPattern, '', line)
-        if res == '%':
+        #line = re.sub(commasPattern, '', line)
+        line = line.strip()                     #remove all tabs and extra whitespaces...
+        if line == '%':
             inCategories = not inCategories
             continue
 
+        #inCategories is True for categories only; the first few lines in the wordslist starting from % and ending with %...
         if inCategories:
-            category, title = res.split(',')
+            category, title = line.split('\t')
             structure['categories'][category] = {
                 'name': title,
                 'freq': 0
             }
         else:
-            categoriesAndWords = res.split(',')
-            categories = []
-            for item in categoriesAndWords:
-                m = digi.match(item)
-                if m:
-                    categories.append(m.group())
+            wordsAndCategories = line.split('\t')
+            word = wordsAndCategories[0]
+            categories = wordsAndCategories[1:]   
+            
+            structure['words'][word] = {
+                'freq': 0,
+                'categories': categories
+            }
 
-                    if len(item) > len(m.group()):
-                        structure['words'][item[3:]] = {
-                            'freq': 0,
-                            'categories': categories
-                        }
-                # else:
+            # categoriesAndWords = line.split(',')
+            # categories = []
+            # for item in categoriesAndWords:
+            #     m = digi.match(item)
+            #     if m:
+            #         categories.append(m.group())
+
+            #         if len(item) > len(m.group()):
+            #             structure['words'][item[3:]] = {
+            #                 'freq': 0,
+            #                 'categories': categories
+            #             }
+            #     # else:
                 #     structure['words'][item] = {
                 #         'freq': 0,
                 #         'categories': categories
