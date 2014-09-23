@@ -11,6 +11,7 @@ import os
 
 p = os.path
 statics = p.join(p.dirname(p.abspath(__file__)), 'static/app/')
+
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = set(['txt'])
 

@@ -32,6 +32,9 @@
           url: '/analyzefiles',
           data: scope.files
         };
+
+        console.log(params);
+
         h = http(params);
         h.success(function(d) {
           scope.entity.result = d.result.categories;

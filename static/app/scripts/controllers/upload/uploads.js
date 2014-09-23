@@ -75,6 +75,8 @@
       }
     });
     uploader.init();
+    
+
     scope.filesAdded = [];
     uploader.bind("FilesAdded", function(up, files) {
       return scope.$apply(function() {

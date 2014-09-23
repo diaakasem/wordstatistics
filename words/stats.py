@@ -5,7 +5,7 @@ from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 import re
 
-commasPattern = re.compile('\,{2,}')
+commasPattern = re.compile('\,{2,}')            #a comma repeated two or more times consecutively...
 digi = re.compile('\d+')
 
 
@@ -50,11 +50,17 @@ def buildWordsStructure(wordsListText):
                 m = digi.match(item)
                 if m:
                     categories.append(m.group())
-                else:
-                    structure['words'][item] = {
-                        'freq': 0,
-                        'categories': categories
-                    }
+
+                    if len(item) > len(m.group()):
+                        structure['words'][item[3:]] = {
+                            'freq': 0,
+                            'categories': categories
+                        }
+                # else:
+                #     structure['words'][item] = {
+                #         'freq': 0,
+                #         'categories': categories
+                #     }
 
     return structure
 
@@ -64,7 +70,8 @@ def statsText(text, words):
     fdist = FreqDist()
     # formatted prints will work with Python2 and Python3
     for word in word_tokenize(text):
-        fdist.inc(word.lower())
+        #fdist.inc(word.lower())
+        fdist[word] += 1
 
     return [(k, fdist.freq(k)) for k in words]
 
