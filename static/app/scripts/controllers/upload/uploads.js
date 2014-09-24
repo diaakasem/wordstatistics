@@ -75,8 +75,6 @@
       }
     });
     uploader.init();
-    
-
     scope.filesAdded = [];
     uploader.bind("FilesAdded", function(up, files) {
       return scope.$apply(function() {
@@ -165,5 +163,3 @@
   angular.module('wordsApp').controller('UploadsUploadsCtrl', ['$scope', 'ParseCrud', '$http', 'ngTableParams', 'Alert', controller]);
 
 }).call(this);
-
-//# sourceMappingURL=uploads.map

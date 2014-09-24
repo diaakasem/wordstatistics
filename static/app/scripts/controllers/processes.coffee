@@ -31,9 +31,10 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
       h = http params
       h.success (d)->
         scope.entity.result = d.result.categories
+        console.log d.result.categories
         Processes.save scope.entity, saveSuccess, onError
         scope.tableParams.reload()
-        Processes.save scope.entity, saveSuccess, onError
+        # Processes.save scope.entity, saveSuccess, onError
         Alert.success 'Processed successfully.'
       h.error (e)->
         Alert.success 'Error occured.'

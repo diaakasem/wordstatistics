@@ -50,15 +50,14 @@
           <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
             Result
           </div>
-          <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12"
-            ng-init="results = entity.get('results')">
+          <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
 
             <div class="row" ng-repeat="entry in entity.get('result')">
               <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                {{entry[0]}}
+                {{entry['name']}}
               </div>
               <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
-                {{entry[1]}}
+                {{entry['freq']}}
               </div>
             </div>
 

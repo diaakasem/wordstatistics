@@ -69,6 +69,7 @@ def analyzefiles():
             catfreq += freq
             structure['categories'][category]['freq'] = catfreq
 
+    structure['words'] = {}                 #no need to return words list on client side...
     return jsonify({'result': structure})
 
 

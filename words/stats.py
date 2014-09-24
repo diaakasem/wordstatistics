@@ -7,7 +7,7 @@ import re
 
 #commasPattern = re.compile('\,{2,}')            #a comma repeated two or more times consecutively...
 digi = re.compile('\d+')
-
+matchEverything = re.compile('.*')
 
 def buildWordsStructure(wordsListText):
     ### build correct structure
@@ -33,27 +33,31 @@ def buildWordsStructure(wordsListText):
     inCategories = False
     for line in wordsListText.split('\n'):
         #line = re.sub(commasPattern, '', line)
-        line = line.strip()                     #remove all tabs and extra whitespaces...
+        line = line.strip()                     #remove all extra tabs and whitespaces...
         if line == '%':
             inCategories = not inCategories
             continue
 
         #inCategories is True for categories only; the first few lines in the wordslist starting from % and ending with %...
         if inCategories:
-            category, title = line.split('\t')
+            category, title = line.split('\t')          #data is tab-delimited, e.g: "511    Achieve" ...
             structure['categories'][category] = {
                 'name': title,
                 'freq': 0
             }
         else:
-            wordsAndCategories = line.split('\t')
-            word = wordsAndCategories[0]
-            categories = wordsAndCategories[1:]   
+            #each line is tab-delimited and has word and categories mixed; the first entry is the word and the
+            #remainings are categories, e.g: "lying 500 501 502 "
+
+            wordAndCategories = line.split('\t')       
+            word = wordAndCategories[0]
+            categories = wordAndCategories[1:]   
             
             structure['words'][word] = {
                 'freq': 0,
                 'categories': categories
             }
+
 
             # categoriesAndWords = line.split(',')
             # categories = []
@@ -81,10 +85,37 @@ def statsText(text, words):
     fdist = FreqDist()
     # formatted prints will work with Python2 and Python3
     for word in word_tokenize(text):
-        #fdist.inc(word.lower())
-        fdist[word] += 1
+        fdist[word.lower()] += 1
 
-    return [(k, fdist.freq(k)) for k in words]
+
+    #loop over the words in fdist and see if you can find those words in the wordslist keys. Since some words in the  
+    #wordslist also has wildcard * at the end to denote anything after the initial word, we match with startswith 
+    #rather than matching on equity...
+
+    frequencies = []
+    
+    # for k in fdist:
+    #     if len([item for item in words if item.startswith(k)]) > 0:
+    #         frequencies.append((k, fdist.freq(k)))
+
+    # return frequencies
+
+
+
+    for word in words:
+        if '*' in word:
+            wordRegEx = word.replace('*', '.*')
+            for k in fdist:
+                m = re.match(wordRegEx, k)
+                if m:
+                    frequencies.append((word, fdist.freq(m.group())))
+
+        else:
+            frequencies.append((word, fdist.freq(word)))
+
+    return frequencies
+
+    # return [(k, fdist.freq(k)) for k in words]
 
 
 def statsFile(text):
