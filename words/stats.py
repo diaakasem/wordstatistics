@@ -89,8 +89,8 @@ def statsText(text, words):
 
 
     #loop over the words in fdist and see if you can find those words in the wordslist keys. Since some words in the  
-    #wordslist also has wildcard * at the end to denote anything after the initial word, we match with startswith 
-    #rather than matching on equity...
+    #wordslist also has wildcard * at the end to denote anything after the initial word, we use Regex to match those 
+    #rather than matching on equity; e.g wrong* will match wrong, wrongful, wrongfully, wronged etc...
 
     frequencies = []
     
@@ -101,10 +101,9 @@ def statsText(text, words):
     # return frequencies
 
 
-
     for word in words:
-        if '*' in word:
-            wordRegEx = word.replace('*', '.*')
+        if '*' in word:         #if word has * we need to compare it with each item in fdist...
+            wordRegEx = word.replace('*', '.*')         #make it suitable for Regular Expression...
             for k in fdist:
                 m = re.match(wordRegEx, k)
                 if m:
