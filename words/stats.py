@@ -26,6 +26,7 @@ def buildWordsStructure(wordsListText):
     #   }
     #}
     ###
+    
     structure = {
         'words': {},
         'categories': {}
@@ -93,13 +94,6 @@ def statsText(text, words):
     #rather than matching on equity; e.g wrong* will match wrong, wrongful, wrongfully, wronged etc...
 
     frequencies = []
-    
-    # for k in fdist:
-    #     if len([item for item in words if item.startswith(k)]) > 0:
-    #         frequencies.append((k, fdist.freq(k)))
-
-    # return frequencies
-
 
     for word in words:
         if '*' in word:         #if word has * we need to compare it with each item in fdist...

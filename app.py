@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from flask import render_template
 from flask import jsonify
+from flask import make_response
 from werkzeug import secure_filename
 from words import stats
 from words import texts

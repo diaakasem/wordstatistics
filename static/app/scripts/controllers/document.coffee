@@ -23,7 +23,26 @@ controller = (scope, params, ParseCrud, timeout, http, location, Alert)->
         scope.$apply ->
           console.log e
           Alert.error 'Error occurred while removing.'
-      
+  
+  scope.save = (entity)->
+    # console.log entity.get('result');
+
+    data = []
+    for key in Object.keys entity.attributes.result 
+      entry = entity.attributes.result[key]
+      data += entry['name'] + "," + entry['freq'] + "\n" 
+      #data.push {name: entry.name, freq: entry.freq}
+
+    console.log data
+    
+    # Create a hidden element to trigger download...
+    hiddenElement = document.createElement('a')
+    hiddenElement.href = 'data:attachment/csv,' + encodeURI(data)
+    hiddenElement.target = '_blank'
+    hiddenElement.download = 'analyzeresult_' + Date.now() + '.csv'
+    hiddenElement.click()
+
+    
   scope.graph = ->
     margin =
       top: 40

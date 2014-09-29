@@ -32,6 +32,22 @@
         }
       });
     };
+    scope.save = function(entity) {
+      var data, entry, hiddenElement, key, _i, _len, _ref;
+      data = [];
+      _ref = Object.keys(entity.attributes.result);
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        key = _ref[_i];
+        entry = entity.attributes.result[key];
+        data += entry['name'] + "," + entry['freq'] + "\n";
+      }
+      console.log(data);
+      hiddenElement = document.createElement('a');
+      hiddenElement.href = 'data:attachment/csv,' + encodeURI(data);
+      hiddenElement.target = '_blank';
+      hiddenElement.download = 'analyzeresult_' + Date.now() + '.csv';
+      return hiddenElement.click();
+    };
     return scope.graph = function() {
       var data, formatPercent, height, margin, svg, tip, width, x, xAxis, y, yAxis;
       margin = {
