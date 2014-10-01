@@ -70,8 +70,12 @@
           {
             title: "Text files",
             extensions: "txt"
+          }, {
+            title: "Doc files",
+            extensions: "doc,docx"
           }
-        ]
+        ],
+        max_file_size: "50mb"
       }
     });
     uploader.init();

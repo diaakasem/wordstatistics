@@ -9,12 +9,13 @@ from words import texts
 from uuid import uuid4
 import json
 import os
+from docx import Document
 
 p = os.path
 statics = p.join(p.dirname(p.abspath(__file__)), 'static/app/')
 
 UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = set(['txt'])
+ALLOWED_EXTENSIONS = set(['txt', 'doc', 'docx'])
 
 app = Flask(__name__,
             static_folder=statics,
@@ -56,11 +57,22 @@ def analyzefiles():
     document = data['document']
     words = data['words']
     with open(getFilePath(document), 'r+') as documentFile:
-        documentText = documentFile.read()
+        extension = os.path.splitext(getFilePath(document))[1]
+        if extension == ".doc" or extension == ".docx":
+            documentText = readWordFile(getFilePath(document))
+        else:
+            documentText = documentFile.read()
+        
+        # print "#----------"
+        # print documentText
+        # print "#----------"
+
     with open(getFilePath(words), 'r+') as wordsFile:
         wordsText = wordsFile.read()
         structure = stats.buildWordsStructure(wordsText)
+
     res = stats.statsText(documentText, structure['words'].keys())
+    
     for comp in res:
         word = comp[0]
         freq = comp[1]
@@ -107,6 +119,10 @@ def upload_file():
         print file
     # Return result and success/error code
     return jsonify({"result": res}), code
+
+def readWordFile(filepath):
+    doc = Document(filepath)
+    return "\n\n".join(paragraph.text for paragraph in doc.paragraphs)
 
 
 @app.route('/', methods=['GET'])

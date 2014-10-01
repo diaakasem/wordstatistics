@@ -32,6 +32,7 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
       h.success (d)->
         scope.entity.result = d.result.categories
         console.log d.result.categories
+        
         Processes.save scope.entity, saveSuccess, onError
         scope.tableParams.reload()
         # Processes.save scope.entity, saveSuccess, onError

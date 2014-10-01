@@ -50,7 +50,9 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
     browse_button: "browse"
     url: "/upload"
     filters:
-      mime_types: [ {title : "Text files", extensions : "txt"} ]
+      mime_types: [ {title : "Text files", extensions : "txt"}, 
+                    {title: "Doc files", extensions: "doc,docx"} ],
+      max_file_size: "50mb"
 
   uploader.init()
 
