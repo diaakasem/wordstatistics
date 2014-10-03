@@ -3,5 +3,6 @@ flask
 pyyaml
 nltk
 gunicorn
+lxml
 python-docx
 
