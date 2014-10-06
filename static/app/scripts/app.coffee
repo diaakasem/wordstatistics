@@ -1,8 +1,11 @@
 app = angular.module 'wordsApp', ['ngRoute', 'ngTable', 'restangular']
 
 app.config ($routeProvider) ->
-  Parse.initialize "zCZ9afoU17xLzheYoVGnUxU85Wvqri3pasbdc0Q9",
-                   "m1kKssfW6cek18eL9fa8AS0JR7siPCFPx5NmHDuR"
+  # Parse.initialize "zCZ9afoU17xLzheYoVGnUxU85Wvqri3pasbdc0Q9",
+  #                  "m1kKssfW6cek18eL9fa8AS0JR7siPCFPx5NmHDuR"
+
+  Parse.initialize "QgzvRaVJflTeeubACUtC9N8T01T71ykyZLON7bfq",
+                    "RqJCdMCza4JwuyZAKsWy507knoa2KfuL0rCFz2cM"
   $routeProvider
     .when '/',
       templateUrl: 'views/main.html'
