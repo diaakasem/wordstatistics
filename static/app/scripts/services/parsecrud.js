@@ -22,13 +22,26 @@
           acl.setPublicReadAccess(true);
           acl.setWriteAccess(Parse.User.current(), true);
           instance.setACL(acl);
+          return instance.save(null, {
+            success: function(wordslist) {
+              return wordslist.get('uploadedDocument').fetch({
+                success: function(documentFile) {
+                  documentFile.setACL(acl);
+                  return documentFile.save(null, {
+                    success: cb,
+                    error: errCB
+                  });
+                }
+              });
+            }
+          });
         } else {
           instance.setACL(new Parse.ACL(Parse.User.current()));
+          return instance.save(null, {
+            success: cb,
+            error: errCB
+          });
         }
-        return instance.save(null, {
-          success: cb,
-          error: errCB
-        });
       };
 
       Crud.prototype.getWith = function(id, keys, cb, errCB) {

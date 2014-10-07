@@ -41,6 +41,7 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
         Alert.success 'Error occured.'
         console.log e
 
+    
     scope.entity.documents.get('uploadedDocument').fetch
       success: (documentFile)->
         scope.$apply ->
@@ -52,6 +53,9 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
         scope.$apply ->
           scope.files.words = wordsFile.get('uploadname')
           doProcess()
+
+      error: (err)->
+        console.log "err"
 
   scope.get = (parseObj, attr='name')->
     parseObj.fetch

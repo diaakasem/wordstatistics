@@ -59,6 +59,9 @@
             scope.files.words = wordsFile.get('uploadname');
             return doProcess();
           });
+        },
+        error: function(err) {
+          return console.log("err");
         }
       });
     };

@@ -63,10 +63,6 @@ def analyzefiles():
         else:
             documentText = documentFile.read()
         
-        # print "#----------"
-        # print documentText
-        # print "#----------"
-
     with open(getFilePath(words), 'r+') as wordsFile:
         wordsText = wordsFile.read()
         structure = stats.buildWordsStructure(wordsText)

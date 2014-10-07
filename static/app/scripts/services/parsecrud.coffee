@@ -15,12 +15,23 @@ Service = ->
         acl.setPublicReadAccess(true)
         acl.setWriteAccess(Parse.User.current(), true)
         instance.setACL acl
+
+        instance.save null,
+          success: (wordslist)->
+            #we want to change the ACL assocaited with the 'uploadedDocument' of this wordslist, too...
+            wordslist.get('uploadedDocument').fetch
+              success: (documentFile)->
+                documentFile.setACL acl
+                documentFile.save null,
+                  success: cb,
+                  error: errCB
+
       else
         instance.setACL(new Parse.ACL(Parse.User.current()))
+        instance.save null,
+          success: cb
+          error: errCB
 
-      instance.save null,
-        success: cb
-        error: errCB
 
     getWith: (id, keys, cb, errCB)->
       query = new Parse.Query @class
