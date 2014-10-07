@@ -11,13 +11,20 @@
       }
 
       Crud.prototype.save = function(obj, cb, errCB) {
-        var instance, k, v;
+        var acl, instance, k, v;
         instance = new this["class"]();
         for (k in obj) {
           v = obj[k];
           instance.set(k, v);
         }
-        instance.setACL(new Parse.ACL(Parse.User.current()));
+        if (this.name === "WordsLists") {
+          acl = new Parse.ACL();
+          acl.setPublicReadAccess(true);
+          acl.setWriteAccess(Parse.User.current(), true);
+          instance.setACL(acl);
+        } else {
+          instance.setACL(new Parse.ACL(Parse.User.current()));
+        }
         return instance.save(null, {
           success: cb,
           error: errCB

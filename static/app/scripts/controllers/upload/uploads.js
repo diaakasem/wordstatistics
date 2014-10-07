@@ -13,7 +13,8 @@
     DocumentUpload = new ParseCrud('DocumentUpload');
     DocumentUpload.list(function(d) {
       scope.data = d;
-      return scope.tableParams.reload();
+      scope.tableParams.reload();
+      return console.log(d);
     });
     removeFile = function(name) {
       var h, params;

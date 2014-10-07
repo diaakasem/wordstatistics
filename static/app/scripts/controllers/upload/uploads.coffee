@@ -11,6 +11,7 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
   DocumentUpload.list (d)->
     scope.data = d
     scope.tableParams.reload()
+    console.log d
 
   removeFile = (name)->
     params =
