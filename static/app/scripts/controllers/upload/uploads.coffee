@@ -32,6 +32,22 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
     filename = e.get('uploadname')
     removeSuccess = (e)->
       scope.data = _.filter scope.data, (d)-> d.id isnt e.id
+
+      #If this document was uploaded by a user (non-admin), it was also uploaded to 'Documents' collection,
+      #so we need to remove it from 'Documents' collection too...
+      unless scope.$root.isAdmin
+
+        #fetch the associated Document in the 'Documents' collection
+        #This is assuming that 'name' of the uploaded document is unique for a given user...
+        
+        query = new Parse.Query 'Documents'
+        query.equalTo 'name', e.get('name')
+        query.first
+          success: (associatedDoc)->
+            Documents.remove associatedDoc, (result)->
+              console.log result
+
+
       removeFile filename
 
     DocumentUpload.remove(e, removeSuccess)

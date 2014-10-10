@@ -42,9 +42,21 @@
       }
       filename = e.get('uploadname');
       removeSuccess = function(e) {
+        var query;
         scope.data = _.filter(scope.data, function(d) {
           return d.id !== e.id;
         });
+        if (!scope.$root.isAdmin) {
+          query = new Parse.Query('Documents');
+          query.equalTo('name', e.get('name'));
+          query.first({
+            success: function(associatedDoc) {
+              return Documents.remove(associatedDoc, function(result) {
+                return console.log(result);
+              });
+            }
+          });
+        }
         return removeFile(filename);
       };
       return DocumentUpload.remove(e, removeSuccess);
