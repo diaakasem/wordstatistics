@@ -58,11 +58,11 @@
       };
       width = 960 - margin.left - margin.right;
       height = 550 - margin.top - margin.bottom;
-      formatPercent = d3.format(".0%");
+      formatPercent = d3.format("03d");
       x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
       y = d3.scale.linear().range([height, 0]);
       xAxis = d3.svg.axis().scale(x).orient("bottom");
-      yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(formatPercent);
+      yAxis = d3.svg.axis().scale(y).orient("left").ticks(10);
       tip = d3.tip().attr("class", "d3-tip").offset([-10, 0]).html(function(d) {
         return "<strong>Frequency:</strong> <span style='color:red'>" + d.frequency + "</span>";
       });
@@ -85,7 +85,7 @@
       svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis).selectAll("text").style("text-anchor", "end").attr("transform", function(d) {
         return "rotate(-65)";
       });
-      svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Frequency");
+      svg.append("g").attr("class", "y axis").call(yAxis);
       return svg.selectAll(".bar").data(data).enter().append("rect").attr("class", "bar").attr("x", function(d) {
         return x(d.word);
       }).attr("width", x.rangeBand()).attr("y", function(d) {
