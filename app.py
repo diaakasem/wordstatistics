@@ -6,6 +6,7 @@ from flask import make_response
 from werkzeug import secure_filename
 from words import stats
 from words import texts
+from words.helpers import process_visualization
 from uuid import uuid4
 import json
 import os
@@ -65,7 +66,7 @@ def analyzefiles():
         
     with open(getFilePath(words), 'r+') as wordsFile:
         wordsText = wordsFile.read()
-        structure = stats.buildWordsStructure(wordsText)
+        structure = stats.buildWordsStructure(wordsText)    
 
     res = stats.statsText(documentText, structure['words'].keys())
     
@@ -78,7 +79,9 @@ def analyzefiles():
             catfreq += freq
             structure['categories'][category]['freq'] = catfreq
 
-    structure['words'] = {}                 #no need to return words list on client side...
+
+    #structure['words'] = {}                 #no need to return words list on client side...
+
     return jsonify({'result': structure})
 
 
@@ -95,6 +98,29 @@ def analyze():
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
+@app.route('/visualize-wordslist')
+def visualize():
+    wordslist_name = request.args.get('name')
+    wordslist_upload_name = request.args.get('uploadname')
+
+    with open(getFilePath(wordslist_upload_name), 'r+') as wordsFile:
+        wordsText = wordsFile.read()
+    
+    structure = stats.buildWordsStructure(wordsText)
+    result = process_visualization(structure)
+    #del structure['words']
+
+    #return jsonify({wordslist_name: result})
+    # return jsonify({
+    #         'name': wordslist_name,
+    #         'children': result
+    #     })
+    print result
+
+    return json.dumps({
+            'name': wordslist_name,
+            'children': result
+        })
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -127,6 +153,7 @@ def main():
 
 app.secret_key = 'C8Zr98j/3yX R~XZH!jmN]LWX/,?RY'
 
+
 if __name__ == '__main__':
     app.debug = True
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=5000)

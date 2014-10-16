@@ -13,6 +13,7 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
   WordsLists.list (d)->
     scope.wordslists = d
 
+
   Processes = new ParseCrud 'Processes'
   Processes.listWith ['wordslist', 'documents'], (d)->
     scope.data = d
@@ -32,7 +33,7 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
       h.success (d)->
         scope.entity.result = d.result.categories
         console.log d.result.categories
-        
+
         Processes.save scope.entity, saveSuccess, onError
         scope.tableParams.reload()
         # Processes.save scope.entity, saveSuccess, onError
@@ -56,6 +57,27 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
 
       error: (err)->
         console.log "err"
+
+  scope.visualize = (wordslist)->
+
+    #first find the uploadedDocument associated with this wordslist..
+    wordslist.get('uploadedDocument').fetch
+      success: (documentFile)->
+        uploadname = documentFile.get('uploadname')
+        name = wordslist.get('name')
+
+        #Pass the uploadname to the server to get visualization data
+        params =
+            method: 'Get'
+            url: '/visualize-wordslist?name='+name+'&uploadname='+uploadname
+        
+        h = http params
+        h.success (d)->
+          console.log d
+          
+        h.error (e)->
+          console.log e
+
 
   scope.get = (parseObj, attr='name')->
     parseObj.fetch
