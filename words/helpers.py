@@ -24,14 +24,14 @@ def process_visualization(structure):
 	top_level_cat = None
 
 	for word in structure['words']:
-		visualize_data = {}
+		d = {}
 		categories = structure['words'][word]['categories']
 		top_level_cat = categories[0]
 
-		add_keys(visualize_data, categories[1:], word)
-		data.append(visualize_data)
+		add_keys(d, categories[1:], word)
+		data.append(d)
 
-	#find level2 categories...
+	#find unique level2 categories ...
 	level2 = [item.keys()[0] for item in data]
 	level2 = set(level2)
 
@@ -41,7 +41,7 @@ def process_visualization(structure):
 	# for item in level2:
 	# 	d[top_level_cat].append(item)
 
-	d = {}
+	result = {}
 	# d['name'] = top_level_cat
 	# d['children'] = []
 	# for item in level2:
@@ -49,13 +49,13 @@ def process_visualization(structure):
 	# 			'name': item
 	# 		})
 
-	d = []
-	d.append({
+	result = []
+	result.append({
 		'name': convert_category_number_to_name(structure, top_level_cat),
 		'children': [{"name": convert_category_number_to_name(structure, item)} for item in level2]
 		})
 
-	return d
+	return result
 
 
 
