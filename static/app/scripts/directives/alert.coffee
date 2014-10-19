@@ -1,13 +1,12 @@
 'use strict'
 
-controller = (root, scope)->
+controller = (root, scope, sce)->
 
   root.$watch 'alert', (alert)->
     if alert
       console.log alert
       scope.level = alert.level
-      scope.msg = alert.msg
-
+      scope.msg = sce.trustAsHtml(alert.msg)    #we'd want to be able to insert html in the msg...
 
 angular.module('wordsApp')
   .directive 'alert', ->
@@ -15,4 +14,4 @@ angular.module('wordsApp')
     replace: yes
     restrict: 'E'
     scope: on
-    controller: ['$rootScope', '$scope', controller]
+    controller: ['$rootScope', '$scope', '$sce', controller]

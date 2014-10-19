@@ -47,7 +47,7 @@
       controller: 'PasswordresetCtrl',
       access: 'public'
     }).otherwise({
-      redirectTo: '/processes'
+      redirectTo: '/upload/uploads'
     });
   });
 

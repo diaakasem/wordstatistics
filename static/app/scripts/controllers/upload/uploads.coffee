@@ -93,6 +93,11 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
         scope.selected = 'uploaded'
         Alert.success "File was uploaded successfully."
 
+  switch_to_upload = ()->
+    console.log "Im called"
+    scope.selected = 'upload'
+    return false
+
   saveSuccess = (e)->
     unless scope.$root.isAdmin
       Documents.save {
@@ -104,7 +109,11 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
         scope.data.push e
         scope.tableParams.reload()
         scope.selected = 'uploaded'
-        Alert.success "File was uploaded successfully."
+        Alert.success "File was uploaded successfully. &nbsp;&nbsp;
+        <a href='#upload'>Upload more documents</a> | 
+        <a href='#/processes'>Run analyses</a>"
+
+
 
   saveError = (e)->
     scope.$apply ->

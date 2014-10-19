@@ -4,7 +4,7 @@
   var controller;
 
   controller = function(scope, ParseCrud, http, ngTableParams, Alert) {
-    var DocumentUpload, Documents, documentSaveSuccess, removeFile, saveError, saveSuccess, uploader;
+    var DocumentUpload, Documents, documentSaveSuccess, removeFile, saveError, saveSuccess, switch_to_upload, uploader;
     scope.text = '';
     scope.entity = {};
     scope.data = [];
@@ -118,6 +118,11 @@
         });
       };
     };
+    switch_to_upload = function() {
+      console.log("Im called");
+      scope.selected = 'upload';
+      return false;
+    };
     saveSuccess = function(e) {
       if (!scope.$root.isAdmin) {
         return Documents.save({
@@ -129,7 +134,7 @@
           scope.data.push(e);
           scope.tableParams.reload();
           scope.selected = 'uploaded';
-          return Alert.success("File was uploaded successfully.");
+          return Alert.success("File was uploaded successfully. &nbsp;&nbsp; <a href='#upload'>Upload more documents</a> | <a href='#/processes'>Run analyses</a>");
         });
       }
     };

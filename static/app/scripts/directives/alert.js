@@ -3,12 +3,12 @@
   'use strict';
   var controller;
 
-  controller = function(root, scope) {
+  controller = function(root, scope, sce) {
     return root.$watch('alert', function(alert) {
       if (alert) {
         console.log(alert);
         scope.level = alert.level;
-        return scope.msg = alert.msg;
+        return scope.msg = sce.trustAsHtml(alert.msg);
       }
     });
   };
@@ -19,7 +19,7 @@
       replace: true,
       restrict: 'E',
       scope: true,
-      controller: ['$rootScope', '$scope', controller]
+      controller: ['$rootScope', '$scope', '$sce', controller]
     };
   });
 

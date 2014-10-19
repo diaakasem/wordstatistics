@@ -48,7 +48,7 @@ app.config ($routeProvider) ->
       controller: 'PasswordresetCtrl'
       access: 'public'
     .otherwise
-      redirectTo: '/processes'
+      redirectTo: '/upload/uploads'
 
 rootController = (root, location, Alert)->
   root.go = (url)->
