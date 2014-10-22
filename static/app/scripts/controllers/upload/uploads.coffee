@@ -3,15 +3,19 @@
 controller = (scope, ParseCrud, http, ngTableParams, Alert)->
 
   scope.text = ''
+  scope.filesUploaded = []      #list of files uploaded in one run; this will need to be added in parse...
   scope.entity = {}
   scope.data = []
   scope.selected = 'upload'
   Documents = new ParseCrud 'Documents'
   DocumentUpload = new ParseCrud 'DocumentUpload'
+  FilesUpload = new ParseCrud 'FilesUpload'   #in case user selects multiple documents, this collection will hold them...
+  
   DocumentUpload.list (d)->
     scope.data = d
     scope.tableParams.reload()
     console.log d
+
 
   removeFile = (name)->
     params =
@@ -39,7 +43,7 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
 
         #fetch the associated Document in the 'Documents' collection
         #This is assuming that 'name' of the uploaded document is unique for a given user...
-        
+       
         query = new Parse.Query 'Documents'
         query.equalTo 'name', e.get('name')
         query.first
@@ -67,7 +71,7 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
     browse_button: "browse"
     url: "/upload"
     filters:
-      mime_types: [ {title : "Text files", extensions : "txt"}, 
+      mime_types: [ {title : "Text files", extensions : "txt"},
                     {title: "Doc files", extensions: "doc,docx"} ],
       max_file_size: "50mb"
 
@@ -92,10 +96,13 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
         scope.tableParams.reload()
         scope.selected = 'uploaded'
         Alert.success "File was uploaded successfully. &nbsp;&nbsp;
-        <a href='#upload'>Upload more documents</a> | 
+        <a href='#upload'>Upload more documents</a> |
         <a href='#/processes'>Run analyses</a>"
 
+
   saveSuccess = (e)->
+    console.log "Save success!"
+    console.log e
     unless scope.$root.isAdmin
       Documents.save {
         name: e.get('name')
@@ -103,11 +110,11 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
       }, documentSaveSuccess(e), saveError
     else
       scope.$apply ->
-        scope.data.push e
-        scope.tableParams.reload()
+        # scope.data.push e
+        # scope.tableParams.reload()
         scope.selected = 'uploaded'
         Alert.success "File was uploaded successfully. &nbsp;&nbsp;
-        <a href='#upload'>Upload more documents</a> | 
+        <a href='#upload'>Upload more documents</a> |
         <a href='#/processes'>Run analyses</a>"
 
 
@@ -118,18 +125,71 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
 
   uploader.bind 'FileUploaded', (up, file, xhr)->
     res = JSON.parse xhr.response
-    obj =
-      name: scope.name
-      filename: file.name
-      uploadname: res.result
+    scope.filesUploaded.push(res.result)
+   
 
-    console.log "Saving Object "
-    DocumentUpload.save obj, saveSuccess, saveError
+  uploader.bind 'UploadComplete', (up, files) ->
 
-  uploader.bind 'UploadComplete', (up, file) ->
+    #add logic here to determine if user added only 1 file in the current run or not.
+    #if only 1 file was added, the logic is straight-forward, simply add the file to parse,
+    #if, however, multiple files were selected, we need to add 1 row to the 
+    # 'DocumentUpload' collection, and the list of all files as a relation to this row to 'FilesUpload' collection...
+
+    files_obj = []
+    files.forEach (file, i)->
+      obj =
+        filename: file.name
+        uploadname: scope.filesUploaded[i]
+
+      files_obj.push(obj)
+      
+    if files_obj.length == 1
+      #its only a single document, so add the name directly here and save...
+      files_obj[0].name = scope.name
+      DocumentUpload.save files_obj[0], saveSuccess, saveError
+    else
+      
+      #multiple documents: save them as a child of the main DocumentUpload object...
+      Document = Parse.Object.extend 'DocumentUpload'
+      document = new Document()
+      document.set 'name', scope.name
+      document.set 'filename', '<multiple files...>'              #might need to improve this line...
+      document.setACL(new Parse.ACL(Parse.User.current()))
+
+      File = Parse.Object.extend 'FilesUpload'
+      filesArray = []
+
+      files_obj.forEach (obj, i)->
+        file = new File()
+        file.set 'filename', obj.filename
+        file.set 'uploadname', obj.uploadname
+        file.set 'parent', document
+        file.setACL(new Parse.ACL(Parse.User.current()))
+
+        filesArray.push(file)
+
+      Parse.Object.saveAll filesArray, 
+        success: (objs)->
+          saveSuccess document      #at the end, call the saveSuccess method to do cleanup...
+
+        error: (error)->
+          console.log error
+
+
+    #refresh the Archive list...
+    DocumentUpload.list (d)->
+      scope.data = d
+      scope.tableParams.reload()
+  
+
+    uploader.splice()     #re-init the uploader, so that new files can be added...
+    
     scope.$apply ->
       scope.filesAdded.length = 0
       scope.name = ''
+      scope.filesToUpload = []
+      scope.filesUploaded = []
+      files = []
 
   uploader.bind 'UploadProgress', (up, file) ->
     scope.$apply ->

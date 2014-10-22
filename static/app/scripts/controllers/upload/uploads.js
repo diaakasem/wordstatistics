@@ -4,13 +4,15 @@
   var controller;
 
   controller = function(scope, ParseCrud, http, ngTableParams, Alert) {
-    var DocumentUpload, Documents, documentSaveSuccess, removeFile, saveError, saveSuccess, uploader;
+    var DocumentUpload, Documents, FilesUpload, documentSaveSuccess, removeFile, saveError, saveSuccess, uploader;
     scope.text = '';
+    scope.filesUploaded = [];
     scope.entity = {};
     scope.data = [];
     scope.selected = 'upload';
     Documents = new ParseCrud('Documents');
     DocumentUpload = new ParseCrud('DocumentUpload');
+    FilesUpload = new ParseCrud('FilesUpload');
     DocumentUpload.list(function(d) {
       scope.data = d;
       scope.tableParams.reload();
@@ -119,6 +121,8 @@
       };
     };
     saveSuccess = function(e) {
+      console.log("Save success!");
+      console.log(e);
       if (!scope.$root.isAdmin) {
         return Documents.save({
           name: e.get('name'),
@@ -126,8 +130,6 @@
         }, documentSaveSuccess(e), saveError);
       } else {
         return scope.$apply(function() {
-          scope.data.push(e);
-          scope.tableParams.reload();
           scope.selected = 'uploaded';
           return Alert.success("File was uploaded successfully. &nbsp;&nbsp; <a href='#upload'>Upload more documents</a> | <a href='#/processes'>Run analyses</a>");
         });
@@ -140,20 +142,61 @@
       });
     };
     uploader.bind('FileUploaded', function(up, file, xhr) {
-      var obj, res;
+      var res;
       res = JSON.parse(xhr.response);
-      obj = {
-        name: scope.name,
-        filename: file.name,
-        uploadname: res.result
-      };
-      console.log("Saving Object ");
-      return DocumentUpload.save(obj, saveSuccess, saveError);
+      return scope.filesUploaded.push(res.result);
     });
-    uploader.bind('UploadComplete', function(up, file) {
+    uploader.bind('UploadComplete', function(up, files) {
+      var Document, File, document, filesArray, files_obj;
+      files_obj = [];
+      files.forEach(function(file, i) {
+        var obj;
+        obj = {
+          filename: file.name,
+          uploadname: scope.filesUploaded[i]
+        };
+        return files_obj.push(obj);
+      });
+      if (files_obj.length === 1) {
+        files_obj[0].name = scope.name;
+        DocumentUpload.save(files_obj[0], saveSuccess, saveError);
+      } else {
+        Document = Parse.Object.extend('DocumentUpload');
+        document = new Document();
+        document.set('name', scope.name);
+        document.set('filename', '<multiple files...>');
+        document.setACL(new Parse.ACL(Parse.User.current()));
+        File = Parse.Object.extend('FilesUpload');
+        filesArray = [];
+        files_obj.forEach(function(obj, i) {
+          var file;
+          file = new File();
+          file.set('filename', obj.filename);
+          file.set('uploadname', obj.uploadname);
+          file.set('parent', document);
+          file.setACL(new Parse.ACL(Parse.User.current()));
+          return filesArray.push(file);
+        });
+        Parse.Object.saveAll(filesArray, {
+          success: function(objs) {
+            return saveSuccess(document);
+          },
+          error: function(error) {
+            return console.log(error);
+          }
+        });
+      }
+      DocumentUpload.list(function(d) {
+        scope.data = d;
+        return scope.tableParams.reload();
+      });
+      uploader.splice();
       return scope.$apply(function() {
         scope.filesAdded.length = 0;
-        return scope.name = '';
+        scope.name = '';
+        scope.filesToUpload = [];
+        scope.filesUploaded = [];
+        return files = [];
       });
     });
     uploader.bind('UploadProgress', function(up, file) {
