@@ -26,7 +26,7 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
     h = http params
     h.success (d)->
       Alert.success 'Removed successfully.'
-      scope.tableParams.reload()
+      # scope.tableParams.reload()
     h.error (e)->
       console.log e
       Alert.error "Error removing uploaded file."
@@ -34,8 +34,15 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
   scope.remove = (e)->
     return  unless scope.hasWriteAccess(e)
     filename = e.get('uploadname')
+
     removeSuccess = (e)->
-      scope.data = _.filter scope.data, (d)-> d.id isnt e.id
+      
+      #refresh the Archive list...
+      DocumentUpload.list (d)->
+        scope.data = d
+        scope.tableParams.reload()
+
+      #scope.data = _.filter scope.data, (d)-> d.id isnt e.id
 
       #If this document was uploaded by a user (non-admin), it was also uploaded to 'Documents' collection,
       #so we need to remove it from 'Documents' collection too...
@@ -51,9 +58,27 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
             Documents.remove associatedDoc, (result)->
               console.log result
 
+      #If filename is defined, its only a single document,
+      #else its a table of documents, so we need to query the filenames separately...
 
+    if filename
       removeFile filename
+    else
+      #query FilesUpLoad to fetch files associated with this 'DocumentUpload' object...
+      query = new Parse.Query 'FilesUpload'
+      query.equalTo 'parent', e
+      query.find
+        success: (files)->
 
+          files.forEach (file, i)->
+            filename = file.get('uploadname')
+            console.log filename
+            removeFile filename
+
+            #remove the file from parse...
+            file.destroy()
+
+    #now destroy the documentUpload object...
     DocumentUpload.remove(e, removeSuccess)
 
 
@@ -92,8 +117,8 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
   documentSaveSuccess = (e)->
     (doc)->
       scope.$apply ->
-        scope.data.push e
-        scope.tableParams.reload()
+        # scope.data.push e
+        # scope.tableParams.reload()
         scope.selected = 'uploaded'
         Alert.success "File was uploaded successfully. &nbsp;&nbsp;
         <a href='#upload'>Upload more documents</a> |
@@ -116,6 +141,11 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
         Alert.success "File was uploaded successfully. &nbsp;&nbsp;
         <a href='#upload'>Upload more documents</a> |
         <a href='#/processes'>Run analyses</a>"
+
+    #refresh the Archive list...
+      DocumentUpload.list (d)->
+        scope.data = d
+        scope.tableParams.reload()
 
 
   saveError = (e)->
@@ -174,12 +204,6 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
 
         error: (error)->
           console.log error
-
-
-    #refresh the Archive list...
-    DocumentUpload.list (d)->
-      scope.data = d
-      scope.tableParams.reload()
   
 
     uploader.splice()     #re-init the uploader, so that new files can be added...

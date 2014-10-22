@@ -29,8 +29,7 @@
       };
       h = http(params);
       h.success(function(d) {
-        Alert.success('Removed successfully.');
-        return scope.tableParams.reload();
+        return Alert.success('Removed successfully.');
       });
       return h.error(function(e) {
         console.log(e);
@@ -38,20 +37,21 @@
       });
     };
     scope.remove = function(e) {
-      var filename, removeSuccess;
+      var filename, query, removeSuccess;
       if (!scope.hasWriteAccess(e)) {
         return;
       }
       filename = e.get('uploadname');
       removeSuccess = function(e) {
         var query;
-        scope.data = _.filter(scope.data, function(d) {
-          return d.id !== e.id;
+        DocumentUpload.list(function(d) {
+          scope.data = d;
+          return scope.tableParams.reload();
         });
         if (!scope.$root.isAdmin) {
           query = new Parse.Query('Documents');
           query.equalTo('name', e.get('name'));
-          query.first({
+          return query.first({
             success: function(associatedDoc) {
               return Documents.remove(associatedDoc, function(result) {
                 return console.log(result);
@@ -59,8 +59,23 @@
             }
           });
         }
-        return removeFile(filename);
       };
+      if (filename) {
+        removeFile(filename);
+      } else {
+        query = new Parse.Query('FilesUpload');
+        query.equalTo('parent', e);
+        query.find({
+          success: function(files) {
+            return files.forEach(function(file, i) {
+              filename = file.get('uploadname');
+              console.log(filename);
+              removeFile(filename);
+              return file.destroy();
+            });
+          }
+        });
+      }
       return DocumentUpload.remove(e, removeSuccess);
     };
     scope.tableParams = new ngTableParams({
@@ -113,8 +128,6 @@
     documentSaveSuccess = function(e) {
       return function(doc) {
         return scope.$apply(function() {
-          scope.data.push(e);
-          scope.tableParams.reload();
           scope.selected = 'uploaded';
           return Alert.success("File was uploaded successfully. &nbsp;&nbsp; <a href='#upload'>Upload more documents</a> | <a href='#/processes'>Run analyses</a>");
         });
@@ -129,9 +142,13 @@
           uploadedDocument: e
         }, documentSaveSuccess(e), saveError);
       } else {
-        return scope.$apply(function() {
+        scope.$apply(function() {
           scope.selected = 'uploaded';
           return Alert.success("File was uploaded successfully. &nbsp;&nbsp; <a href='#upload'>Upload more documents</a> | <a href='#/processes'>Run analyses</a>");
+        });
+        return DocumentUpload.list(function(d) {
+          scope.data = d;
+          return scope.tableParams.reload();
         });
       }
     };
@@ -186,10 +203,6 @@
           }
         });
       }
-      DocumentUpload.list(function(d) {
-        scope.data = d;
-        return scope.tableParams.reload();
-      });
       uploader.splice();
       return scope.$apply(function() {
         scope.filesAdded.length = 0;
