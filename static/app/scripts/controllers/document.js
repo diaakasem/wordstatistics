@@ -12,8 +12,17 @@
     Processes = new ParseCrud('Processes');
     Processes.getWith(params.id, ['wordslist', 'documents'], function(d) {
       return scope.$apply(function() {
+        var data, key, _i, _len, _ref, _results;
         scope.entity = d;
-        return scope.graph();
+        console.log(d);
+        _ref = Object.keys(scope.entity.get('result'));
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          key = _ref[_i];
+          data = scope.entity.get('result')[key].categories;
+          _results.push(scope.graph(data));
+        }
+        return _results;
       });
     });
     scope.remove = function(entity) {
@@ -33,13 +42,31 @@
       });
     };
     scope.save = function(entity) {
-      var data, entry, hiddenElement, key, _i, _len, _ref;
-      data = [];
+      var category, data, entry, file, hiddenElement, i, result, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+      console.log(entity.get('result'));
+      result = entity.attributes.result;
+      data = "Filename,";
+      i = 1;
       _ref = Object.keys(entity.attributes.result);
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        key = _ref[_i];
-        entry = entity.attributes.result[key];
-        data += entry['name'] + "," + entry['freq'] + "\n";
+        file = _ref[_i];
+        entry = result[file].categories;
+        if (i === 1) {
+          _ref1 = Object.keys(entry);
+          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+            category = _ref1[_j];
+            data += entry[category].name + ",";
+          }
+          data += "\n";
+        }
+        data += file + ",";
+        _ref2 = Object.keys(entry);
+        for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+          category = _ref2[_k];
+          data += entry[category].freq + ",";
+        }
+        data += "\n";
+        i++;
       }
       console.log(data);
       hiddenElement = document.createElement('a');
@@ -48,13 +75,13 @@
       hiddenElement.download = 'analyzeresult_' + Date.now() + '.csv';
       return hiddenElement.click();
     };
-    return scope.graph = function() {
-      var data, formatPercent, height, margin, svg, tip, width, x, xAxis, y, yAxis;
+    return scope.graph = function(data) {
+      var formatPercent, height, margin, svg, tip, width, x, xAxis, y, yAxis;
       margin = {
         top: 40,
         right: 20,
         bottom: 80,
-        left: 40
+        left: 80
       };
       width = 960 - margin.left - margin.right;
       height = 550 - margin.top - margin.bottom;
@@ -68,10 +95,10 @@
       });
       svg = d3.select("#chart").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
       svg.call(tip);
-      data = _.map(scope.entity.get('result'), function(d) {
+      data = _.map(data, function(d) {
         return {
           word: d.name,
-          frequency: d.freq * 100
+          frequency: d.freq
         };
       });
       x.domain(data.map(function(d) {

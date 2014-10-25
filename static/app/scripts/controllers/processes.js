@@ -34,8 +34,7 @@
         };
         h = http(params);
         h.success(function(d) {
-          scope.entity.result = d.result.categories;
-          console.log(d.result.categories);
+          scope.entity.result = d.result;
           Processes.save(scope.entity, saveSuccess, onError);
           scope.tableParams.reload();
           return Alert.success('Processed successfully.');
@@ -48,8 +47,29 @@
       scope.entity.documents.get('uploadedDocument').fetch({
         success: function(documentFile) {
           return scope.$apply(function() {
-            scope.files.document = documentFile.get('uploadname');
-            return doProcess();
+            var query;
+            if (documentFile.get('uploadname')) {
+              scope.files.document = documentFile.get('uploadname');
+              scope.files.filename = documentFile.get('filename');
+              return doProcess();
+            } else {
+              query = new Parse.Query('FilesUpload');
+              query.equalTo('parent', documentFile);
+              return query.find({
+                success: function(files) {
+                  var filenames, uploadnames;
+                  uploadnames = [];
+                  filenames = [];
+                  files.forEach(function(file, i) {
+                    uploadnames.push(file.get('uploadname'));
+                    return filenames.push(file.get('filename'));
+                  });
+                  scope.files.document = uploadnames;
+                  scope.files.filename = filenames;
+                  return doProcess();
+                }
+              });
+            }
           });
         }
       });

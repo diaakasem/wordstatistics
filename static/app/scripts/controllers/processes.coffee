@@ -31,12 +31,11 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
           
       h = http params
       h.success (d)->
-        scope.entity.result = d.result.categories
-        console.log d.result.categories
+        
+        scope.entity.result = d.result
 
         Processes.save scope.entity, saveSuccess, onError
         scope.tableParams.reload()
-        # Processes.save scope.entity, saveSuccess, onError
         Alert.success 'Processed successfully.'
       h.error (e)->
         Alert.success 'Error occured.'
@@ -45,9 +44,32 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
     
     scope.entity.documents.get('uploadedDocument').fetch
       success: (documentFile)->
-        scope.$apply ->
-          scope.files.document = documentFile.get('uploadname')
-          doProcess()
+         scope.$apply ->
+
+          if documentFile.get('uploadname')               #check if just a single file...
+            scope.files.document = documentFile.get('uploadname')
+            scope.files.filename = documentFile.get('filename')
+            doProcess()         
+          else
+
+            #if documentFile consists of many files, fetch all the files associated with it;
+            #in case of multiple files, documentFile doesn't have 'uploadname' associated with it...
+            query = new Parse.Query 'FilesUpload'
+            query.equalTo 'parent', documentFile
+            query.find
+              success: (files)->
+
+                uploadnames = []
+                filenames = []
+
+                files.forEach (file, i)->
+                  uploadnames.push(file.get('uploadname'))
+                  filenames.push(file.get('filename'))
+
+                scope.files.document = uploadnames
+                scope.files.filename = filenames
+                doProcess()
+
 
     scope.entity.wordslist.get('uploadedDocument').fetch
       success: (wordsFile)->
@@ -58,11 +80,13 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
       error: (err)->
         console.log "err"
 
+
   scope.visualize = (wordslist)->
 
     #first find the uploadedDocument associated with this wordslist..
     wordslist.get('uploadedDocument').fetch
       success: (documentFile)->
+
         uploadname = documentFile.get('uploadname')
         name = wordslist.get('name')
 

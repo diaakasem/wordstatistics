@@ -11,6 +11,7 @@ from uuid import uuid4
 import json
 import os
 from docx import Document
+import copy
 
 p = os.path
 statics = p.join(p.dirname(p.abspath(__file__)), 'static/app/')
@@ -55,21 +56,53 @@ def getFilePath(filename):
 @app.route('/analyzefiles', methods=['POST'])
 def analyzefiles():
     data = json.loads(request.data)
-    document = data['document']
     words = data['words']
+    document = data['document']     #document contains the uploaded file name on the server...
+    filename = data['filename']     #filename contains the actual filename on the user computer when he uploaded...
+
+    #remove extension from filename and replace '.' and '$' sign, as parse do not allow it as nested keys......
+    if type(filename) == list:
+        filename = [os.path.splitext(file)[0] for file in filename]     
+        filename = [file.replace('.', '') for file in filename]     
+        filename = [file.replace('$', '') for file in filename]     
+    else:
+        filename = os.path.splitext(filename)[0]
+        filename = filename.replace('.', '')
+        filename = filename.replace('$', '')
+
+
+    with open(getFilePath(words), 'r+') as wordsFile:
+        wordsText = wordsFile.read()
+        structure = stats.buildWordsStructure(wordsText)    
+    
+    result = {}
+    i = 0
+   
+    if not type(document) == list:            #if its only a single file...     
+        result[filename] = process_document(document, structure)    
+    else:
+        #document is a list of multiple files, process each...
+        for doc in document:
+            temp_structure = copy.deepcopy(structure)
+            temp_structure = process_document(doc, temp_structure)
+        
+            result[filename[i]] = temp_structure
+            i+=1
+
+    return jsonify({'result': result})
+
+#helper function...
+def process_document(document, structure):
+
     with open(getFilePath(document), 'r+') as documentFile:
         extension = os.path.splitext(getFilePath(document))[1]
         if extension == ".doc" or extension == ".docx":
             documentText = readWordFile(getFilePath(document))
         else:
             documentText = documentFile.read()
-        
-    with open(getFilePath(words), 'r+') as wordsFile:
-        wordsText = wordsFile.read()
-        structure = stats.buildWordsStructure(wordsText)    
-
-    res = stats.statsText(documentText, structure['words'].keys())
     
+    res = stats.statsText(documentText, structure['words'].keys())
+
     for comp in res:
         word = comp[0]
         freq = comp[1]
@@ -79,10 +112,8 @@ def analyzefiles():
             catfreq += freq
             structure['categories'][category]['freq'] = catfreq
 
-
-    #structure['words'] = {}                 #no need to return words list on client side...
-
-    return jsonify({'result': structure})
+    structure['words'] = {}                 #no need to return words list on client side...
+    return structure
 
 
 @app.route('/analyze', methods=['POST'])

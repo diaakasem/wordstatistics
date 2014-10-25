@@ -53,12 +53,17 @@
           </div>
           <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
 
-            <div class="row" ng-repeat="entry in entity.get('result')">
-              <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                {{entry['name']}}
-              </div>
-              <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
-                {{entry['freq']}}
+            <div class="row" ng-repeat="(key, entry) in entity.get('result')">
+              <h3> {{key}} </h3>
+              <div ng-repeat="data in entry.categories">
+
+                <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                  {{data['name']}}
+                </div>
+                <div class="value col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                  {{data['freq']}}
+                </div>
+
               </div>
             </div>
 

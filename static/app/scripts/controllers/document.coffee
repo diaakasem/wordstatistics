@@ -10,8 +10,15 @@ controller = (scope, params, ParseCrud, timeout, http, location, Alert)->
   Processes = new ParseCrud 'Processes'
   Processes.getWith params.id, ['wordslist', 'documents'], (d)->
     scope.$apply ->
+
       scope.entity = d
-      scope.graph()
+      console.log d
+
+      for key in Object.keys scope.entity.get('result')
+        data = scope.entity.get('result')[key].categories
+        scope.graph(data)
+      
+      #scope.graph()
 
   scope.remove = (entity)->
     entity.destroy
@@ -25,13 +32,27 @@ controller = (scope, params, ParseCrud, timeout, http, location, Alert)->
           Alert.error 'Error occurred while removing.'
   
   scope.save = (entity)->
-    # console.log entity.get('result');
+    console.log entity.get('result');
 
-    data = []
-    for key in Object.keys entity.attributes.result 
-      entry = entity.attributes.result[key]
-      data += entry['name'] + "," + entry['freq'] + "\n" 
-      #data.push {name: entry.name, freq: entry.freq}
+    result = entity.attributes.result 
+    data = "Filename,"
+    i = 1
+
+    for file in Object.keys entity.attributes.result 
+      entry = result[file].categories
+     
+      #save the category name only at the first time...
+      if i is 1
+        for category in Object.keys entry
+          data += entry[category].name + ","
+        data += "\n"
+
+      #save the values for every file...
+      data += file + ","
+      for category in Object.keys entry
+        data += entry[category].freq + ","
+      data += "\n"  
+      i++
 
     console.log data
     
@@ -43,12 +64,12 @@ controller = (scope, params, ParseCrud, timeout, http, location, Alert)->
     hiddenElement.click()
 
     
-  scope.graph = ->
+  scope.graph = (data)->
     margin =
       top: 40
       right: 20
       bottom: 80
-      left: 40
+      left: 80
 
     width = 960 - margin.left - margin.right
     height = 550 - margin.top - margin.bottom
@@ -70,9 +91,9 @@ controller = (scope, params, ParseCrud, timeout, http, location, Alert)->
     svg = d3.select("#chart").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     svg.call tip
 
-    data = _.map scope.entity.get('result'), (d)->
+    data = _.map data, (d)->
       word: d.name
-      frequency: d.freq * 100
+      frequency: d.freq
 
     x.domain data.map((d) -> d.word)
     y.domain [0, d3.max(data, (d) -> d.frequency)]
