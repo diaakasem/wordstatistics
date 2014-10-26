@@ -134,10 +134,8 @@
       };
     };
     saveSuccess = function(e) {
-      console.log("Save success!");
-      console.log(e);
       if (!scope.$root.isAdmin) {
-        return Documents.save({
+        Documents.save({
           name: e.get('name'),
           uploadedDocument: e
         }, documentSaveSuccess(e), saveError);
@@ -146,11 +144,11 @@
           scope.selected = 'uploaded';
           return Alert.success("File was uploaded successfully. &nbsp;&nbsp; <a href='#upload'>Upload more documents</a> | <a href='#/processes'>Run analyses</a>");
         });
-        return DocumentUpload.list(function(d) {
-          scope.data = d;
-          return scope.tableParams.reload();
-        });
       }
+      return DocumentUpload.list(function(d) {
+        scope.data = d;
+        return scope.tableParams.reload();
+      });
     };
     saveError = function(e) {
       return scope.$apply(function() {

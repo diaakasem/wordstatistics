@@ -66,7 +66,7 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
     else
       #query FilesUpLoad to fetch files associated with this 'DocumentUpload' object...
       query = new Parse.Query 'FilesUpload'
-      query.equalTo 'parent', e
+      query.equalTo 'parent', e  #find all files where e is the parent (e = documentUpload object that is to be removed)...
       query.find
         success: (files)->
 
@@ -117,17 +117,12 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
   documentSaveSuccess = (e)->
     (doc)->
       scope.$apply ->
-        # scope.data.push e
-        # scope.tableParams.reload()
         scope.selected = 'uploaded'
         Alert.success "File was uploaded successfully. &nbsp;&nbsp;
         <a href='#upload'>Upload more documents</a> |
         <a href='#/processes'>Run analyses</a>"
 
-
   saveSuccess = (e)->
-    console.log "Save success!"
-    console.log e
     unless scope.$root.isAdmin
       Documents.save {
         name: e.get('name')
@@ -135,18 +130,15 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
       }, documentSaveSuccess(e), saveError
     else
       scope.$apply ->
-        # scope.data.push e
-        # scope.tableParams.reload()
         scope.selected = 'uploaded'
         Alert.success "File was uploaded successfully. &nbsp;&nbsp;
         <a href='#upload'>Upload more documents</a> |
         <a href='#/processes'>Run analyses</a>"
 
     #refresh the Archive list...
-      DocumentUpload.list (d)->
-        scope.data = d
-        scope.tableParams.reload()
-
+    DocumentUpload.list (d)->
+      scope.data = d
+      scope.tableParams.reload()
 
   saveError = (e)->
     scope.$apply ->
@@ -158,9 +150,10 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
     scope.filesUploaded.push(res.result)
    
 
+  #this event is trigerred when uploading to server is completed...
   uploader.bind 'UploadComplete', (up, files) ->
 
-    #add logic here to determine if user added only 1 file in the current run or not.
+    #determine if user added only 1 file in the current run or not.
     #if only 1 file was added, the logic is straight-forward, simply add the file to parse,
     #if, however, multiple files were selected, we need to add 1 row to the 
     # 'DocumentUpload' collection, and the list of all files as a relation to this row to 'FilesUpload' collection...
@@ -198,6 +191,7 @@ controller = (scope, ParseCrud, http, ngTableParams, Alert)->
 
         filesArray.push(file)
 
+      #save all files in bulk...
       Parse.Object.saveAll filesArray, 
         success: (objs)->
           saveSuccess document      #at the end, call the saveSuccess method to do cleanup...

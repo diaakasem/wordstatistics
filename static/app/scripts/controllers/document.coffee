@@ -14,12 +14,12 @@ controller = (scope, params, ParseCrud, timeout, http, location, Alert)->
       scope.entity = d
       console.log d
 
-      for key in Object.keys scope.entity.get('result')
+      #call the graph function foreach file that we have in this analyses...
+      for key in Object.keys scope.entity.get('result')       #key will be the filename...
         data = scope.entity.get('result')[key].categories
         scope.graph(data)
       
-      #scope.graph()
-
+      
   scope.remove = (entity)->
     entity.destroy
       success: ->
