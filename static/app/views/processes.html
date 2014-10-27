@@ -17,12 +17,7 @@
     >
     <a class="clickable" ng-click="selected='list'"> Analyses Archive </a></li>
 
-    <li ng-class="{active: selected=='dictionaries'}"
-    class="bstooltip" data-toggle="tooltip" data-placement="bottom"
-    title="Visualize available dictionaries"
-    >
-    <a class="clickable" ng-click="selected='dictionaries'"> Available Dictionaries </a></li>
-
+    
   </ul>
 
   <div class="tab-content">
@@ -94,24 +89,6 @@
     </div>
 
     
-    <div class="tab-pane fade in panel panel-default" 
-      ng-class="{active: selected=='dictionaries'}"
-      style="border-top: 0">
-      <div class="panel-body visualize">
-          
-          <ul ng-repeat="e in wordslists">
-
-            <li style="margin-top:10px">{{e.get('name')}}
-              <button class="btn btn-primary" style="margin-left:20px" ng-click="visualize(e)">
-                <i class="glyphicon glyphicon-stats"></i>
-                Visualize
-              </button>
-            </li>
-
-          </ul>
-
-      </div>
-    </div>
 
   </div>
 </div>

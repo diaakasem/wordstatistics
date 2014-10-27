@@ -4,10 +4,12 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
   scope.selected = 'new'
   scope.entity = {}
   scope.files = {}
+  scope.temp = "ibrahim"
 
   Documents = new ParseCrud 'Documents'
   Documents.list (d)->
     scope.documents = d
+    scope.temp = "ahmed"
 
   WordsLists = new ParseCrud 'WordsLists'
   WordsLists.list (d)->

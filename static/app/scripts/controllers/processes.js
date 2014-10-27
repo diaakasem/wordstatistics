@@ -8,9 +8,11 @@
     scope.selected = 'new';
     scope.entity = {};
     scope.files = {};
+    scope.temp = "ibrahim";
     Documents = new ParseCrud('Documents');
     Documents.list(function(d) {
-      return scope.documents = d;
+      scope.documents = d;
+      return scope.temp = "ahmed";
     });
     WordsLists = new ParseCrud('WordsLists');
     WordsLists.list(function(d) {

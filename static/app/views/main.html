@@ -1,0 +1,21 @@
+
+<h2>Available Dictionaries</h2>
+
+<div class="tab-pane fade in panel panel-default" 
+  ng-class="{active: selected=='dictionaries'}"
+  style="border-top: 0">
+  <div class="panel-body visualize">
+
+      <ul ng-repeat="e in wordslists">
+
+        <li style="margin-top:10px">{{e.get('name')}}
+          <button class="btn btn-primary" style="margin-left:20px" ng-click="visualize(e)">
+            <i class="glyphicon glyphicon-stats"></i>
+            Visualize
+          </button>
+        </li>
+
+      </ul>
+
+  </div>
+</div>
