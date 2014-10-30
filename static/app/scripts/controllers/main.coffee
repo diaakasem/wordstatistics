@@ -1,6 +1,9 @@
 controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
   
   scope.data = []
+  scope.visualizeText = 'Visualize'
+  scope.visualization = off
+  scope.selected = 'visual'
 
   Documents = new ParseCrud 'Documents'
   Documents.list (d)->
@@ -18,6 +21,14 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
 
 
   scope.visualize = (wordslist)->
+    
+    #This function acts as a toggle; if visualization is on, close it and return...
+    if scope.visualization is on 
+      scope.visualizeText = 'Visualize'
+      d3.select("svg").remove();
+      scope.visualization = not scope.visualization
+      return
+  
 
     #first find the uploadedDocument associated with this wordslist..
     wordslist.get('uploadedDocument').fetch
@@ -34,15 +45,21 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
         h = http params
         h.success (d)->
           console.log d
+        
+          #change the state of the visualization...
+          scope.visualizeText = 'Close'
+          scope.visualization = not scope.visualization
+    
 
+          #using a 'collapsible tree'...
           margin =
             top: 20
-            right: 120
+            right: 20
             bottom: 20
             left: 120
 
-          width = 960 - margin.right - margin.left
-          height = 500 - margin.top - margin.bottom
+          width = 1060 - margin.right - margin.left
+          height = 800 - margin.top - margin.bottom
           i = 0
           duration = 750
 
@@ -65,6 +82,7 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
             .attr("width", width + margin.right + margin.left).attr("height", height + margin.top + margin.bottom)
             .append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
+
           d3.select(self.frameElement).style "height", "800px"
           
           collapse = (d) ->
@@ -82,7 +100,7 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
             
             # Normalize for fixed-depth.
             nodes.forEach (d) ->
-              d.y = d.depth * 180
+              d.y = d.depth * 120
               #return
 
             # Update the nodes…

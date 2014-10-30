@@ -5,6 +5,9 @@
   controller = function(scope, ParseCrud, ngTableParams, http, Alert) {
     var Documents, Processes, WordsLists;
     scope.data = [];
+    scope.visualizeText = 'Visualize';
+    scope.visualization = false;
+    scope.selected = 'visual';
     Documents = new ParseCrud('Documents');
     Documents.list(function(d) {
       return scope.documents = d;
@@ -19,6 +22,12 @@
       return scope.tableParams.reload();
     });
     scope.visualize = function(wordslist) {
+      if (scope.visualization === true) {
+        scope.visualizeText = 'Visualize';
+        d3.select("svg").remove();
+        scope.visualization = !scope.visualization;
+        return;
+      }
       return wordslist.get('uploadedDocument').fetch({
         success: function(documentFile) {
           var h, name, params, uploadname;
@@ -32,14 +41,16 @@
           h.success(function(d) {
             var click, collapse, diagonal, duration, height, i, margin, root, svg, tree, update, width;
             console.log(d);
+            scope.visualizeText = 'Close';
+            scope.visualization = !scope.visualization;
             margin = {
               top: 20,
-              right: 120,
+              right: 20,
               bottom: 20,
               left: 120
             };
-            width = 960 - margin.right - margin.left;
-            height = 500 - margin.top - margin.bottom;
+            width = 1060 - margin.right - margin.left;
+            height = 800 - margin.top - margin.bottom;
             i = 0;
             duration = 750;
             tree = d3.layout.tree().size([height, width]);
@@ -60,7 +71,7 @@
               nodes = tree.nodes(root).reverse();
               links = tree.links(nodes);
               nodes.forEach(function(d) {
-                return d.y = d.depth * 180;
+                return d.y = d.depth * 120;
               });
               node = svg.selectAll("g.node").data(nodes, function(d) {
                 return d.id || (d.id = ++i);

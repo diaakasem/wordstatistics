@@ -139,19 +139,12 @@ def visualize():
     
     structure = stats.buildWordsStructure(wordsText)
     result = process_visualization(structure)
-    #del structure['words']
-
-    #return jsonify({wordslist_name: result})
-    # return jsonify({
-    #         'name': wordslist_name,
-    #         'children': result
-    #     })
-    print result
 
     return json.dumps({
             'name': wordslist_name,
             'children': result
         })
+        
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
