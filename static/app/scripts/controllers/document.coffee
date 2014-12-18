@@ -5,7 +5,7 @@ controller = (scope, params, ParseCrud, timeout, http, location, Alert)->
 
   scope.text = ''
   scope.entity = {}
-  scope.selected = 'document'
+  scope.selected = 'visual'
 
   Processes = new ParseCrud 'Processes'
   Processes.getWith params.id, ['wordslist', 'documents'], (d)->

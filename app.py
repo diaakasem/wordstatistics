@@ -15,8 +15,13 @@ import copy
 
 p = os.path
 statics = p.join(p.dirname(p.abspath(__file__)), 'static/app/')
+PRODUCTION = False
 
-UPLOAD_FOLDER = '/var/www/wordstatistics/uploads'
+if PRODUCTION:
+    UPLOAD_FOLDER = '/var/www/wordstatistics/uploads'
+else:
+    UPLOAD_FOLDER = 'uploads'
+
 ALLOWED_EXTENSIONS = set(['txt', 'doc', 'docx'])
 
 app = Flask(__name__,

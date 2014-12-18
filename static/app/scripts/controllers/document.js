@@ -8,7 +8,7 @@
     scope.id = params.id;
     scope.text = '';
     scope.entity = {};
-    scope.selected = 'document';
+    scope.selected = 'visual';
     Processes = new ParseCrud('Processes');
     Processes.getWith(params.id, ['wordslist', 'documents'], function(d) {
       return scope.$apply(function() {

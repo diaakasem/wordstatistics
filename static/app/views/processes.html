@@ -30,14 +30,7 @@
             <form role="form" class="">
 
               <div class="form-group">
-                <label for="name">1) Name Your Analysis</label>
-                <input type="text" class="form-control" id="name"
-                ng-model="entity.name"
-                placeholder="Enter a unique name for this analysis.">
-              </div>
-
-              <div class="form-group">
-                <label for="documents">2) Select a Document</label>
+                <label for="documents">1) Select a Document</label>
                 <select ng-model="entity.documents" class="form-control"
                   name="documents" id="documents"
                   ng-options="doc.get('name') for doc in documents">
@@ -45,11 +38,18 @@
               </div>
 
               <div class="form-group">
-                <label for="wordslist">3) Select a Dictionary</label>
+                <label for="wordslist">2) Select a Dictionary</label>
                 <select ng-model="entity.wordslist" class="form-control"
                   name="wordslist" id="wordslist"
                   ng-options="doc.get('name') for doc in wordslists">
                 </select>
+              </div>
+
+              <div class="form-group">
+                <label for="name">3) Name Your Analysis</label>
+                <input type="text" class="form-control" id="name"
+                ng-model="entity.name"
+                placeholder="Enter a unique name for this analysis.">
               </div>
 
               <button type="submit" class="btn btn-primary pull-right"

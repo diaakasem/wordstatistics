@@ -4,11 +4,12 @@
   <alert></alert>
 
   <ul class="nav nav-tabs">
-    <li ng-class="{active: selected=='document'}">
-    <a class="clickable" ng-click="selected='document'">Document</a>
-    </li>
     <li ng-class="{active: selected=='visual'}">
-    <a class="clickable" ng-click="selected='visual'">Visualization</a></li>
+      <a class="clickable" ng-click="selected='visual'">Visualization</a>
+    </li>
+    <li ng-class="{active: selected=='document'}">
+      <a class="clickable" ng-click="selected='document'">Raw Data</a>
+    </li>
   </ul>
 
   <div class="tab-content">
@@ -18,7 +19,7 @@
       style="border-top: 0">
 
       <div class="panel-body">
-
+        
         <div class="row">
           <div class="title col-lg-4 col-md-4 col-sm-6 col-xs-12">
             Created At
@@ -74,11 +75,7 @@
       <div class="panel-footer">
         <div class="row">
           <div class="col-xs-4 col-xs-offset-7">
-            <button class="btn btn-primary" ng-click="save(entity)">
-              <i class="glyphicon glyphicon-save"></i>
-              Save as CSV
-            </button>
-
+            
             <button class="btn btn-danger" ng-click="remove(entity)">
               <i class="glyphicon glyphicon-remove"></i>
               Remove
@@ -86,12 +83,29 @@
           </div>
         </div>
       </div>
+
     </div>
 
     <div class="tab-pane fade in panel panel-default" 
       ng-class="{active: selected=='visual'}"
       style="border-top: 0">
       <div class="panel-body">
+
+        <div class="row">
+          <div class="col-xs-2">
+            <button class="btn btn-primary" ng-click="save(entity)">
+              <i class="glyphicon glyphicon-save"></i>
+              Download CSV
+            </button>
+          </div>
+          
+          <div class="col-xs-4">
+            <a class = 'view_raw_data' ng-click="selected='document'"> View raw data</a>
+          </div>
+
+        </div>
+
+
         <div class="row">
           <div id="chart"></div>
         </div>

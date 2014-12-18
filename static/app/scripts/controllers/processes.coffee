@@ -1,10 +1,9 @@
-controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
+controller = (scope, location, ParseCrud,  ngTableParams, http, Alert) ->
 
   scope.data = []
   scope.selected = 'new'
   scope.entity = {}
   scope.files = {}
-  scope.temp = "ibrahim"
 
   Documents = new ParseCrud 'Documents'
   Documents.list (d)->
@@ -258,11 +257,12 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
         obj.get(attr)
     
   saveSuccess = (e)->
+
+    Alert.success 'Process information was saved successfully.'
     scope.$apply ->
-      scope.data.push e
-      scope.tableParams.reload()
-      scope.selected = 'list'
-      Alert.success 'Process information was saved successfully.'
+
+      #redirect to results' page...
+      location.path('/process/' + e.id)
     
   onError = (e)->
     scope.$apply ->
@@ -306,4 +306,4 @@ controller = (scope, ParseCrud,  ngTableParams, http, Alert) ->
 
 angular.module('wordsApp')
   .controller 'ProcessesCtrl',
-  ['$scope', 'ParseCrud', 'ngTableParams', '$http', 'Alert', controller]
+  ['$scope', '$location', 'ParseCrud', 'ngTableParams', '$http', 'Alert', controller]

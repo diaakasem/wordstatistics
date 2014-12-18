@@ -2,13 +2,12 @@
 (function() {
   var controller;
 
-  controller = function(scope, ParseCrud, ngTableParams, http, Alert) {
+  controller = function(scope, location, ParseCrud, ngTableParams, http, Alert) {
     var Documents, Processes, Uploads, WordsLists, onError, removeFile, saveSuccess;
     scope.data = [];
     scope.selected = 'new';
     scope.entity = {};
     scope.files = {};
-    scope.temp = "ibrahim";
     Documents = new ParseCrud('Documents');
     Documents.list(function(d) {
       scope.documents = d;
@@ -239,11 +238,9 @@
       });
     };
     saveSuccess = function(e) {
+      Alert.success('Process information was saved successfully.');
       return scope.$apply(function() {
-        scope.data.push(e);
-        scope.tableParams.reload();
-        scope.selected = 'list';
-        return Alert.success('Process information was saved successfully.');
+        return location.path('/process/' + e.id);
       });
     };
     onError = function(e) {
@@ -306,6 +303,6 @@
     });
   };
 
-  angular.module('wordsApp').controller('ProcessesCtrl', ['$scope', 'ParseCrud', 'ngTableParams', '$http', 'Alert', controller]);
+  angular.module('wordsApp').controller('ProcessesCtrl', ['$scope', '$location', 'ParseCrud', 'ngTableParams', '$http', 'Alert', controller]);
 
 }).call(this);
