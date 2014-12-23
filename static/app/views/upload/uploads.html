@@ -21,23 +21,35 @@
 
         <div class="row">
           <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3 col-xl-4 col-xl-offset-4">
-                        
-            <form role="form" class="col-xm-12">
-              <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" ng-model="name"
-                placeholder="Enter a unique name to mark this document.">
-              </div>
-            </form>
+         
+            <ol>
+              <li>
+                <button type="button" id="browse" class="btn btn-default">
+                  <i class="glyphicon glyphicon-eye-open"></i>
+                  Browse
+                </button>
+              </li>
+              <br/>
 
-            <button type="button" id="browse" class="btn btn-default">
-              <i class="glyphicon glyphicon-eye-open"></i>
-              Browse
-            </button>
-            <button type="button" class="btn btn-default" ng-click="upload()">
-              <i class="glyphicon glyphicon-upload"></i>
-              Upload
-            </button>
+              <li>
+                <form role="form" class="col-xm-12">
+                  <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" ng-model="name"
+                    placeholder="Enter a unique name to mark this document.">
+                  </div>
+                </form>
+              </li>
+              <br/>
+
+              <li>
+                <button type="button" class="btn btn-default" ng-click="upload()">
+                  <i class="glyphicon glyphicon-upload"></i>
+                  Upload
+                </button>
+              </li>
+            </ol>               
+
           </div>
         </div>
 
