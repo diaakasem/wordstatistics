@@ -23,5 +23,3 @@
   angular.module('wordsApp').controller('PasswordresetCtrl', ['$scope', 'Alert', controller]);
 
 }).call(this);
-
-//# sourceMappingURL=passwordreset.map

@@ -9,13 +9,15 @@
     class="bstooltip" data-toggle="tooltip" data-placement="bottom"
     title="Start a new analysis"
     >
-    <a class="clickable" ng-click="selected='new'"> New </a>
+    <a class="clickable" ng-click="selected='new'"> New Analysis </a>
     </li>
     <li ng-class="{active: selected=='list'}"
     class="bstooltip" data-toggle="tooltip" data-placement="bottom"
     title="Previously analyzed documents"
     >
-    <a class="clickable" ng-click="selected='list'"> Archive </a></li>
+    <a class="clickable" ng-click="selected='list'"> Analyses Archive </a></li>
+
+    
   </ul>
 
   <div class="tab-content">
@@ -28,14 +30,7 @@
             <form role="form" class="">
 
               <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name"
-                ng-model="entity.name"
-                placeholder="Unique name for this process.">
-              </div>
-
-              <div class="form-group">
-                <label for="documents">Document</label>
+                <label for="documents">1) Select a Document</label>
                 <select ng-model="entity.documents" class="form-control"
                   name="documents" id="documents"
                   ng-options="doc.get('name') for doc in documents">
@@ -43,11 +38,18 @@
               </div>
 
               <div class="form-group">
-                <label for="wordslist">Words List</label>
+                <label for="wordslist">2) Select a Dictionary</label>
                 <select ng-model="entity.wordslist" class="form-control"
                   name="wordslist" id="wordslist"
                   ng-options="doc.get('name') for doc in wordslists">
                 </select>
+              </div>
+
+              <div class="form-group">
+                <label for="name">3) Name Your Analysis</label>
+                <input type="text" class="form-control" id="name"
+                ng-model="entity.name"
+                placeholder="Enter a unique name for this analysis.">
               </div>
 
               <button type="submit" class="btn btn-primary pull-right"
@@ -85,5 +87,8 @@
 
       </div>
     </div>
+
+    
+
   </div>
 </div>

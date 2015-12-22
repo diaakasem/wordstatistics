@@ -29,3 +29,5 @@ tags
 *.jade
 files/*
 uploads/*
+temp-files/*
+data-files/*

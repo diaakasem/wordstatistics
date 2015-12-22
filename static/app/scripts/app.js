@@ -5,7 +5,7 @@
   app = angular.module('wordsApp', ['ngRoute', 'ngTable', 'restangular']);
 
   app.config(function($routeProvider) {
-    Parse.initialize("zCZ9afoU17xLzheYoVGnUxU85Wvqri3pasbdc0Q9", "m1kKssfW6cek18eL9fa8AS0JR7siPCFPx5NmHDuR");
+    Parse.initialize("QgzvRaVJflTeeubACUtC9N8T01T71ykyZLON7bfq", "RqJCdMCza4JwuyZAKsWy507knoa2KfuL0rCFz2cM");
     return $routeProvider.when('/', {
       templateUrl: 'views/main.html',
       controller: 'MainCtrl',
@@ -47,7 +47,7 @@
       controller: 'PasswordresetCtrl',
       access: 'public'
     }).otherwise({
-      redirectTo: '/processes'
+      redirectTo: '/upload/uploads'
     });
   });
 
@@ -143,5 +143,3 @@
   ]);
 
 }).call(this);
-
-//# sourceMappingURL=app.map

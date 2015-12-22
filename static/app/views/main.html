@@ -1,0 +1,43 @@
+
+<h3> Welcome</h3>
+
+  <ul class="nav nav-tabs">
+    <li ng-class="{active: selected=='visual'}">
+    <a class="clickable" ng-click="selected='visual'"> Visualize Dictionaries </a>
+    </li>
+
+    <li ng-class="{active: selected=='instructions'}">
+    <a class="clickable" ng-click="selected='instructions'"> Instructions </a>
+    </li>
+  </ul>
+
+
+<div class="tab-content">
+
+  <div class="tab-pane fade in panel panel-default" 
+    ng-class="{active: selected=='visual'}"
+    style="border-top: 0">
+    <div class="panel-body visualize">
+      <ul ng-repeat="e in wordslists">
+
+          <li style="margin-top:10px">{{e.get('name')}}
+            <button class="btn btn-primary" style="margin-left:20px" ng-click="visualize(e)">
+              <i class="glyphicon glyphicon-stats"></i>
+              {{visualizeText}}
+            </button>
+          </li>
+
+      </ul>
+    </div>
+  </div>
+
+  <div class="tab-pane fade in panel panel-default" 
+  ng-class="{active: selected=='instructions'}"
+  style="border-top: 0">
+  <div class="panel-body visualize">
+    Instructions goes here...
+  </div>
+
+
+</div>
+
